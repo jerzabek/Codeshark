@@ -22,7 +22,7 @@ deploy_testing:
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
-    - apt-get --yes --force-yes install rsync
+    - apt-get --yes --force-yes install rsync nodejs
     # Setup SSH deploy keys
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
