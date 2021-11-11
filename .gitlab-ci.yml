@@ -9,6 +9,8 @@ build-job:
       - ./build/
   script:
     - npm run-script build
+  before_script:
+    - apt-get --yes --force-yes install nodejs
     
 deploy_testing:
   type: deploy
@@ -22,7 +24,7 @@ deploy_testing:
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
-    - apt-get --yes --force-yes install rsync nodejs
+    - apt-get --yes --force-yes install rsync
     # Setup SSH deploy keys
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
