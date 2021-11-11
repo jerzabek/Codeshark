@@ -11,7 +11,7 @@ build-job:
     - npm run-script build
   before_script:
     - apt-get update -qq
-    - curl https://www.npmjs.com/install.sh | sudo sh
+    - apt-get -y install npm nodejs
     
 deploy_testing:
   type: deploy
