@@ -1,0 +1,31 @@
+stages:
+  - build
+  - deploy
+
+build-job:
+  stage: build
+  artifacts:
+     paths:
+      - ./build/
+  script:
+    - npm run-script build
+    
+deploy_testing:
+  type: deploy
+  environment:
+    name: testing
+    url: $TESTING_DOMAIN
+  script:
+    - rsync -avrc --exclude=.env --exclude=.git --exclude=.gitlab --exclude=.gitlab-ci.yml . $SSH_USERNAME@$TESTING_DOMAIN:/var/www/$TESTING_DOMAIN/
+  only:
+    - development
+  before_script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    - apt-get --yes --force-yes install rsync
+    # Setup SSH deploy keys
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
