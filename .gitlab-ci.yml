@@ -12,6 +12,7 @@ build-job:
   before_script:
     - apt-get update -qq
     - apt-get -y install npm
+    - npm install npm@latest -g
     
 deploy_testing:
   type: deploy
