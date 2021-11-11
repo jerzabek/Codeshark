@@ -13,8 +13,8 @@ build-job:
     - apt-get update -qq
     - apt-get -y install npm nodejs
     - npm cache clean -f
-    - sudo npm install -g n
-    - sudo n stable
+    - npm install -g n
+    - n stable
     
 deploy_testing:
   type: deploy
