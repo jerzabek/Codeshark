@@ -11,7 +11,7 @@ build-job:
     - npm run-script build
   before_script:
     - apt-get update -qq
-    - apt-get -y install nodejs
+    - apt-get -y install nodejs npm
     
 deploy_testing:
   type: deploy
