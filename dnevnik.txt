@@ -36,3 +36,4 @@ Napravljeni issuesi na GitLabu koje ćemo trebati riješiti.
 
 5.11. 
 Damjanić napravio prvi Entity–relationship model za bazu podataka.
+
