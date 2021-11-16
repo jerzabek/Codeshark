@@ -1,6 +1,12 @@
 stages:
+  - build
   - deploy
 
+build-job:
+  stage: build
+  script:
+    - echo "OK"
+    
 deploy_testing:
   type: deploy
   environment:
