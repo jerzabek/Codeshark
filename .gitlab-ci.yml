@@ -22,7 +22,7 @@ deploy_testing:
     name: testing
     url: $TESTING_DOMAIN
   script:
-    - rsync -avrc --exclude=.env --exclude=.git --exclude=.gitlab --exclude=.gitlab-ci.yml . $SSH_USERNAME@$TESTING_DOMAIN:/var/www/$TESTING_DOMAIN/
+    - ssh $SSH_USERNAME@$TESTING_DOMAIN "cd codeshark/ && ./redeploy_frontend_testing.sh"
   only:
     - development
   before_script:
