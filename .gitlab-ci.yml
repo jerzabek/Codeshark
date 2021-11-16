@@ -7,7 +7,7 @@ build-job:
   script:
     - echo "OK"
     
-deploy_testing:
+deploy-job:
   type: deploy
   environment:
     name: testing
