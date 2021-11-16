@@ -2,20 +2,14 @@
 		
 	\section{Funkcionalni zahtjevi}
 			
-			\textbf{\textit{dio 1. revizije}}\\
-			
-			\textit{Navesti \textbf{dionike} koji imaju \textbf{interes u ovom sustavu} ili  \textbf{su nositelji odgovornosti}. To su prije svega korisnici, ali i administratori sustava, naručitelji, razvojni tim.}\\
-				
-			\textit{Navesti \textbf{aktore} koji izravno \textbf{koriste} ili \textbf{komuniciraju sa sustavom}. Oni mogu imati inicijatorsku ulogu, tj. započinju određene procese u sustavu ili samo sudioničku ulogu, tj. obavljaju određeni posao. Za svakog aktora navesti funkcionalne zahtjeve koji se na njega odnose.}\\
-			
-			
 			\noindent \textbf{Dionici:}
 			
 			\begin{packed_enum}
 				
-				\item Dionik 1
-				\item Dionik 2				
-				\item ...
+				\item Natjecatelj
+				\item Voditelj
+				\item Administrator				
+				\item Razvojni tim
 				
 			\end{packed_enum}
 			
@@ -23,28 +17,59 @@
 			
 			
 			\begin{packed_enum}
-				\item  \underbar{Aktor 1 (inicijator) može:}
+				\item  \underbar{Neregistrirani/neprijavljeni korisnik (inicijator) može:}
 				
 				\begin{packed_enum}
 					
-					\item funkcionalnost 1
-					\item funkcionalnost 2
+					\item pretraživati natjecanja i pristupiti popisu zadataka s natjecanja i sudionika natjecanja
+					\item pretraživati i čitati zadatke s natjecanja
+					\item pristupiti informacijama tuđeg korisničkog profila:
 					\begin{packed_enum}
 						
-						\item  podfunkcionalnost 1 
-						\item  podfunkcionalnost 2
+						\item  korisničko ime, ime i prezime, i osvojene nagrade
+						\item  statistike u što se ubraja broj točno riješenih i broj isprobanih zadataka
+						\item  popis natjecanja na kojima je korisnik prisustvovao ili natjecanja koja je održavao
 				
 					\end{packed_enum}
-					\item  funkcionalnost 3
+					\item se registrirati u sustav, stvoriti novi korisnički račun za koji:
+					\begin{packed_enum}
+						
+						\item  su mu potrebni korisničko ime, lozinka, ime i prezime te e-mail adresa
+						\item  mora izabrati razinu pristupa "natjecatelj" ili "voditelj"
+						
+					\end{packed_enum}
+				\end{packed_enum}
+			
+				\item  \underbar{Natjecatelj (inicijator) može:}
+				
+				\begin{packed_enum}
+					
+					\item pregledavati i mijenjati osobne podatke
+					\item izbrisati svoj korisnički račun
+					\item pristupiti zadatcima za vježbu i rješavati ih
+					\item prijaviti i odjaviti se na natjecanja i pristupiti natjecanjima
+					\item osvojiti nagrade
+					\item pokrenuti virtualno natjecanje
 					
 				\end{packed_enum}
 			
-				\item  \underbar{Aktor 2 (sudionik) može:}
+					\item  \underbar{Voditelj (inicijator) može:}
 				
 				\begin{packed_enum}
 					
-					\item funkcionalnost 1
-					\item funkcionalnost 2
+					\item pokrenuti i voditi vlastito natjecanje 
+					
+				\end{packed_enum}
+			
+				\item  \underbar{Administrator (inicijator) može:}
+				
+				\begin{packed_enum}
+					
+					\item vidjeti popis svih registriranih korisnika i njihovih osobnih podataka
+					\item korisnike brisati i mijenjati im razinu pristupa aplikaciji (natjecatelj, voditelj)
+					\item pristupiti statistici
+					\item stvarati i brisati zadatke
+					\item odobravati zahtjeve za razinu pristupa voditelja
 					
 				\end{packed_enum}
 			\end{packed_enum}
