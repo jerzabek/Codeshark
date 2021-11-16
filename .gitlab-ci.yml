@@ -1,21 +1,6 @@
 stages:
-  - build
   - deploy
 
-build-job:
-  stage: build
-  artifacts:
-     paths:
-      - ./build/
-  script:
-    - npm run-script build
-  before_script:
-    - apt-get update -qq
-    - apt-get -y install npm nodejs
-    - npm cache clean -f
-    - npm install -g n
-    - n stable
-    
 deploy_testing:
   type: deploy
   environment:
