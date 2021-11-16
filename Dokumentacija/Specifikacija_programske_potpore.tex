@@ -55,47 +55,326 @@
 				
 			\subsection{Obrasci uporabe}
 				
-				\textbf{\textit{dio 1. revizije}}
-				
 				\subsubsection{Opis obrazaca uporabe}
-					\textit{Funkcionalne zahtjeve razraditi u obliku obrazaca uporabe. Svaki obrazac je potrebno razraditi prema donjem predlošku. Ukoliko u nekom koraku može doći do odstupanja, potrebno je to odstupanje opisati i po mogućnosti ponuditi rješenje kojim bi se tijek obrasca vratio na osnovni tijek.}\\
-					
 
-					\noindent \underbar{\textbf{UC$<$broj obrasca$>$ -$<$ime obrasca$>$}}
+					\noindent \underbar{\textbf{UC15 - Dodavanje natjecanja}}
 					\begin{packed_item}
 	
-						\item \textbf{Glavni sudionik: }$<$sudionik$>$
-						\item  \textbf{Cilj:} $<$cilj$>$
-						\item  \textbf{Sudionici:} $<$sudionici$>$
-						\item  \textbf{Preduvjet:} $<$preduvjet$>$
+						\item \textbf{Glavni sudionik: }Voditelj
+						\item  \textbf{Cilj:} Dodati natjecanje
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu voditelja
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
 	
-							\item $<$opis korak jedan$>$
-							\item $<$opis korak dva$>$
-							\item $<$opis korak tri$>$
-							\item $<$opis korak četiri$>$
-							\item $<$opis korak pet$>$
+							\item Voditelj odabire karticu "Natjecanja"
+							\item Voditelj dodaje novo natjecanje
+							\item Voditelj unosi potrebne podatke o natjecanju
+							\item Promjene se upisuju u bazu podataka
 						\end{packed_enum}
 						
 						\item  \textbf{Opis mogućih odstupanja:}
 						
 						\item[] \begin{packed_item}
 	
-							\item[2.a] $<$opis mogućeg scenarija odstupanja u koraku 2$>$
+							\item[3.a] Voditelj unosi podatke u nedozvoljenom formatu
 							\item[] \begin{packed_enum}
 								
-								\item $<$opis rješenja mogućeg scenarija korak 1$>$
-								\item $<$opis rješenja mogućeg scenarija korak 2$>$
+								\item Sustav obavještava voditelja o neuspjelom upisu podataka
+								\item Voditelj popravlja neispravne unose i stvara natjecanje ili odustaje od stvaranja natjecanja
 								
 							\end{packed_enum}
-							\item[2.b] $<$opis mogućeg scenarija odstupanja u koraku 2$>$
-							\item[3.a] $<$opis mogućeg scenarija odstupanja  u koraku 3$>$
-							
 						\end{packed_item}
 					\end{packed_item}
 				
+					\noindent \underbar{\textbf{UC16 - Pokretanje natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Voditelj
+						\item  \textbf{Cilj:} Pokrenuti natjecanje
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu voditelja
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Voditelj odabire karticu "Natjecanja"
+							\item Voditelj odabire jedno od svojih natjecanja
+							\item Voditelj pokreće natjecanje
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC17 - Prijava na natjecanje}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Prijaviti se na nadolazeće natjecanje
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od nadolazećih natjecanja
+							\item Natjecatelj se prijavljuje na odabrano natjecanje
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC18 - Pristupanje natjecanju}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Pristupiti natjecanju
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen u sustav i na natjecanje koje je trenutno aktivno
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od trenutno aktivnih natjecanja na koje je prijavljen
+							\item Natjecatelj pristupa natjecanju
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC19 - Odjava s natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Odjaviti se s natjecanja
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen u sustav i na natjecanje
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od nadolazećih natjecanja na koje je prijavljen
+							\item Natjecatelj se odjavljuje s odabranog natjecanja
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC20 - Uređivanje natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Voditelj
+						\item  \textbf{Cilj:} Urediti natjecanje
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu voditelja
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Voditelj odabire karticu "Natjecanja"
+							\item Voditelj odabire jedno od svojih natjecanja
+							\item Voditelj uređuje pojedinosti svog natjecanja
+							\item Promjene se upisuju u bazu podataka
+						\end{packed_enum}
+						
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+							
+							\item[3.a] Voditelj unosi podatke u nedozvoljenom formatu
+							\item[] \begin{packed_enum}
+								
+								\item Sustav obavještava voditelja o neuspjelom upisu podataka
+								\item Voditelj popravlja neispravne unose i uspješno uređuje natjecanje ili odustaje od uređivanja natjecanja
+								
+							\end{packed_enum}
+						\end{packed_item}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC21 - Pregled sudionika na natjecanju}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Korisnik
+						\item  \textbf{Cilj:} Pregledati natjecatelje koji su sudjelovali na natjecanju
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire karticu "Natjecanja"
+							\item Korisnik odabire jedno od prošlih natjecanja
+							\item Prikazuje se lista natjecatelja koji su sudjelovali na odabranom natjecanju
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC22 - Brisanje natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Administrator
+						\item  \textbf{Cilj:} Obrisati postojeće natjecanje
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu administratora
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Administrator odabire karticu "Natjecanja"
+							\item Administrator odabire jedno od natjecanja
+							\item Administrator briše odabrano natjecanje
+							\item Natjecanje se briše iz baze podataka
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC23 - Dohvat učitanog rješenja zadatka s natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Dohvatiti učitano rješenje zadatka nekog od natjecatelja koji je sudjelovao na natjecanju
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati potpuno točno riješen konkretan zadatak
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od prošlih natjecanja
+							\item Natjecatelj odabire jedan od zadataka s odabranog natjecanja
+							\item Natjecatelj dohvaća rješenje zadatka
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC24 - Završetak natjecanja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Završiti s natjecanjem
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i morao je pristupiti natjecanju
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od trenutno aktivnih natjecanja na koje je prijavljen
+							\item Natjecatelj pristupa natjecanju
+							\item Nakon rješavanja zadataka, a prije isteka vremena, natjecatelj završava natjecanje
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC25 - Pregled ostalih korisnika}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Korisnik
+						\item  \textbf{Cilj:} Pregled profila ostalih korisnika
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire karticu "Korisnici"
+							\item Prikazuje se lista svih registriranih natjecatelja i voditelja
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC26 - Promjena ovlasti korisniku}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Administrator
+						\item  \textbf{Cilj:} Promjeniti ovlasti korisniku
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu administratora
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Administrator odabire karticu "Korisnici"
+							\item Administrator odabire korisnika
+							\item Administrator mijenja odabranom korisniku ovlasti
+							\item Promjene se upisuju u bazu podataka
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC27 - Pregled statistike pojedinog korisnika}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Korisnik
+						\item  \textbf{Cilj:} Pregledati statistiku pojedinog korisnika
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Korisnik odabire karticu "Korisnici"
+							\item Korisnik odabire određenog korisnika s liste
+							\item Prikazuje se statistika odabranog korisnika
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC28 - Pregled svih učitanih rješenja nekog natjecatelja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Natjecatelj
+						\item  \textbf{Cilj:} Pregledati sva učitana rješenja natjecatelja koji je sudjelovao na natjecanju
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Natjecatelj odabire karticu "Natjecanja"
+							\item Natjecatelj odabire jedno od prošlih natjecanja
+							\item Natjecatelj odabire jednog od natjecatelja koji je sudjelovao na natjecanju
+							\item Prikazuju se sva učitana rješenja odabranog natjecatelja
+						\end{packed_enum}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC29 - Promjena osobnih podataka korisniku}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Administrator
+						\item  \textbf{Cilj:} Promijniti osobne podatke korisniku
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu administratora
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Administrator odabire karticu "Korisnici"
+							\item Administrator odabire određenog korisnika
+							\item Administrator mijenja željene osobne podatke korisniku
+							\item Promjene se upisuju u bazu podataka
+						\end{packed_enum}
+						
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+							
+							\item[3.a] Voditelj unosi podatke u nedozvoljenom formatu
+							\item[] \begin{packed_enum}
+								
+								\item Sustav obavještava administratora o neuspjelom upisu podataka
+								\item Administrator popravlja neispravne unose i uspješno mijenja osobne podatke odabranog korisnika ili odustaje od promjena
+								
+							\end{packed_enum}
+						\end{packed_item}
+					\end{packed_item}
+				
+					\noindent \underbar{\textbf{UC30 - Potvrda promjene uloge voditelja}}
+					\begin{packed_item}
+						
+						\item \textbf{Glavni sudionik: }Administrator
+						\item  \textbf{Cilj:} Potvrditi promjenu uloge voditelju
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Korisnik mora biti prijavljen i imati ulogu administratora
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+							
+							\item Administrator odabire karticu "Korisnici"
+							\item Administrator odabire određenog korisnika
+							\item Administrator potvrđuje korisniku promjenu uloge u voditelja natjecanja
+							\item Promjene se upisuju u bazu podataka
+						\end{packed_enum}
+					\end{packed_item}
 					
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
