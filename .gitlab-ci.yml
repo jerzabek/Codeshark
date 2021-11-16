@@ -1,6 +1,3 @@
-stages:
-  - deploy
-
 deploy_testing:
   type: deploy
   environment:
