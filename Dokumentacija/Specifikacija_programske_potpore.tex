@@ -744,10 +744,35 @@
 				
 			\subsection{Sekvencijski dijagrami}
 				
-				\textbf{\textit{dio 1. revizije}}\\
+				\subsubsection{Obrazac uporabe UC9 - Dodavanje zadataka}
 				
-				\textit{Nacrtati sekvencijske dijagrame koji modeliraju najvažnije dijelove sustava (max. 4 dijagrama). Ukoliko postoji nedoumica oko odabira, razjasniti s asistentom. Uz svaki dijagram napisati detaljni opis dijagrama.}
-				\eject
+				\noindent Voditelj šalje zahtjev za dodavanjem novog zadatka te mu se prikazuje stranica s poljima koja treba popuniti. Ta polja su naziv zadatka, broj bodova (tj. težina 1-5), vremensko ograničenje izvršavanja programa, tekst zadatka, primjeri za evaluaciju (ulaz i očekivani izlaz programa) i privatnost zadatka. Voditelj upisuje tražene podatke i sprema promjene. Ukoliko su svi upisani podaci ispravno napisani, voditelj dobiva potvrdu u obliku poruke da je uspješno stvorio zadatak, a ako su upisani podaci na neki način neispravni, voditelju se dojavljuje greška i nudi da ispravi podatke. 
+				
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{slike/UC9 - Dodavanje zadataka.PNG}
+					\caption{Sekvencijski dijagram za UC9}
+					\label{fig:seq_uc9}
+				\end{figure}
+				
+				\subsubsection{Obrazac uporabe UC12 - Uređivanje zadataka za vježbu}
+				
+				\noindent Voditelj najprije odabire karticu sa zadacima te mu se prikazuje popis zadataka. Zatim odabire određeni zadatak s popisa i dobiva sve informacije o njemu. Zatim odabire opciju za uređivanje zadataka i, slično kao i u prethodnom dijagramu, prikazuje mu se stranica s istim poljima koja treba popuniti. Voditelj uređuje željene podatke, sprema promjene i, ako su uređeni podaci ispravni, dobiva potvrdu o uspješnom uređivanju zadatka, inače dobiva poruku greške i nudi mu se da ispravi podatke.
+				
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{slike/UC12 - Uređivanje zadataka za vježbu.PNG}
+					\caption{Sekvencijski dijagram za UC12}
+					\label{fig:seq_uc12}
+				\end{figure}
+				
+				\subsubsection{Obrazac uporabe UC23 - Dohvat učitanog rješenja zadatka s natjecanja}
+				
+				\noindent Natjecatelj najprije odabire karticu s natjecanjima i dobiva popis natjecanja. Nakon toga bira željeno natjecanje i dobiva sve informacije o njemu. Zatim odabire zadatak čije rješenje želi dohvatiti i prikazuju mu se podaci o zadatku. Na ovoj stranici odabire opciju za dohvat rješenja i prima potvrdu o njegovom uspješnom preuzimanju samo ako je natjecatelj već riješio taj zadatak, i to potpuno točno, a inače dobiva poruku da ne može preuzeti rješenje tog zadatka. 
+				
+				\begin{figure}[H]
+					\includegraphics[width=\textwidth]{slike/UC23 - Dohvat učitanog rješenja zadatka s natjecanja.PNG}
+					\caption{Sekvencijski dijagram za UC23}
+					\label{fig:seq_uc23}
+				\end{figure}
 	
 		\section{Ostali zahtjevi}
 		
