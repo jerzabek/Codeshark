@@ -63,7 +63,10 @@
 			Prezime & VARCHAR	&  prezime korisnika		\\ \hline 
 			Email & VARCHAR & email korisnika  \\ \hline 
 			Titula	& VARCHAR & prilagođena titula korisnika  	\\ \hline  
-			NivouPrava	& INT & razina ovlasti korisnika  	\\ \hline  
+			NivouPrava	& INT & razina ovlasti korisnika  	\\ \hline
+			Token	& VARCHAR & token napravljen za korisnika 	\\ \hline  
+			Token Generiran	& TIMESTAMP & vrijeme kada je token generiran\\ \hline  
+			Aktivan	& Boolean & stanje verifikacije korisnika  	\\ \hline    
 			
 		\end{longtblr}
 		
@@ -83,8 +86,8 @@
 			\SetCell{LightGreen}NatjecanjeID & INT	&  jedinstveni indikator natjecanja  	\\ \hline
 			ImeNatjecanja	& VARCHAR & identificirajuće ime natjecanja  	\\ \hline 
 			Tekst Natjecanja	& VARCHAR & sadržaj teksta natjecanja 	\\ \hline
-			VrijemeKraj	& DATE & vrijeme završetka natjecanja 	\\ \hline 
-			VrijemePoc & DATE	&  vrijeme početka natjecanje		\\ \hline 
+			VrijemeKraj	& TIMESTAMP & vrijeme završetka natjecanja 	\\ \hline 
+			VrijemePoc & TIMESTAMP	&  vrijeme početka natjecanje		\\ \hline 
 			SlikaTrofeja & VARCHAR	&  sličica trofeja		\\ \hline 
 			BrojZadataka & INT & broj zadataka u natjecanju  \\ \hline 
 			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
@@ -109,7 +112,7 @@
 			Bodovi	& INT & broj bodova(težina 1-5)	\\ \hline
 			MaxVrijeme Izvrs	& NUMERIC &  maksimalno vrijeme izvršavanja programa 	\\ \hline 
 			TekstZadatka & VARCHAR	&  sadržaj teksta zadatka		\\ \hline 
-			Privatnost & INT	&  binarna vrijednost privatnosti( 1-zadatak je javan, 0-zadatak je privatan)	\\ \hline 
+			Privatnost & Boolean	&  stanje privatnosti zadatka	\\ \hline 
 			Slag & VARCHAR & slag verzija naziva zadatka  \\ \hline 
 			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID)  	\\ \hline  
 			\SetCell{LightBlue} NatjecanjeID & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeID)  	\\ \hline  
@@ -147,13 +150,13 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Upload Rjesenja}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Vrijeme Predaje & DATE	&  vrijeme predaje rješenja  	\\ \hline
+			\SetCell{LightGreen}Vrijeme Predaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
 			\SetCell{LightGreen} Korisnik ID	& INT & Korisnik ID (korisnik.KorisnikID)  	\\ \hline 
 			\SetCell{LightGreen} Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline
 			Predano Rjesenje	& VARCHAR &  datoteka koju je predao korisnik	\\ \hline 
 			Prolaznost & NUMERIC	&  posto riješenosti primjera zadataka		\\ \hline 
 			ProsjVrijeme Izvrs & NUMERIC	&  prosječno vrijeme izvršavanja po primjeru		\\ \hline 
-			NatjecanjeTraje & INT & binarna vrijednost trajanja natjecanje(1-natjecanje trenutno traje,0-natjecanje trenutno ne traje)  \\ \hline  
+			NatjecanjeTraje & BOOLEAN & zadatkova veza s natjecanjima(1-natjecanje trenutno traje,0-natjecanje trenutno ne traje)  \\ \hline  
 		\end{longtblr}
 		
 		\noindent \textbf{Virtualno Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o Virtualnim natjecanjima.
@@ -258,7 +261,7 @@
 		\begin{figure}[H]
 			\includegraphics[width=\textwidth]{slike/RelacijskaShema.PNG} %veličina u odnosu na širinu linije
 			\caption{E-R dijagram baze podataka}
-			\label{fig:leetcode} %label mora biti drugaciji za svaku sliku
+			\label{fig:RelacijskaShema} %label mora biti drugaciji za svaku sliku
 		\end{figure}
 		
 		\eject

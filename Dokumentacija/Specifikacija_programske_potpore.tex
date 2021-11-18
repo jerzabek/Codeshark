@@ -743,6 +743,7 @@
 				\eject		
 				
 			\subsection{Sekvencijski dijagrami}
+			
 				
 				\subsubsection{Obrazac uporabe UC9 - Dodavanje zadataka}
 				
@@ -753,6 +754,7 @@
 					\caption{Sekvencijski dijagram za UC9}
 					\label{fig:seq_uc9}
 				\end{figure}
+			\eject
 				
 				\subsubsection{Obrazac uporabe UC12 - Uređivanje zadataka za vježbu}
 				
@@ -763,6 +765,7 @@
 					\caption{Sekvencijski dijagram za UC12}
 					\label{fig:seq_uc12}
 				\end{figure}
+				\eject
 				
 				\subsubsection{Obrazac uporabe UC23 - Dohvat učitanog rješenja zadatka s natjecanja}
 				
@@ -773,12 +776,22 @@
 					\caption{Sekvencijski dijagram za UC23}
 					\label{fig:seq_uc23}
 				\end{figure}
+		\eject
 	
 		\section{Ostali zahtjevi}
 		
-			\textbf{\textit{dio 1. revizije}}\\
-		 
-			 \textit{Nefunkcionalni zahtjevi i zahtjevi domene primjene dopunjuju funkcionalne zahtjeve. Oni opisuju \textbf{kako se sustav treba ponašati} i koja \textbf{ograničenja} treba poštivati (performanse, korisničko iskustvo, pouzdanost, standardi kvalitete, sigurnost...). Primjeri takvih zahtjeva u Vašem projektu mogu biti: podržani jezici korisničkog sučelja, vrijeme odziva, najveći mogući podržani broj korisnika, podržane web/mobilne platforme, razina zaštite (protokoli komunikacije, kriptiranje...)... Svaki takav zahtjev potrebno je navesti u jednoj ili dvije rečenice.}
+		\begin{packed_item}
+			\item Sustav treba omogućiti rad više korisnika u stvarnom vremenu
+			 \item Korisničko sučelje i sustav moraju podržavati hrvatsku abecedu (dijakritičke znakove) pri unosu i prikazu tekstualnog sadržaja
+			\item Izvršavanje dijela programa u kojem se pristupa bazi podataka ne smije trajati duže od nekoliko sekundi
+			\item Sustav treba biti implementiran kao web aplikacija koristeći objektno-orijentirane jezike
+			\item Neispravno korištenje korisničkog sučelja ne smije narušiti funkcionalnost i rad sustava
+			\item Sustav treba biti jednostavan za korištenje, korisnici se moraju znati koristiti sučeljem bez opširnih uputa
+			\item Sustav mora validirati podatke na klijentskoj i poslužiteljskoj strani
+			\item Veza s bazom podataka mora biti kvalitetno zaštićena, brza i otporna na vanjske greške
+			\item Pristup sustavu mora biti omogućen iz javne mreže pomoću HTTPS.
+			\item Sustav je responzivan na mobilnim uređajima 
+		\end{packed_item}	
 			 
 			 
 			 
