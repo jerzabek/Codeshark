@@ -66,7 +66,7 @@ function Login({ login: loginUser }) {
     attemptLogin()
   }
   return (
-    <div class="container py-4">
+    <div className="container py-4">
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-4">
           <h1 className='mb-4 text-center'>Sign into your account</h1>
@@ -99,10 +99,10 @@ function Login({ login: loginUser }) {
             <div className="row">
               <div className="col-12">
                 <div className="float-end">
-                  <div class="align-middle spinner-border me-3 visually-hidden" role="status" id="login-spinner">
-                    <span class="visually-hidden">Loading...</span>
+                  <div className="align-middle spinner-border me-3 visually-hidden" role="status" id="login-spinner">
+                    <span className="visually-hidden">Loading...</span>
                   </div>
-                  <button type="submit" id="login-button" className="btn btn-success"><i class="bi bi-door-open"></i> Sign in</button>
+                  <button type="submit" id="login-button" className="btn btn-success"><i className="bi bi-door-open"></i> Sign in</button>
                 </div>
               </div>
             </div>

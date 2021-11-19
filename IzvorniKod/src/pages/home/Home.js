@@ -22,7 +22,7 @@ function Home(props) {
       </div>
       <div className="container py-5 text-center">
         <h1>Welcome to CodeShark</h1>
-        <p className='mb-1'>Brought to you with <i class="bi bi-suit-heart-fill text-danger"></i> by <span className="fw-bold">DomeFanClub</span></p>
+        <p className='mb-1'>Brought to you with <i className="bi bi-suit-heart-fill text-danger"></i> by <span className="fw-bold">DomeFanClub</span></p>
         <p className="text-muted">Work in progress #proginz 2021./2022.</p>
       </div>
     </div>

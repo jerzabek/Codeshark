@@ -86,7 +86,7 @@ function Register() {
   }
 
   return (
-    <div class="container py-4">
+    <div className="container py-4">
       <h1 className='mb-4 text-center'>Register</h1>
       <hr className="w-75 mx-auto" />
       <form id="registration-form" onSubmit={formSubmit}>
@@ -158,9 +158,9 @@ function Register() {
 
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4">
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="profilePicture">Profile picture</label>
-              <input type="file" name="profilePicture" class="form-control" id="profilePicture" accept="image/png, image/jpeg, image/jpg"
+            <div className="input-group mb-3">
+              <label className="input-group-text" for="profilePicture">Profile picture</label>
+              <input type="file" name="profilePicture" className="form-control" id="profilePicture" accept="image/png, image/jpeg, image/jpg"
                onChange={(e) => setProfilePicture(e.target.files[0])}></input>
             </div>
           </div>
@@ -186,8 +186,8 @@ function Register() {
         <div className="row">
           <div className="col-12 col-md-10 col-lg-8">
             <div className="float-end">
-              <div class="align-middle spinner-border me-3 visually-hidden" role="status" id="register-spinner">
-                <span class="visually-hidden">Loading...</span>
+              <div className="align-middle spinner-border me-3 visually-hidden" role="status" id="register-spinner">
+                <span className="visually-hidden">Loading...</span>
               </div>
               <button type="submit" id="register-button" className="btn btn-success"><i className="bi bi-person-plus"></i> Register</button>
             </div>

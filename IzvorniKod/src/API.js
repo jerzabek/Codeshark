@@ -47,8 +47,20 @@ function verifyAccount(token) {
     })
 }
 
+function getAvatar(username) {
+  return axiosInstance.get(`avatar/${username}`)
+    .then((res) => {
+      if ([404].includes(res.status)) return handleError(res.data)
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 export {
   login,
   register,
-  verifyAccount
+  verifyAccount,
+  getAvatar
 }
