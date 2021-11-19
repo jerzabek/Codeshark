@@ -19,6 +19,9 @@ function Login({ login: loginUser }) {
     }
 
     const attemptLogin = async () => {
+      document.getElementById('login-button').classList.add('disabled')
+      document.getElementById('login-spinner').classList.remove('visually-hidden')
+
       try {
         const res = await login(loginData)
 
@@ -36,7 +39,13 @@ function Login({ login: loginUser }) {
             icon: 'error'
           })
         }
+
+        document.getElementById('login-button').classList.remove('disabled')
+        document.getElementById('login-spinner').classList.add('visually-hidden')
       } catch (err) {
+        document.getElementById('login-button').classList.remove('disabled')
+        document.getElementById('login-spinner').classList.add('visually-hidden')
+
         if (typeof err === 'object') {
           MySwal.fire({
             title: <p>An error unknown error occurred :(</p>,
@@ -57,41 +66,49 @@ function Login({ login: loginUser }) {
     attemptLogin()
   }
   return (
-    <div>
-      <h1>Sign into your account</h1>
-      <form id="registration-form" onSubmit={formSubmit}>
-        <div className="row">
-          <div className="col-12 col-md-6 col-lg-4">
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">Username</label>
-              <input type="text" className="form-control" name="username" placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required></input>
+    <div class="container py-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-4">
+          <h1 className='mb-4 text-center'>Sign into your account</h1>
+          <hr className="w-75 mx-auto" />
+          <form id="registration-form" onSubmit={formSubmit}>
+            <div className="row">
+              <div className="col-12">
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">Username</label>
+                  <input type="text" className="form-control" name="username" autocomplete="off" placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required></input>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-12 col-md-6 col-lg-4">
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input type="password" className="form-control" name="password" placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required></input>
+            <div className="row">
+              <div className="col-12">
+                <div className="mb-3">
+                  <label htmlFor="password" className="form-label">Password</label>
+                  <input type="password" className="form-control" name="password" placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required></input>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="row">
-          <div className="col-12 col-md-6 col-lg-4">
-            <div className="float-end">
-              <button type="submit" className="btn btn-success"><i class="bi bi-door-open"></i> Sign in</button>
+            <div className="row">
+              <div className="col-12">
+                <div className="float-end">
+                  <div class="align-middle spinner-border me-3 visually-hidden" role="status" id="login-spinner">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <button type="submit" id="login-button" className="btn btn-success"><i class="bi bi-door-open"></i> Sign in</button>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

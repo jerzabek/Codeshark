@@ -8,7 +8,6 @@ import {
   Route
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.min.js'
 import { HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
@@ -45,8 +44,7 @@ function CodeShark() {
       }}>
         <Header />
 
-        <main className='py-4'>
-          <div className='container'>
+        <main>
             <Routes>
               <Route path={LOGIN} exact element={<Login login={login} />} />
               <Route path={LOGOUT} exact element={<Logout logout={logout} />} />
@@ -59,7 +57,6 @@ function CodeShark() {
                 </PrivateRoute>
               } />
             </Routes>
-          </div>
         </main>
       </UserContext.Provider>
     </BrowserRouter>

@@ -13,10 +13,20 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
-  const [level, setLevel] = useState('')
+  const [level, setLevel] = useState('1')
 
   function formSubmit(e) {
     e.preventDefault()
+
+    if (password !== confirm) {
+      MySwal.fire({
+        title: <p>Could not complete registration!</p>,
+        html: <p>Your passwords don't match. Please make sure they are the same.</p>,
+        icon: 'warning'
+      })
+
+      return;
+    }
 
     let registrationData = {
       korisnickoime: username,
@@ -30,6 +40,9 @@ function Register() {
     }
 
     const attemptRegistration = async () => {
+      document.getElementById('register-button').classList.add('disabled')
+      document.getElementById('register-spinner').classList.remove('visually-hidden')
+
       try {
         const res = await register(registrationData)
 
@@ -45,7 +58,13 @@ function Register() {
             icon: 'error'
           })
         }
+
+        document.getElementById('register-button').classList.remove('disabled')
+        document.getElementById('register-spinner').classList.add('visually-hidden')
       } catch (err) {
+        document.getElementById('register-button').classList.remove('disabled')
+        document.getElementById('register-spinner').classList.add('visually-hidden')
+
         if (typeof err === 'object') {
           MySwal.fire({
             title: <p>An error unknown error occurred :(</p>,
@@ -67,8 +86,9 @@ function Register() {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div class="container py-4">
+      <h1 className='mb-4 text-center'>Register</h1>
+      <hr className="w-75 mx-auto" />
       <form id="registration-form" onSubmit={formSubmit}>
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4">
@@ -156,7 +176,10 @@ function Register() {
         <div className="row">
           <div className="col-12 col-md-10 col-lg-8">
             <div className="float-end">
-              <button type="submit" className="btn btn-success"><i className="bi bi-person-plus"></i> Register</button>
+              <div class="align-middle spinner-border me-3 visually-hidden" role="status" id="register-spinner">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <button type="submit" id="register-button" className="btn btn-success"><i className="bi bi-person-plus"></i> Register</button>
             </div>
           </div>
         </div>

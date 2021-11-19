@@ -5,7 +5,7 @@ function Profile(props) {
   const userContext = useContext(UserContext)
 
   return (
-    <div>
+    <div className='container'>
       <h1>Your profile</h1>
       <h2>Currently logged in as {userContext.user.username}</h2>
     </div>
