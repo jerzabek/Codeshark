@@ -1,3 +1,4 @@
+
 12.10.2021. Prvi sastanak DFC
 Prisustvovali Tomljenović, Jeržabek, Damjanić, Griparić i Mihalić. 
 Započeti su početni dogovori oko organizacije i podjele poslova. Mihalić proglašen zapisničarem. Damjanić voditeljem. 
@@ -32,6 +33,9 @@ Prođeni primjeri dokumentacije koju ćemo pisati.
 Jeržabek postavio CICD pipeline
 
 3.11.2021.
+Instaliran CRA kao baza za React projekt.
+
+3.11.2021.
 Napravljeni issuesi na GitLabu koje ćemo trebati riješiti.
 
 5.11.2021.
@@ -54,4 +58,5 @@ Napravljena verifikacija pomoću maila preko MailTrapa. Omogućeno postavljanje 
 
 19.11.2021.
 Završna verzija dokumentacije prije predaje je završena. Generičke/osnovne funkcije fizičkog djela programa su napravljene i trenutno nema neriješenih issuesa.
+
 

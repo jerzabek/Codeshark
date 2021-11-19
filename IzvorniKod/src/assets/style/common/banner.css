@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Source+Sans+Pro:wght@700&display=swap');
+
+.banner-container {
+  height: 40em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.banner-container .banner-background {
+  width: 100%;
+  height: 40em;
+  object-fit: cover;
+  object-position: center -200px;
+  filter: brightness(0.7);
+  position: absolute;
+}
+
+.banner-container .banner-content {
+  position: relative;
+}
+
+.banner-container .banner-content {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.banner-container .banner-content .banner-title {
+  font-size: 5em;
+}
+
+.banner-container .btn-cta {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+@media (max-width: 1550px) { 
+  .banner-container {
+    height: 100vh;
+  }
+
+  .banner-container .banner-background {
+    height: 100vh;
+    object-position: center;
+  }
+  
+  .banner-container .banner-content .banner-title {
+    font-size: 3.2em;
+    margin-bottom: 0.5em;
+  }
+}
