@@ -25,7 +25,7 @@ deploy_production:
     refs:
       - main
   environment:
-    name: testing
+    name: production
     url: $DOMAIN
   script:
     - ssh $SSH_USERNAME@$DOMAIN "cd codeshark/ && ./redeploy_frontend_production.sh"
