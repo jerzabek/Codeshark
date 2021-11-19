@@ -8,8 +8,6 @@ deploy_testing:
     url: $TESTING_DOMAIN
   script:
     - ssh $SSH_USERNAME@$TESTING_DOMAIN "cd codeshark/ && ./redeploy_frontend_testing.sh"
-  only:
-    - development
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
