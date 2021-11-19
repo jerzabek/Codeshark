@@ -49,14 +49,14 @@ function Header(props) {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div className="navbar-nav w-100">
+          <div className="navbar-nav w-100 align-items-baseline">
             <NavLink to={HOME} className='nav-link'>Home</NavLink>
             <NavLink to={HOME} className='nav-link'>Problems</NavLink>
             <NavLink to={HOME} className='nav-link'>Leaderboards</NavLink>
             {
               isLogged ?
                 <React.Fragment>
-                  <NavLink to={PROFILE} className='nav-link ms-lg-auto ms-0'>
+                  <NavLink to={PROFILE} className='nav-link ms-lg-auto ms-0 align-items-baseline'>
                     <img src={avatar} onError={(e) => {
                       if (!e.target.src.includes(defaultAvatar)) {
                         // So that it doesnt keep spamming if the default avatar is not available
