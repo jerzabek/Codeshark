@@ -1,4 +1,5 @@
 deploy_testing:
+  stage: deploy
   only:
     refs:
       - develop
@@ -21,6 +22,7 @@ deploy_testing:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 deploy_testing:
+  stage: deploy
   only:
     refs:
       - main
