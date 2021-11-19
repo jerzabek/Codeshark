@@ -1,11 +1,11 @@
 import * as axios from 'axios'
 
-const baseUrl = 'https://sigma.domefan.club:5000/'
+const baseUrl = process.env.REACT_APP_API_URL
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
   headers: { 'Content-Type': 'application/json' },
-  validateStatus: (status) => (status >= 200 && status < 300) || status === 404
+  validateStatus: (status) => (status >= 200 && status < 300)
 })
 
 const handleError = (err) => ({ success: false, error: err.error || err || 'Greška na serveru' })
@@ -28,10 +28,10 @@ function register(data) {
       "Content-Type": "multipart/form-data"
     }
   }).then((res) => {
-    if ([400].includes(res.status)) throw new Error(res.data.error)
     return handleSuccess(res.data)
   }).catch(err => {
-    if (err && err.response && [400].includes(err.response.status)) return handleError(err.response.data.error)
+    if (err && err.response && [413].includes(err.response.status)) return handleError('Profile picture is too large. Size limit is 1 MB.')
+    if (err && err.response && [400, 413].includes(err.response.status)) return handleError(err.response.data.error)
     return handleError()
   })
 }
