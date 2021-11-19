@@ -14,6 +14,7 @@ function Register() {
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [level, setLevel] = useState('1')
+  const [profilePicture, setProfilePicture] = useState()
 
   function formSubmit(e) {
     e.preventDefault()
@@ -38,6 +39,16 @@ function Register() {
       titula: '',
       nivouprava: level
     }
+
+    // const registrationData = new FormData();
+    // registrationData.append("korisnickoime", username,);
+    // registrationData.append("slikaprofila", profilePicture);
+    // registrationData.append("lozinka", password,);
+    // registrationData.append("ime", firstname,);
+    // registrationData.append("prezime", lastname,);
+    // registrationData.append("email", email,);
+    // registrationData.append("titula", '',);
+    // registrationData.append("nivouprava", level);
 
     const attemptRegistration = async () => {
       document.getElementById('register-button').classList.add('disabled')
@@ -152,6 +163,16 @@ function Register() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required></input>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12 col-md-6 col-lg-4">
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="profilePicture">Profile picture</label>
+              <input type="file" name="profilePicture" class="form-control" id="profilePicture" accept="image/png, image/jpeg, image/jpg"
+               onChange={(e) => setProfilePicture(e.target.files)}></input>
             </div>
           </div>
         </div>
