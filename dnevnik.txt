@@ -34,6 +34,24 @@ Jeržabek postavio CICD pipeline
 3.11.2021.
 Napravljeni issuesi na GitLabu koje ćemo trebati riješiti.
 
-5.11. 
+5.11.2021.
 Damjanić napravio prvi Entity–relationship model za bazu podataka.
+
+12.11.2021.
+Groupni sastanak gdje su prisustvovali svi članovi. Jeržabek je održao predavanje o Reactu, kako se koristi i primjene.
+Ostvarene prve konekcije na bazu podataka. Dogovoreni dodatni parametri o kojima se mora paziti na bazi.
+
+15.11.-16.11.2021.
+Podignuta prva verzija frontenda. Napravljen registration/login screen. 
+Podignuta prva verzija backenda. Slušaju se zahtjevi i spremaju podatci u bazu podataka.
+Povezan frontend i backend na serveru. Napravljeni su skoro svi uvjeti prve revizije.
+
+17.11.2021.
+Prva demonstratura/revizija sa asistentom. Potrebno napraviti verifikaciju preko maila.
+
+18.11.2021.
+Napravljena verifikacija pomoću maila preko MailTrapa. Omogućeno postavljanje slike profila koja se sprema na server.
+
+19.11.2021.
+Završna verzija dokumentacije prije predaje je završena. Generičke/osnovne funkcije fizičkog djela programa su napravljene i trenutno nema neriješenih issuesa.
 
