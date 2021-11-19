@@ -15,16 +15,19 @@ function Profile(props) {
       try {
         const res = await getAvatar(userContext.user.username)
 
+        console.log(res)
+
         if (res.success) {
           setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.url)
-          
-          document.getElementById('avatar').classList.remove('visually-hidden');
-          document.getElementById('avatar-spinner').classList.add('visually-hidden');
+
+          document.getElementById('avatar-profile').classList.remove('visually-hidden');
+          document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         } else {
-          document.getElementById('avatar-spinner').classList.add('visually-hidden');
+          document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         }
       } catch (err) {
-        document.getElementById('avatar-spinner').classList.add('visually-hidden');
+        console.log(err)
+        document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
       }
     })();
 
@@ -36,7 +39,7 @@ function Profile(props) {
       <div className="row">
         <div className="col-12 col-md-2 col-lg-3">
           <div className="flex-justify-content-center avatar-container">
-            <div className="spinner-grow" role="status" id="avatar-spinner">
+            <div className="spinner-grow" role="status" id="avatar-profile-spinner">
               <span className="visually-hidden">Loading...</span>
             </div>
             <img src={avatar} onError={(e) => {
@@ -44,7 +47,7 @@ function Profile(props) {
                 // So that it doesnt keep spamming if the default avatar is not available
                 e.target.onerror = null; e.target.src = defaultAvatar
               }
-            }} alt="Avatar" id="avatar" className='avatar rounded-circle visually-hidden' />
+            }} alt="Avatar" id="avatar-profile" className='avatar rounded-circle visually-hidden' />
           </div>
         </div>
         <div className="col-12 col-md-10 col-lg-9">
