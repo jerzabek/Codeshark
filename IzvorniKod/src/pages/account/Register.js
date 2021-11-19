@@ -29,17 +29,6 @@ function Register() {
       return;
     }
 
-    // let registrationData = {
-    //   korisnickoime: username,
-    //   slikaprofila: "juan.png",
-    //   lozinka: password,
-    //   ime: firstname,
-    //   prezime: lastname,
-    //   email: email,
-    //   titula: '',
-    //   nivouprava: level
-    // }
-
     const registrationData = new FormData();
     registrationData.append("korisnickoime", username,);
     registrationData.append("slikaprofila", profilePicture);
@@ -172,7 +161,7 @@ function Register() {
             <div class="input-group mb-3">
               <label class="input-group-text" for="profilePicture">Profile picture</label>
               <input type="file" name="profilePicture" class="form-control" id="profilePicture" accept="image/png, image/jpeg, image/jpg"
-               onChange={(e) => setProfilePicture(e.target.files)}></input>
+               onChange={(e) => setProfilePicture(e.target.files[0])}></input>
             </div>
           </div>
         </div>
