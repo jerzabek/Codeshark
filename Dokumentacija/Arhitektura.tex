@@ -268,7 +268,37 @@
 			
 			
 		\section{Dijagram razreda}
-		
+			Na slici 4.2. vidimo osnovni model UML dijagrama koji prikazuje osnovne klase koje koristimo na backendu.
+				
+			Trenutni dijagram razreda opisuje izgled klasa i njihovih metoda koje će nam biti potrebne u projektu. 
+			Trenutno pošto imamo registraciju, ulogiravanje i validaciju, koristimo samo klasu Korisnik te njene metode. 
+			Imamo privatnu metodu koja se zove \verb*| __get_id() | preko koje dobivamo korisnikid iz baze podataka,
+			zato što je to metoda koja dohvaća privatni ključ te ne želimo da korisnik ikad ima pristup tome.
+			Tu metodu trenutno ne koristimo previše već će biti jako korisna kasnije u konekcijama s instancama ostalim
+			klasa prilikom dobivanja informacija iz ostalih tablica baze podataka. Kao što se vidi, svaka klasa ima 
+			konstruktor \verb*| __init__() | te primaju informacije koje su identične onima iz njihovih modela iz baze podataka.
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/DijagramRazreda.png} %veličina u odnosu na širinu linije
+				\caption{Dijagram razreda}
+				\label{fig:DijagramRazreda} %label mora biti drugaciji za svaku sliku
+			\end{figure}	
+			
+
+			Budući da radimo u programskom jeziku Python, ne možemo lako prikazati Data Transfer objects.
+			Međutim, prilikom registracije, sve informacije koje dobivamo s frontenda prosljeđujemo u konstruktor
+			Korisnik. Kasnije, prilikom ulogiranjavanja, preko korisničkog imena dobivamo podatke iz baze te izrađujemo instancu Korisnik,
+			S tim Korisnikom kasnije možemo baratati pomoću njegovih podataka tražimo iz baze podataka da li je aktiviran te odgovara li
+			hash unesene lozinke hashu lozinke koja je spremljena u bazu podataka, tj. u instanci Korisnik.
+
+			Naša klasa Korisnik se zapravo referira i na voditelja i na administratora. Oni svi imaju identične podatke te duplikacija koda
+			nije potrebna. Velika razlika je samo u njihovom podatku NivouPrava o kojem će ovisiti kakve ovlasti na stranici ima.
+			To će također biti funkcija koju će biti privatna. Voditelj će za razliku od natjecatelja imati pristup stranicama
+			za stranicama za uploadanje zadataka i testnih primjera te stvaranju natjecanja. Administrator će to uz to sve moći 
+			uređivati ovlasti svih voditelja i natjecatelja te mora potvrditi voditelja što će biti na posebnoj stranici.
+
+
+
 			\textit{Potrebno je priložiti dijagram razreda s pripadajućim opisom. Zbog preglednosti je moguće dijagram razlomiti na više njih, ali moraju biti grupirani prema sličnim razinama apstrakcije i srodnim funkcionalnostima.}\\
 			
 			\textbf{\textit{dio 1. revizije}}\\
