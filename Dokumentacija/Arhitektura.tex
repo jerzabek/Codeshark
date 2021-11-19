@@ -234,7 +234,7 @@
 		\end{longtblr}
 		
 		
-		\noindent \textbf{Je Osvojio} \space \space Ovaj entitet sadržava sve informacije o klasi natjecanja.
+		\noindent \textbf{Klasa Natjecanja} \space \space Ovaj entitet sadržava sve informacije o klasi natjecanja.
 		Sadrži atribute:   ID klase natjecanja, naziv klase natjecanja.
 		
 		
@@ -272,11 +272,11 @@
 				
 			Trenutni dijagram razreda opisuje izgled klasa i njihovih metoda koje će nam biti potrebne u projektu. 
 			Trenutno pošto imamo registraciju, ulogiravanje i validaciju, koristimo samo klasu Korisnik te njene metode. 
-			Imamo privatnu metodu koja se zove \verb*| __get_id() | preko koje dobivamo korisnikid iz baze podataka,
+			Imamo privatnu metodu koja se zove \verb*|__get_id()| preko koje dobivamo korisnikid iz baze podataka,
 			zato što je to metoda koja dohvaća privatni ključ te ne želimo da korisnik ikad ima pristup tome.
 			Tu metodu trenutno ne koristimo previše već će biti jako korisna kasnije u konekcijama s instancama ostalim
 			klasa prilikom dobivanja informacija iz ostalih tablica baze podataka. Kao što se vidi, svaka klasa ima 
-			konstruktor \verb*| __init__() | te primaju informacije koje su identične onima iz njihovih modela iz baze podataka.
+			konstruktor \verb*|__init__()| te primaju informacije koje su identične onima iz njihovih modela iz baze podataka.
 
 			\begin{figure}[H]
 				\includegraphics[width=\textwidth]{slike/DijagramRazreda.png} %veličina u odnosu na širinu linije
@@ -287,23 +287,18 @@
 
 			Budući da radimo u programskom jeziku Python, ne možemo lako prikazati Data Transfer objects.
 			Međutim, prilikom registracije, sve informacije koje dobivamo s frontenda prosljeđujemo u konstruktor
-			Korisnik. Kasnije, prilikom ulogiranjavanja, preko korisničkog imena dobivamo podatke iz baze te izrađujemo instancu Korisnik,
-			S tim Korisnikom kasnije možemo baratati pomoću njegovih podataka tražimo iz baze podataka da li je aktiviran te odgovara li
+			Korisnik. Kasnije, prilikom login-a, preko korisničkog imena dobivamo podatke iz baze te izrađujemo instancu Korisnik.
+			S tim Korisnikom možemo baratati pomoću njegovih podataka. Tražimo iz baze podataka je li aktiviran te odgovara li
 			hash unesene lozinke hashu lozinke koja je spremljena u bazu podataka, tj. u instanci Korisnik.
 
 			Naša klasa Korisnik se zapravo referira i na voditelja i na administratora. Oni svi imaju identične podatke te duplikacija koda
 			nije potrebna. Velika razlika je samo u njihovom podatku NivouPrava o kojem će ovisiti kakve ovlasti na stranici ima.
 			To će također biti funkcija koju će biti privatna. Voditelj će za razliku od natjecatelja imati pristup stranicama
-			za stranicama za uploadanje zadataka i testnih primjera te stvaranju natjecanja. Administrator će to uz to sve moći 
-			uređivati ovlasti svih voditelja i natjecatelja te mora potvrditi voditelja što će biti na posebnoj stranici.
+			za  kreiranje zadataka te stvaranju natjecanja. Administrator će uz to sve moći uređivati ovlasti svih korisnika te će pomoću toga imati mogućnost potvrditi voditelja što će biti na posebnoj stranici.
 
 
 
-			\textit{Potrebno je priložiti dijagram razreda s pripadajućim opisom. Zbog preglednosti je moguće dijagram razlomiti na više njih, ali moraju biti grupirani prema sličnim razinama apstrakcije i srodnim funkcionalnostima.}\\
-			
-			\textbf{\textit{dio 1. revizije}}\\
-			
-			\textit{Prilikom prve predaje projekta, potrebno je priložiti potpuno razrađen dijagram razreda vezan uz \textbf{generičku funkcionalnost} sustava. Ostale funkcionalnosti trebaju biti idejno razrađene u dijagramu sa sljedećim komponentama: nazivi razreda, nazivi metoda i vrste pristupa metodama (npr. javni, zaštićeni), nazivi atributa razreda, veze i odnosi između razreda.}\\
+				\eject
 			
 			\textbf{\textit{dio 2. revizije}}\\			
 			
@@ -315,7 +310,7 @@
 		
 		\section{Dijagram stanja}
 			
-			
+		
 			\textbf{\textit{dio 2. revizije}}\\
 			
 			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
