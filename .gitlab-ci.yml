@@ -1,6 +1,7 @@
 deploy_testing:
   only:
-    - develop
+    refs:
+      - develop
   environment:
     name: testing
     url: $TESTING_DOMAIN
@@ -21,7 +22,8 @@ deploy_testing:
 
 deploy_testing:
   only:
-    - main
+    refs:
+      - main
   environment:
     name: testing
     url: $DOMAIN
