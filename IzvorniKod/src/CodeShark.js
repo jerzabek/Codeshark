@@ -5,22 +5,24 @@ import { useCookies } from 'react-cookie'
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
+import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
 import Profile from './pages/profile/Profile'
 import Logout from './common/Logout'
 import Register from './pages/account/Register'
+import EmailVerification from './pages/account/EmailVerification'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
 
-  const [cookies, setCookie, removeCookie] = useCookies([SESSION_STORAGE_USER]);
-  const [user, setUser] = useState(getUser());
+  const [cookies, setCookie, removeCookie] = useCookies([SESSION_STORAGE_USER])
+  const [user, setUser] = useState(getUser())
 
   function getUser() {
     return cookies[SESSION_STORAGE_USER]
@@ -45,18 +47,25 @@ function CodeShark() {
         <Header />
 
         <main>
-            <Routes>
-              <Route path={LOGIN} exact element={<Login login={login} />} />
-              <Route path={LOGOUT} exact element={<Logout logout={logout} />} />
-              <Route path={REGISTER} exact element={<Register />} />
-              <Route path={HOME} exact element={<Home />} />
+          <Routes>
+            <Route path={EMAIL_VERIFICATION}>
+              <Route path=':token' element={<EmailVerification />} />
+              
+              <Route path="" element={<Navigate to={HOME} />} />
+            </Route>
+            <Route path={LOGIN} exact element={<Login login={login} />} />
+            <Route path={LOGOUT} exact element={<Logout logout={logout} />} />
+            <Route path={REGISTER} exact element={<Register />} />
+            <Route path={HOME} exact element={<Home />} />
 
-              <Route path={PROFILE} element={
-                <PrivateRoute isAuth={user}>
-                  <Profile />
-                </PrivateRoute>
-              } />
-            </Routes>
+            <Route path={PROFILE} element={
+              <PrivateRoute isAuth={user}>
+                <Profile />
+              </PrivateRoute>
+            } />
+
+            <Route path="*" element={<Navigate to={HOME} />} />
+          </Routes>
         </main>
       </UserContext.Provider>
     </BrowserRouter>
