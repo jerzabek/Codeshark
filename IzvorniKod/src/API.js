@@ -24,9 +24,9 @@ function login(data) {
 
 function register(data) {
   return axiosInstance.post('register', data, {
-    // headers: {
-    //   "Content-Type": "multipart/form-data"
-    // }
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
   }).then((res) => {
     if ([400].includes(res.status)) throw new Error(res.data.error)
     return handleSuccess(res.data)

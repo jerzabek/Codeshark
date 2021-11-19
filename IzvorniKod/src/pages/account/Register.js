@@ -29,26 +29,26 @@ function Register() {
       return;
     }
 
-    let registrationData = {
-      korisnickoime: username,
-      slikaprofila: "juan.png",
-      lozinka: password,
-      ime: firstname,
-      prezime: lastname,
-      email: email,
-      titula: '',
-      nivouprava: level
-    }
+    // let registrationData = {
+    //   korisnickoime: username,
+    //   slikaprofila: "juan.png",
+    //   lozinka: password,
+    //   ime: firstname,
+    //   prezime: lastname,
+    //   email: email,
+    //   titula: '',
+    //   nivouprava: level
+    // }
 
-    // const registrationData = new FormData();
-    // registrationData.append("korisnickoime", username,);
-    // registrationData.append("slikaprofila", profilePicture);
-    // registrationData.append("lozinka", password,);
-    // registrationData.append("ime", firstname,);
-    // registrationData.append("prezime", lastname,);
-    // registrationData.append("email", email,);
-    // registrationData.append("titula", '',);
-    // registrationData.append("nivouprava", level);
+    const registrationData = new FormData();
+    registrationData.append("korisnickoime", username,);
+    registrationData.append("slikaprofila", profilePicture);
+    registrationData.append("lozinka", password,);
+    registrationData.append("ime", firstname,);
+    registrationData.append("prezime", lastname,);
+    registrationData.append("email", email,);
+    registrationData.append("titula", '',);
+    registrationData.append("nivouprava", level);
 
     const attemptRegistration = async () => {
       document.getElementById('register-button').classList.add('disabled')
