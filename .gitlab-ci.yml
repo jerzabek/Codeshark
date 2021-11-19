@@ -21,7 +21,7 @@ deploy_testing:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-deploy_testing:
+deploy_production:
   stage: deploy
   only:
     refs:
