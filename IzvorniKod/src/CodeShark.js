@@ -50,12 +50,12 @@ function CodeShark() {
           <Routes>
             <Route path={EMAIL_VERIFICATION}>
               <Route path=':token' element={<EmailVerification />} />
-              
+
               <Route path="" element={<Navigate to={HOME} />} />
             </Route>
-            <Route path={LOGIN} exact element={<Login login={login} />} />
+            <Route path={LOGIN} exact element={<Login login={login} isAuth={user} />} />
             <Route path={LOGOUT} exact element={<Logout logout={logout} />} />
-            <Route path={REGISTER} exact element={<Register />} />
+            <Route path={REGISTER} exact element={<Register isAuth={user} />} />
             <Route path={HOME} exact element={<Home />} />
 
             <Route path={PROFILE} element={

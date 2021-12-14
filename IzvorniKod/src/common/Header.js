@@ -29,7 +29,7 @@ function Header(props) {
           document.getElementById('avatar-spinner').classList.add('visually-hidden');
         }
       } catch (err) {
-        document.getElementById('avatar-spinner').classList.add('visually-hidden');
+        document.getElementById('avatar-spinner')?.classList.add('visually-hidden');
       }
     })();
 

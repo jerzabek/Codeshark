@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { register } from '../../API';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { HOME } from '../../Routes';
+import { HOME, PROFILE } from '../../Routes';
+import { Navigate } from 'react-router-dom';
 
 const MySwal = withReactContent(Swal)
 
-function Register() {
+function Register({ isAuth }) {
   const [username, setUsername] = useState('')
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -15,6 +16,10 @@ function Register() {
   const [confirm, setConfirm] = useState('')
   const [level, setLevel] = useState('1')
   const [profilePicture, setProfilePicture] = useState()
+
+  if (isAuth) {
+    return <Navigate to={PROFILE} />;
+  }
 
   function formSubmit(e) {
     e.preventDefault()
@@ -159,7 +164,7 @@ function Register() {
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4">
             <div className="input-group mb-3">
-              <label className="input-group-text" for="profilePicture">Profile picture</label>
+              <label className="input-group-text" htmlFor="profilePicture">Profile picture</label>
               <input type="file" name="profilePicture" className="form-control" id="profilePicture" accept="image/png, image/jpeg, image/jpg"
                onChange={(e) => setProfilePicture(e.target.files[0])}></input>
             </div>
