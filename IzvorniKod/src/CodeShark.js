@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
+import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, PROBLEMS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -17,6 +17,7 @@ import Profile from './pages/profile/Profile'
 import Logout from './common/Logout'
 import Register from './pages/account/Register'
 import EmailVerification from './pages/account/EmailVerification'
+import Problems from "./pages/problems/Problems"
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -57,7 +58,7 @@ function CodeShark() {
             <Route path={LOGOUT} exact element={<Logout logout={logout} />} />
             <Route path={REGISTER} exact element={<Register isAuth={user} />} />
             <Route path={HOME} exact element={<Home />} />
-
+            
             <Route path={PROFILE} element={
               <PrivateRoute isAuth={user}>
                 <Profile />
@@ -65,6 +66,12 @@ function CodeShark() {
             } />
 
             <Route path="*" element={<Navigate to={HOME} />} />
+            
+            <Route path={PROBLEMS} element={
+              <PrivateRoute isAuth={user}>
+                <Problems />
+              </PrivateRoute>
+            } />
           </Routes>
         </main>
       </UserContext.Provider>
