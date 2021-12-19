@@ -3,6 +3,7 @@ import { getAvatar } from '../../API';
 import { UserContext } from './../../common/UserContext';
 import '../../assets/style/common/avatar.css'
 import { profileInfo } from '../../API'
+import Calendar from 'react-calendar'
 
 function Profile(props) {
   const userContext = useContext(UserContext)
@@ -63,6 +64,7 @@ function Profile(props) {
   }, []);
 
   return (
+    <React.Fragment>
     <div className='container py-4'>
       <div className="row">
         <div className="col-12 col-md-2 col-lg-3">
@@ -79,11 +81,53 @@ function Profile(props) {
           </div>
         </div>
         <div className="col-12 col-md-10 col-lg-9">
-          <h1 className='mb-2'>Your profile</h1>
+          <h1 className='mb-2'>Your profile (rank {rank})</h1>
           <h2>Currently logged in as {userContext.user.username}</h2>
+          <div><button>Change Profile Picture</button></div>
         </div>
       </div>
     </div>
+    <div className="container py-4">
+      <div><h2>Profile Info:</h2></div>
+      <div className="row">
+        <div className="col-12 col-md-6 col-lg-6">
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 col-md-10 col-lg-9"><b>First Name: </b>{firstname}</div>
+              <div className="col-12 col-md-2 col-lg-3"><button>Edit</button></div>
+            </div>
+          </div>
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 col-md-10 col-lg-9"><b>Last Name: </b>{lastname}</div>
+              <div className="col-12 col-md-2 col-lg-3"><button>Edit</button></div>
+            </div>
+          </div>
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 col-md-10 col-lg-9"><b>Username: </b>{userContext.user.username}</div>
+              <div className="col-12 col-md-2 col-lg-3">{(rank === "admin") && <button>Edit</button>}</div>
+            </div>
+          </div>
+          <div className="container py-2">
+            <div className="col-12 col-md-10 col-lg-9"><b>Rank: </b>{rank}</div>
+          </div>
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 col-md-10 col-lg-9"><b>Email: </b></div>
+              <div className="col-12 col-md-2 col-lg-3">{(rank === "admin") && <button>Edit</button>}</div>
+            </div>
+          </div>
+          <div className="container py-2"><b>Trophies: </b>{trophies}</div>
+          <div className="container py-2"><b>Percentage of solved problems: </b>{Number((percentage * 100).toFixed(1))}<b>%</b></div>
+          <div className="container py-2"><button>Change Password</button></div>
+        </div>
+        <div className="col-12 col-md-6 col-lg-6">
+          <Calendar/>
+        </div>
+      </div>
+    </div>
+    </React.Fragment>
   );
 }
 
