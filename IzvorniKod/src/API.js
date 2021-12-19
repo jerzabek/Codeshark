@@ -58,9 +58,19 @@ function getAvatar(username) {
     })
 }
 
+function loadUsers() {
+  return axiosInstance.get('users').then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [400].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 export {
   login,
   register,
   verifyAccount,
-  getAvatar
+  getAvatar,
+  loadUsers
 }

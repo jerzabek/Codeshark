@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
+import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -17,6 +17,7 @@ import Profile from './pages/profile/Profile'
 import Logout from './common/Logout'
 import Register from './pages/account/Register'
 import EmailVerification from './pages/account/EmailVerification'
+import Members from './pages/members/Members'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -61,6 +62,12 @@ function CodeShark() {
             <Route path={PROFILE} element={
               <PrivateRoute isAuth={user}>
                 <Profile />
+              </PrivateRoute>
+            } />
+
+            <Route path={MEMBERS} element={
+              <PrivateRoute isAuth={user}>
+                <Members />
               </PrivateRoute>
             } />
 
