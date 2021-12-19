@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   validateStatus: (status) => (status >= 200 && status < 300)
 })
 
-const handleError = (err) => ({ success: false, error: err.error || err || 'Greška na serveru' })
+const handleError = (err) => ({ success: false, error: err?.error || err || 'Greška na serveru' })
 const handleSuccess = (data) => ({ success: true, data })
 
 function login(data) {
@@ -58,9 +58,20 @@ function getAvatar(username) {
     })
 }
 
+function getCompetitors() {
+  return axiosInstance.get(`competitors`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 export {
   login,
   register,
   verifyAccount,
-  getAvatar
+  getAvatar,
+  getCompetitors
 }

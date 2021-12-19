@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER } from '../Routes'
+import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER, COMPETITIONS } from '../Routes'
 import { UserContext } from './UserContext'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
@@ -53,6 +53,7 @@ function Header(props) {
             <NavLink to={HOME} className='nav-link'>Home</NavLink>
             <NavLink to={HOME} className='nav-link'>Problems</NavLink>
             <NavLink to={HOME} className='nav-link'>Leaderboards</NavLink>
+            <NavLink to={COMPETITIONS} className='nav-link'>Competitions</NavLink>
             {
               isLogged ?
                 <React.Fragment>
