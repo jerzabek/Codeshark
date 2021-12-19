@@ -67,10 +67,20 @@ function loadUsers() {
   })
 }
 
+function getHomeContests() {
+  return axiosInstance.get('').then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [400].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 export {
   login,
   register,
   verifyAccount,
   getAvatar,
-  loadUsers
+  loadUsers,
+  getHomeContests
 }

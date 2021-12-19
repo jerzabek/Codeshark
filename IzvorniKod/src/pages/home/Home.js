@@ -1,11 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import bannerImage from '../../assets/images/header/header-home.jpg';
 import '../../assets/style/common/banner.css';
 import { Link } from 'react-router-dom';
 import { REGISTER } from '../../Routes';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { getHomeContests } from '../../API';
 
 function Home(props) {
+
+  const [tasks, setTasks] = useState([]);
+  const tasksArr = [];
+
+  const [comps, setComps] = useState([]);
+  const compsArr = [];
+
+  useEffect(() => {
+
+    (async () => {
+      try {
+        const res = await getHomeContests()
+
+        console.log(res)
+
+        if (res.success) {
+
+          for (const task of res.data.tasks) {
+            tasksArr.push(task);
+          }
+
+          setTasks(tasksArr);
+
+          for (const comp of res.data.competitions) {
+            compsArr.push(comp);
+          }
+
+          setComps(compsArr);
+
+        } else {
+          tasksArr.push('Yikes');
+          compsArr.push('Yikes');
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    })();
+
+  }, []);
+
   return (
     <div>
       <div className="banner-container">
@@ -22,11 +63,32 @@ function Home(props) {
       </div>
 
       <div>
+        <div>
+          <h2>Recent Competitions</h2>
+          <div>
+            {comps.map((comp) => (
+              <div>
+                {comp}
 
+              </div>
+            ))}
+          </div>
+        </div>
 
+        <div>
+          <h2>Recent Tasks</h2>
+          <div>
+            {tasks.map((task) => (
+              <div>
+                <h4>{task.name}</h4>
+                <h6>Difficulty : {task.tezina}</h6>
+                <p>{task.slug}</p>
 
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-
 
       <div className="container py-5 text-center">
         <h1>Welcome to CodeShark</h1>

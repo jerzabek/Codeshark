@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/style/common/banner.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { loadUsers, getAvatar } from '../../API';
+import { loadUsers } from '../../API';
 
 function Members(props) {
 
