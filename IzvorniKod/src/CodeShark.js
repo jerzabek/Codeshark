@@ -64,7 +64,7 @@ function CodeShark() {
                 <Profile />
               </PrivateRoute>
             } />
-
+            
             <Route path={MEMBERS} element={
               <PrivateRoute isAuth={user}>
                 <Members />
