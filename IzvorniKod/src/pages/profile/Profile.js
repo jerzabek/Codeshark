@@ -2,12 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { getAvatar } from '../../API';
 import { UserContext } from './../../common/UserContext';
 import '../../assets/style/common/avatar.css'
+import { profileInfo } from '../../API'
 
 function Profile(props) {
   const userContext = useContext(UserContext)
   const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR
 
   const [avatar, setAvatar] = useState(defaultAvatar)
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [profilePicture, setProfilePicture] = useState()
+  const [trophies, setTrophies] = useState()
+  const [rank, setRank] = useState('')
+  const [attempted, setAttempted] = useState('0')
+  const [solved, setSolved] = useState('0')
+  const [percentage, setPercentage] = useState('0')
 
   useEffect(() => {
     // Loading the profile picture
@@ -25,6 +34,25 @@ function Profile(props) {
         } else {
           document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         }
+
+        let data = {
+          korisnickoime: userContext.user.username
+        }
+        const res2 = await profileInfo(data)
+
+        console.log(res2)
+
+        if (res2.success) {
+          setFirstname(res2.data.ime)
+          setLastname(res2.data.prezime)
+          setProfilePicture(res2.data.slikaprofila_url)
+          setTrophies(res2.data.trophies)
+          setRank(res2.data.titula)
+          setAttempted(res2.data.pokusano_zad)
+          setSolved(res2.data.uspjesno_zad)
+          setPercentage(res2.data.postotak_uspjesnih)
+        }
+
       } catch (err) {
         console.log(err)
         document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');

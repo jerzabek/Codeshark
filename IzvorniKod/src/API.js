@@ -58,9 +58,21 @@ function getAvatar(username) {
     })
 }
 
+function profileInfo(username) {
+  return axiosInstance.post('profile', username)
+    .then((res) => {
+      if ([400, 401].includes(res.status)) throw new Error(res.data.error)
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [400, 401].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 export {
   login,
   register,
   verifyAccount,
-  getAvatar
+  getAvatar,
+  profileInfo
 }
