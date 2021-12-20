@@ -73,7 +73,7 @@ function Home(props) {
             {comps.map((comp) => (
               <div class="card" style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
                 <img src={'https://cdn.domefan.club/trophy/' + comp.slika_trofeja} class="card-img-top align-self-center"
-                  style={{ width: "5rem", height: "5rem", margin: "1rem" }} onError={(e) => {
+                  style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
                     if (!e.target.src.includes(defaultAvatar)) {
 
                       e.target.onerror = null; e.target.src = defaultAvatar
