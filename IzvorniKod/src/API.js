@@ -59,7 +59,7 @@ function getAvatar(username) {
 }
 
 function profileInfo(username) {
-  return axiosInstance.post('profile', username)
+  return axiosInstance.get(`members/${username}`)
     .then((res) => {
       if ([400, 401].includes(res.status)) throw new Error(res.data.error)
       return handleSuccess(res.data)
