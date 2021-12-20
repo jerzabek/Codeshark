@@ -55,21 +55,25 @@ function Home(props) {
           <div className="row">
             <div className="col-12 col-md-10 col-lg-9 text-center text-md-start">
               <h1 className="banner-title fw-700">Welcome to<br /><span className="fw-800">CodeShark</span></h1>
-              <p className="banner-description">Wish to participate in coding contests or create one yourself? Join CodeShark today! When it comes to competition, CodeShark has none - besides the ones it hosts.</p>
+              <p className="banner-description">Wish to participate in coding contests or create one yourself? Join CodeShark today!</p>
+              <p className="banner-description">When it comes to competition, CodeShark has none - besides the ones it hosts.</p>
               <Link to={REGISTER} className='btn btn-info btn-lg btn-outline-light rounded-0 btn-cta px-5'>Sign up now!</Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div>
+      <div className="container">
         <div>
           <h2>Recent Competitions</h2>
-          <div>
+          <div class="d-flex flex-row justify-content-center">
             {comps.map((comp) => (
-              <div>
-                {comp}
-
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{comp.ime_natjecanja}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_pocetak} - {comp.vrijeme_kraj}</h6>
+                  <p class="card-text">Tasks : {comp.broj_zadataka}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -77,13 +81,15 @@ function Home(props) {
 
         <div>
           <h2>Recent Tasks</h2>
-          <div>
+          <div class="d-flex flex-row justify-content-center">
             {tasks.map((task) => (
-              <div>
-                <h4>{task.name}</h4>
-                <h6>Difficulty : {task.tezina}</h6>
-                <p>{task.slug}</p>
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{task.name}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.tezina}</h6>
+                  <p class="card-text">{task.slug}</p>
 
+                </div>
               </div>
             ))}
           </div>
