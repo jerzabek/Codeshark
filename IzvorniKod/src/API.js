@@ -68,10 +68,32 @@ function getTasks() {
     })
 }
 
+function getTask(slug) {
+  return axiosInstance.get(`task/${slug}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function executeTask(data) {
+  return axiosInstance.post('execute_task', data)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [413,400].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 export {
   login,
   register,
   verifyAccount,
   getAvatar,
-  getTasks
+  getTasks,
+  getTask,
+  executeTask
 }

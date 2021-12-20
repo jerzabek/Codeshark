@@ -66,7 +66,7 @@ function CodeShark() {
               </PrivateRoute>
             } />
 
-            <Route path={TASK} element={
+            <Route path={TASK + '/:handle'} element={
               <PrivateRoute isAuth={user}>
                 <Task />
               </PrivateRoute>

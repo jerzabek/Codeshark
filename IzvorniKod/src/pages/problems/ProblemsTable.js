@@ -65,11 +65,11 @@ function ProblemsTable({ data, columns, loading }) {
         </thead>
         <tbody>
           {displayData && displayData.map(task =>
-            <tr  key={task.task_id}> 
+            <tr  key={task.slug}> 
               <td></td>
               <td>{task.name}</td>
               <td>{task.tezina} / 5 </td>
-              <td><Link to={TASK} className='btn btn-info btn-outline-light rounded-50 btn-cta p-1'>Solve!</Link></td>
+              <td><Link to={TASK + '/' + task.slug} className='btn btn-info btn-outline-light rounded-50 btn-cta p-1'>Solve!</Link></td>
             </tr>
           )}
         </tbody>
