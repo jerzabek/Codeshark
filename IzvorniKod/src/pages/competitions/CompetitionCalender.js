@@ -42,7 +42,7 @@ function CompetitionCalender(props) {
   }
 
   return (
-    <div className='competition-calender-container border my-2 rounded-top'>
+    <div className='competition-calender-container border my-2 rounded-3 bg-white'>
       <Kalend
         events={events}
         initialDate={new Date().toISOString()}

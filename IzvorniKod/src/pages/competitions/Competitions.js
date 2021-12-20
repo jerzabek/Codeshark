@@ -32,8 +32,8 @@ function Competitions(props) {
         } else {
           let mock = []
 
-          for(var i = 0; i < 20; i++) {
-            mock.push({naziv: 'abcdef'.charAt(Math.floor(Math.random()*6)), start: 'b', finish: 'c', class: 'd', organizer: 'e'})
+          for (var i = 0; i < 20; i++) {
+            mock.push({ naziv: 'abcdef'.charAt(Math.floor(Math.random() * 6)), start: 'b', finish: 'c', class: 'd', organizer: 'e' })
           }
 
           setList(mock)
@@ -47,25 +47,31 @@ function Competitions(props) {
   }, []);
 
   return (
-    <div className='container py-4'>
-      <div className="row">
-        <div className="col-12 d-flex justify-content-between align-items-center">
-          <h3>Check out ongoing competitions:</h3>
-          <Link to={COMPETITIONS + "/" + CREATE} className="btn btn-success"><i className="bi bi-file-earmark-plus"></i> Create new competition</Link>
+    <React.Fragment>
+      <div className="bg-dark">
+        <div className="container py-4">
+        <div className="row">
+          <div className="col-12 d-flex justify-content-between align-items-center">
+            <h3 className='text-white'>Check out ongoing competitions:</h3>
+            <Link to={COMPETITIONS + "/" + CREATE} className="btn btn-success"><i className="bi bi-file-earmark-plus"></i> Create new competition</Link>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <CompetitionCalender />
+          </div>
+        </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12">
-          <CompetitionCalender />
+      <div className='container py-4'>
+        <div className="row mt-4">
+          <div className="col-12">
+            <h3>Search all competitions:</h3>
+            <CompetitionTable data={list} columns={COMPETITION_TABLE_HEADERS} loading={loading} />
+          </div>
         </div>
       </div>
-      <div className="row mt-4">
-        <div className="col-12">
-          <h3>Search all competitions:</h3>
-          <CompetitionTable data={list} columns={COMPETITION_TABLE_HEADERS} loading={loading}/>
-        </div>
-      </div>
-    </div>
+    </React.Fragment>
   );
 }
 
