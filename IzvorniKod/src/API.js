@@ -1,6 +1,6 @@
 import * as axios from 'axios'
 
-const baseUrl = process.env.REACT_APP_API_URL
+const baseUrl = process.env.REACT_APP_API_URL 
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -58,9 +58,20 @@ function getAvatar(username) {
     })
 }
 
+function getTasks() {
+  return axiosInstance.get('tasks')
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 export {
   login,
   register,
   verifyAccount,
-  getAvatar
+  getAvatar,
+  getTasks
 }
