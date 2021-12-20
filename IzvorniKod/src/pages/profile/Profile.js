@@ -4,6 +4,7 @@ import { UserContext } from './../../common/UserContext';
 import '../../assets/style/common/avatar.css'
 import { profileInfo } from '../../API'
 import Calendar from 'react-calendar'
+import '../../assets/style/common/styles.css'
 
 function Profile(props) {
   const userContext = useContext(UserContext)
@@ -85,17 +86,30 @@ function Profile(props) {
   function renderCompetitions() {
     var rows = [];
     for (var i = 0; i < organizedCompetitions.length; i++) {
+      var image = "https://cdn.domefan.club/trophy/" + organizedCompetitions[i].slika_trofeja
         rows.push(<tr key={organizedCompetitions[i].natjecanje_id}>
           <td>{organizedCompetitions[i].natjecanje_id}</td>
           <td>{organizedCompetitions[i].ime_natjecanja}</td>
           <td>{organizedCompetitions[i].vrijeme_pocetak}</td>
           <td>{organizedCompetitions[i].vrijeme_kraj}</td>
-          <td>{organizedCompetitions[i].slika_trofeja}</td>
+          <td><img src={image} width="30" height="30"></img></td>
           <td>{organizedCompetitions[i].broj_zadataka}</td>
-          <td>{organizedCompetitions[i].id_klase_natjecanja}</td>
+          <td>{organizedCompetitions[i].ime_klase_natjecanja}</td>
         </tr>)
     }
     return <tbody>{rows}</tbody>;
+  }
+
+  function renderThrophies() {
+    var rows = []
+    for (var i = 0; i < trophies.length; i++) {
+      var image = "https://cdn.domefan.club/trophy/" + trophies[i].img
+      rows.push(<div key={trophies[i].name} className="container py-2">
+        <img src={image} width="30" height="30"></img>
+        {trophies[i].name}
+      </div>)
+    }
+    return <div>{rows}</div>;
   }
 
   return (
@@ -156,9 +170,10 @@ function Profile(props) {
               <div className="col-12 col-md-2 col-lg-3">{(rank === 3) && <button>Edit</button>}</div>
             </div>
           </div>
-          {trophies !== undefined ?
+          {trophies !== undefined && trophies.length !== 0 ?
           <div className="container py-2">
-            <b>Trophies: </b>            
+            <b>Trophies: </b>
+            {renderThrophies()}
           </div> :
           <div className="container py-2">
             <b>Trophies: </b>No trophies
@@ -215,7 +230,7 @@ function Profile(props) {
                   <th>Ending Time</th>
                   <th>Trophy Image</th>
                   <th>Number of Tasks</th>
-                  <th>Competition Class ID</th>
+                  <th>Competition Class Name</th>
                 </tr>
               </thead>
               {renderCompetitions()}
