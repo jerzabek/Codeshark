@@ -7,7 +7,7 @@ import { CREATE, PROBLEMS } from '../../Routes'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 const PROBLEMS_TABLE_HEADERS = [
-  'Problem ID',
+  '#',
   'Name',
   'Difficulty',
 ]

@@ -2,10 +2,12 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import './problems-table.css'
+import { TASK } from '../../Routes'
+import { Link } from 'react-router-dom'
 
 function ProblemsTable({ data, columns, loading }) {
   const [displayData, setDisplayData] = useState(data)
-
+  
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
@@ -30,15 +32,16 @@ function ProblemsTable({ data, columns, loading }) {
     e.preventDefault()
   }
 
+  
   return (
     <React.Fragment>
-       <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="row align-items-end my-3 mb-2">
           <div className="col-12 col-md-4 col-lg-3">
             <div className="form-group">
               <label htmlFor="name" className="form-label">Problem name:</label>
-              <input type="name" 
-                className="form-control" 
+              <input type="name"
+                className="form-control"
                 id="name"
                 autoComplete='off'
                 value={filterName}
@@ -49,7 +52,7 @@ function ProblemsTable({ data, columns, loading }) {
             <button type="submit" className="btn btn-primary">filter</button>
           </div>
         </div>
-      </form> 
+      </form>
       <table className="table table-striped table-hover competition-table">
         <thead>
           <tr>
@@ -61,17 +64,14 @@ function ProblemsTable({ data, columns, loading }) {
           </tr>
         </thead>
         <tbody>
-          {
-            displayData.map((row, rowIndex) => 
-              <tr key = {rowIndex}>
-                {
-                  Object.values(row).map((column, colIndex) => 
-                  <td key={rowIndex + colIndex}>{column}</td>
-                  )
-                }
-              </tr>
-              )
-          }
+          {displayData && displayData.map(task =>
+            <tr  key={task.task_id}> 
+              <td></td>
+              <td>{task.name}</td>
+              <td>{task.tezina} / 5 </td>
+              <td><Link to={TASK} className='btn btn-info btn-outline-light rounded-50 btn-cta p-1'>Solve!</Link></td>
+            </tr>
+          )}
         </tbody>
       </table>
     </React.Fragment>
