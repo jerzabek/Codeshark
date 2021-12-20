@@ -9,6 +9,8 @@ function Members(props) {
 
   const items = [];
 
+  const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR
+
   useEffect(() => {
 
     (async () => {
@@ -37,16 +39,38 @@ function Members(props) {
 
   return (
     <div>
-      {users.map((user) => (
-        <div>
-          <span>
-            <img src={process.env.REACT_APP_IMAGE_PREFIX + user.slikaprofila}/>
-            {user.korisnickoime} {user.ime_prezime}
-            
-            </span>
 
-        </div>
-      ))}
+      <div class="container">
+
+        <table class="table table-striped table-hover table-sm" >
+          <thead class="table-dark">
+            <tr style={{ textAlign: "center" }}>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr style={{ textAlign: "center", verticalAlign: "middle"}}>
+                <th scope="row">
+                  <img src={process.env.REACT_APP_IMAGE_PREFIX + user.slikaprofila} style={{ width: "2.5rem", height: "2.5rem"}}
+                    onError={(e) => {
+                      if (!e.target.src.includes(defaultAvatar)) {
+                        // So that it doesnt keep spamming if the default avatar is not available
+                        e.target.onerror = null; e.target.src = defaultAvatar
+                      }
+                    }} alt="Juan image didn't load"/>
+                </th>
+                <td>{user.ime_prezime}</td>
+                <td>{user.korisnickoime}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+      </div>
+
     </div>
   );
 }

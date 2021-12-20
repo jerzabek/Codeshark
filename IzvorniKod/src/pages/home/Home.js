@@ -14,6 +14,8 @@ function Home(props) {
   const [comps, setComps] = useState([]);
   const compsArr = [];
 
+  const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR;
+
   useEffect(() => {
 
     (async () => {
@@ -63,27 +65,38 @@ function Home(props) {
         </div>
       </div>
 
-      <div className="container">
-        <div>
+      <div class="container">
+        <div class="container" style={{ marginTop: "1rem" }}>
+
           <h2>Recent Competitions</h2>
           <div class="d-flex flex-row justify-content-center">
             {comps.map((comp) => (
-              <div class="card">
+              <div class="card" style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
+                <img src={'https://cdn.domefan.club/trophy/' + comp.slika_trofeja} class="card-img-top align-self-center"
+                  style={{ width: "5rem", height: "5rem", margin: "1rem" }} onError={(e) => {
+                    if (!e.target.src.includes(defaultAvatar)) {
+
+                      e.target.onerror = null; e.target.src = defaultAvatar
+                    }
+                  }} alt={defaultAvatar} />
                 <div class="card-body">
                   <h5 class="card-title">{comp.ime_natjecanja}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_pocetak} - {comp.vrijeme_kraj}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_pocetak}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_kraj}</h6>
                   <p class="card-text">Tasks : {comp.broj_zadataka}</p>
                 </div>
               </div>
             ))}
+
           </div>
         </div>
 
-        <div>
+        <div class="container" style={{ marginTop: "1rem" }}>
+
           <h2>Recent Tasks</h2>
           <div class="d-flex flex-row justify-content-center">
             {tasks.map((task) => (
-              <div class="card">
+              <div class="card" style={{ width: "20rem", height: "10rem", margin: "0.25rem" }}>
                 <div class="card-body">
                   <h5 class="card-title">{task.name}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.tezina}</h6>
@@ -92,6 +105,7 @@ function Home(props) {
                 </div>
               </div>
             ))}
+
           </div>
         </div>
       </div>
