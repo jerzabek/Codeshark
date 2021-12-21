@@ -1,7 +1,9 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { COMPETITIONS } from '../../Routes';
 import './competition-table.css'
+import { useNavigate } from "react-router-dom";
 
 function CompetitionTable({ data, columns, loading }) {
   const [displayData, setDisplayData] = useState(data)
@@ -10,9 +12,11 @@ function CompetitionTable({ data, columns, loading }) {
 
   useEffect(() => {
     setDisplayData(
-      data.filter((row) => row.naziv.includes(filterName))
+      data.filter((row) => row.ime_natjecanja.toLowerCase().includes(filterName.toLowerCase()))
     )
   }, [filterName, data])
+
+  const navigate = useNavigate();
 
   if (loading === true) {
     return (
@@ -30,6 +34,10 @@ function CompetitionTable({ data, columns, loading }) {
     e.preventDefault()
   }
 
+  function linkToCompetition(competition_id) {
+    navigate(COMPETITIONS + "/" + competition_id);
+  }
+
   // TODO: Sorting
 
   return (
@@ -39,8 +47,8 @@ function CompetitionTable({ data, columns, loading }) {
           <div className="col-12 col-md-4 col-lg-3">
             <div className="form-group">
               <label htmlFor="name" className="form-label">Competition name:</label>
-              <input type="name" 
-                className="form-control" 
+              <input type="name"
+                className="form-control"
                 id="name"
                 autoComplete='off'
                 value={filterName}
@@ -64,14 +72,23 @@ function CompetitionTable({ data, columns, loading }) {
         </thead>
         <tbody>
           {
-            displayData.map((row, rowIndex) =>
-              <tr key={"competitor-row-" + rowIndex}>
-                {
-                  Object.values(row).map((column, colIndex) =>
-                    <td key={"competitor-col-" + rowIndex + colIndex}>{column}</td>
-                  )
-                }
-              </tr>
+            displayData.map((row, rowIndex) => {
+              var start = new Date(row.vrijeme_pocetak)
+              start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr")
+
+              var end = new Date(row.vrijeme_kraj)
+              end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr")
+
+              return (
+                <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.natjecanje_id)} className="hover-pointer align-middle">
+                  <td><img className="rounded-circle" style={{ width: "3em" }} src={process.env.REACT_APP_TROPHY_PREFIX + row.slika_trofeja} alt="Trophy" /></td>
+                  <td>{row.ime_natjecanja}</td>
+                  <td>{start}</td>
+                  <td>{end}</td>
+                  <td>{row.ime_klase_natjecanja}</td>
+                </tr>
+              )
+            }
             )
           }
         </tbody>

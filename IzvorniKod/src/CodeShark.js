@@ -19,6 +19,7 @@ import Register from './pages/account/Register'
 import EmailVerification from './pages/account/EmailVerification'
 import Competitions from './pages/competitions/Competitions'
 import CreateCompetition from './pages/competitions/CreateCompetition'
+import Competition from './pages/competitions/single/Competition'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -70,6 +71,12 @@ function CodeShark() {
               <Route path={CREATE} element={
                 <PrivateRoute isAuth={user}>
                   <CreateCompetition />
+                </PrivateRoute>
+              } />
+
+              <Route path={":competition_id"} element={
+                <PrivateRoute isAuth={user}>
+                  <Competition />
                 </PrivateRoute>
               } />
 

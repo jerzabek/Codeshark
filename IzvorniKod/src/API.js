@@ -58,8 +58,8 @@ function getAvatar(username) {
     })
 }
 
-function getCompetitors() {
-  return axiosInstance.get(`competitors`)
+function getCompetitions() {
+  return axiosInstance.get(`competitions`)
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
@@ -68,8 +68,31 @@ function getCompetitors() {
     })
 }
 
+function getCompetition(competition_id) {
+  return axiosInstance.get(`competition/${competition_id}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function setupCreateCompetition(username) {
+  return axiosInstance.get(`create_competition`, {
+    headers: {
+      'session': username
+    }
+  })
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      return handleError(err)
+    })
+}
+
 function createCompetition(data) {
-  return axiosInstance.post(`competitions`, data, {
+  return axiosInstance.post(`create_competition`, data, {
     headers: {
       "Content-Type": "multipart/form-data"
     }
@@ -86,6 +109,8 @@ export {
   register,
   verifyAccount,
   getAvatar,
-  getCompetitors,
+  getCompetitions,
+  getCompetition,
+  setupCreateCompetition,
   createCompetition
 }
