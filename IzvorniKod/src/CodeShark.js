@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -20,6 +20,7 @@ import EmailVerification from './pages/account/EmailVerification'
 import Competitions from './pages/competitions/Competitions'
 import CreateCompetition from './pages/competitions/CreateCompetition'
 import Competition from './pages/competitions/single/Competition'
+import Members from './pages/members/Members'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -64,6 +65,12 @@ function CodeShark() {
             <Route path={PROFILE} element={
               <PrivateRoute isAuth={user}>
                 <Profile />
+              </PrivateRoute>
+            } />
+
+            <Route path={MEMBERS} element={
+              <PrivateRoute isAuth={user}>
+                <Members />
               </PrivateRoute>
             } />
 

@@ -1,2 +1,62 @@
-- 3.11.2021.
+
+12.10.2021. Prvi sastanak DFC
+Prisustvovali Tomljenović, Jeržabek, Damjanić, Griparić i Mihalić. 
+Započeti su početni dogovori oko organizacije i podjele poslova. Mihalić proglašen zapisničarem. Damjanić voditeljem. 
+Nije još uspostavljen kontakt sa svim članovima.
+Predložene početne alternativne ideje za projekt: dating site, bolja stranica za upise, forum/reddit alternativa?
+Predložene početne ideje za tehnologije: React za frontend, Python/Java za backend
+
+13.10.2021.
+Napravljen GitLab te organizacija tima
+
+14.10.2021.
+Prvi sastanak cijelog tima s asistentom i demosom gdje smo saznali više o zadatku.
+Drugi sastanak gdje smo se složili oko tehnologija.
+
+15.10.2021.
+Nabavili smo domenu "https://domefan.club/" i hosting. Linku se može pristupiti.
+
+23.10.2021. 
+Mihalić napravio testu verziju Flask backenda
+
+27.10.2021.
+Početna repo organizacija na GitLabu. Podijeljeno na frontend i backend s dokumentacijom.
+
+28.10.2021.
+Prvi pravi sastanak, rezervirali smo učionicu na FER-u kako bi se zajedno dogovorili.
+Svi prisutni na sastanku. Dogovoreni rasporedi stranice. Dogovoren izgled front pagea, headera i općenitog routinga i izgleda svih stranica.
+Početni rasporedi stranica napravljeni. 
+Dogovorene tehnologije, Flask za backend i React za frontend uz PostgreSQL kao baza podataka. Podjela posla po članovima. 
+Prođeni primjeri dokumentacije koju ćemo pisati.
+
+2.11.2021.
+Jeržabek postavio CICD pipeline
+
+3.11.2021.
 Instaliran CRA kao baza za React projekt.
+
+3.11.2021.
+Napravljeni issuesi na GitLabu koje ćemo trebati riješiti.
+
+5.11.2021.
+Damjanić napravio prvi Entity–relationship model za bazu podataka.
+
+12.11.2021.
+Groupni sastanak gdje su prisustvovali svi članovi. Jeržabek je održao predavanje o Reactu, kako se koristi i primjene.
+Ostvarene prve konekcije na bazu podataka. Dogovoreni dodatni parametri o kojima se mora paziti na bazi.
+
+15.11.-16.11.2021.
+Podignuta prva verzija frontenda. Napravljen registration/login screen. 
+Podignuta prva verzija backenda. Slušaju se zahtjevi i spremaju podatci u bazu podataka.
+Povezan frontend i backend na serveru. Napravljeni su skoro svi uvjeti prve revizije.
+
+17.11.2021.
+Prva demonstratura/revizija sa asistentom. Potrebno napraviti verifikaciju preko maila.
+
+18.11.2021.
+Napravljena verifikacija pomoću maila preko MailTrapa. Omogućeno postavljanje slike profila koja se sprema na server.
+
+19.11.2021.
+Završna verzija dokumentacije prije predaje je završena. Generičke/osnovne funkcije fizičkog djela programa su napravljene i trenutno nema neriješenih issuesa.
+
+

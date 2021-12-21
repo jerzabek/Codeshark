@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER, COMPETITIONS } from '../Routes'
+import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER, COMPETITIONS, MEMBERS } from '../Routes'
 import { UserContext } from './UserContext'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import logo from '../assets/images/logo-black.png'
@@ -51,7 +51,7 @@ function Header(props) {
           <div className="navbar-nav w-100 align-items-baseline">
             <NavLink to={HOME} className='nav-link'>Home</NavLink>
             <NavLink to={HOME} className='nav-link'>Problems</NavLink>
-            <NavLink to={HOME} className='nav-link'>Leaderboards</NavLink>
+            <NavLink to={MEMBERS} className='nav-link'>Members</NavLink>
             <NavLink to={COMPETITIONS} className='nav-link'>Competitions</NavLink>
             {
               isLogged ?

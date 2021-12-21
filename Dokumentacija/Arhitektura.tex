@@ -1,63 +1,304 @@
 \chapter{Arhitektura i dizajn sustava}
 		
-		\textbf{\textit{dio 1. revizije}}\\
-
-		\textit{ Potrebno je opisati stil arhitekture te identificirati: podsustave, preslikavanje na radnu platformu, spremišta podataka, mrežne protokole, globalni upravljački tok i sklopovsko-programske zahtjeve. Po točkama razraditi i popratiti odgovarajućim skicama:}
+		\noindent Arhitekturu je moguće podijeliti na tri podsustava:
 	\begin{itemize}
-		\item 	\textit{izbor arhitekture temeljem principa oblikovanja pokazanih na predavanjima (objasniti zašto ste baš odabrali takvu arhitekturu)}
-		\item 	\textit{organizaciju sustava s najviše razine apstrakcije (npr. klijent-poslužitelj, baza podataka, datotečni sustav, grafičko sučelje)}
-		\item 	\textit{organizaciju aplikacije (npr. slojevi frontend i backend, MVC arhitektura) }		
+		\item 	Web poslužitelj
+		\item 	Web aplikacija
+		\item 	Baza podataka	
 	\end{itemize}
-
-	
 		
-
+		\underline{\textit{Web preglednik}} je program koji korisniku omogućuje pregled web-stranica i multimedijskog sadržaja vezanog uz njih. Korisnik putem web preglednika šalje zahtjev web poslužitelju te mu web preglednik kao interpreter prevodi web-stranicu i njezin sadržaj u format koji je korisniku razumljiv. \\
+		\underline{\textit{Web poslužitelj}} temelj je rada web aplikacije te je njegov glavni zadatak omogućiti komunikaciju klijenta s aplikacijom. Komunikacija se ostvaruje preko protokola HTTP (engl. \textit{Hyper Text Transfer Protocol}), koji služi za prijenos informacija na webu. Web aplikacija se pokreće preko poslužitelja koji joj prosljeđuje zahtjev od strane korisnika. \\
+		\underline{\textit{Web aplikacija}} služi za obradu korisničkih zahtjeva. Ovisno o zahtjevu, web aplikacija tijekom obrade zahtjeva pristupa bazi podataka te korisniku vraća odgovor u obliku HTML (engl. \textit{HyperText Markup Language}) dokumenta koji se prikazuje preko web preglednika. \\
+		Codeshark web aplikacija bazirana je na programskom jeziku Python-u za razvoj \textit{backend}-a, zajedno s JavaScript-om uz biblioteku React za razvoj \textit{frontend}-a. Kao razvojno okruženje koristio se Microsoft Visual Studio. \\
+		Arhitektura sustava temelji se na konceptu MVC-a (Model-View-Controller). Karakteristika MVC koncepta je nezavisan razvoj pojedinih dijelova aplikacije što za posljedicu ima jednostavnije ispitivanje kao i jednostavno razvijanje i dodavanje novih svojstava u sustav. \\
 		
-
+		\noindent MVC koncept sastoji se od:
+		
+		\begin{itemize}
+			\item \textbf{Model} - Središnja komponenta sustava. Predstavlja dinamičke strukture podataka, neovisne o korisničkom sučelju. Izravno upravlja podacima, logikom i pravilima aplikacije. Ujedno i prima ulazne podatke od Controller-a.
+			\item \textbf{View} - Bilo kakav prikaz podataka, poput grafa. Mogući su različiti prikazi iste informacije poput grafičkog ili tabličnog prikaza podataka.
+			\item \textbf{Controller} - Prima ulaze i prilagođava ih za prosljeđivanje Model-u ili View-u. Upravlja korisničkim zahtjevima i temeljem njih izvodi daljnju interakciju s ostalim elementima sustava.
+		\end{itemize}
+		
 				
 		\section{Baza podataka}
-			
-			\textbf{\textit{dio 1. revizije}}\\
-			
-		\textit{Potrebno je opisati koju vrstu i implementaciju baze podataka ste odabrali, glavne komponente od kojih se sastoji i slično.}
 		
-			\subsection{Opis tablica}
+		
+		
+		\noindent Za potrebe našeg sustava koristit  ćemo relacijsku bazu podataka koja svojom strukturom olakšava baratanju potrebnih podataka. Gradivna jedinka baze je relacija, odnosno tablica koja je definirana svojim imenom i skupom atributa. Zadaća baze podataka je brza i jednostavna pohrana, izmjena i dohvat podataka za daljnju obradu.
+		Baza podataka ove aplikacije sastoji se od sljedećih entiteta:
+		\begin{packed_item}
+			\item Korisnik
+			\item Natjecanje
+			\item Zadatak
+			\item Test-Primjeri
+			\item Upload-Rjesenja
+			\item Virtualno-Natjecanje
+			\item Trofej
+			\item Sudjeluje-Na
+			\item Je-Osvojio
+			\item Klasa-Natjecanja
+		\end{packed_item}
+		\subsection{Opis Tablica}
+		\noindent \textbf{Korisnik} \space \space Ovaj entitet sadržava sve važne informacije o korisniku aplikacije.
+		Sadrži atribute: Korisnikov ID, Korisničko ime, lozinku, ime, prezime, sliku profila, email, titulu i korisnikovu razinu ovlasti. Ovaj entitet u vezi je
+		One-to-Many s entitetom Natjecanje preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a korisnika (AutorID), u vezi Many-to-Many s  Je-Osvojio preko ID-a korisnika, u vezi Many-to-Many s  Sudjeluje-na preko ID-a korisnika, u vezi One-to-Many s entitetom Upload-Rjesenja preko ID-a korisnika  te u vezi One-to-Many s entitetom VirtNatjecanje preko ID-a korisnika.
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Korisnik}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Korisnik ID & INT	&  jedinstveni indikator korisnika  	\\ \hline
+			KorisnickoIme	& VARCHAR & identificirajuće ime korisnika  	\\ \hline 
+			Lozinka	& VARCHAR & hash lozinke 	\\ \hline
+			SlikaProfila	& VARCHAR &  slika profila korisnika 	\\ \hline 
+			Ime & VARCHAR	&  ime korisnika		\\ \hline 
+			Prezime & VARCHAR	&  prezime korisnika		\\ \hline 
+			Email & VARCHAR & email korisnika  \\ \hline 
+			Titula	& VARCHAR & prilagođena titula korisnika  	\\ \hline  
+			NivouPrava	& INT & razina ovlasti korisnika  	\\ \hline
+			Token	& VARCHAR & token napravljen za korisnika 	\\ \hline  
+			Token Generiran	& TIMESTAMP & vrijeme kada je token generiran\\ \hline  
+			Aktivan	& Boolean & stanje verifikacije korisnika  	\\ \hline    
 			
-
-				\textit{Svaku tablicu je potrebno opisati po zadanom predlošku. Lijevo se nalazi točno ime varijable u bazi podataka, u sredini se nalazi tip podataka, a desno se nalazi opis varijable. Svjetlozelenom bojom označite primarni ključ. Svjetlo plavom označite strani ključ}
-				
-				
-				\begin{longtblr}[
-					label=none,
-					entry=none
-					]{
-						width = \textwidth,
-						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
-						rowhead = 1,
-					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \multicolumn{3}{|c|}{\textbf{korisnik - ime tablice}}	 \\ \hline[3pt]
-					\SetCell{LightGreen}IDKorisnik & INT	&  	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod  	\\ \hline
-					korisnickoIme	& VARCHAR &   	\\ \hline 
-					email & VARCHAR &   \\ \hline 
-					ime & VARCHAR	&  		\\ \hline 
-					\SetCell{LightBlue} primjer	& VARCHAR &   	\\ \hline 
-				\end{longtblr}
-				
-				
+		\end{longtblr}
+		
+		\noindent \textbf{Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o održavanju natjecanja.
+		Sadrži atribute:  ID Natjecanja, ime natjecanja, tekst natjecanja, vrijeme kraja natjecanja, vrijeme početka natjecanja, sliku trofeja, broj zadataka, ID autora natjecanja, ID klase natjecanja, ID trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a natjecanja , u vezi One-to-Many s  VirtNatjecanje preko ID-a natjecanja, u vezi One-to-One s  entitetom Trofej preko ID-a trofeja te u vezi Many-to-One s entitetom IDKlasaNatjecanja preko ID-a klase natjecanja.
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Natjecanje}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}NatjecanjeID & INT	&  jedinstveni indikator natjecanja  	\\ \hline
+			ImeNatjecanja	& VARCHAR & identificirajuće ime natjecanja  	\\ \hline 
+			Tekst Natjecanja	& VARCHAR & sadržaj teksta natjecanja 	\\ \hline
+			VrijemeKraj	& TIMESTAMP & vrijeme završetka natjecanja 	\\ \hline 
+			VrijemePoc & TIMESTAMP	&  vrijeme početka natjecanje		\\ \hline 
+			SlikaTrofeja & VARCHAR	&  sličica trofeja		\\ \hline 
+			BrojZadataka & INT & broj zadataka u natjecanju  \\ \hline 
+			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
+			\SetCell{LightBlue} ID Klase Natjecanja & INT & ID Klase Natjecanja (klasanatjecanja.IDKlaseNatjecanja)  	\\ \hline  
+			\SetCell{LightBlue} TrofejID	& INT & Trofej ID (trofej.TrofejID)   	\\ \hline 
+		\end{longtblr}
+		
+		\noindent \textbf{Zadatak} \space \space Ovaj entitet sadržava sve važne informacije o zadacima.
+		Sadrži atribute:  Zadatak ID, ime zadatka, tekst zadatka, bodovi zadatka, maksimalno vrijeme izvršavanja zadatka, privatnost zadatka, slag naziv zadatka, id autora , id natjecanja(opcionalno). Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja , u vezi One-to-Many s  TestPrimjeri preko ID-a zadatka, u vezi One-to-Many s  entitetom UploadRjesenja preko ID-a zadatka te u 4 veze One-to-Many s entitetom VirtNatjecanje preko ID-a zadataka.
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Zadatak}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}ZadatakID & INT	&  jedinstveni indikator zadatka  	\\ \hline
+			ImeZadatka	& VARCHAR & identificirajući naziv zadatka  \\ \hline
+			Bodovi	& INT & broj bodova(težina 1-5)	\\ \hline
+			MaxVrijeme Izvrs	& NUMERIC &  maksimalno vrijeme izvršavanja programa 	\\ \hline 
+			TekstZadatka & VARCHAR	&  sadržaj teksta zadatka		\\ \hline 
+			Privatnost & Boolean	&  stanje privatnosti zadatka	\\ \hline 
+			Slag & VARCHAR & slag verzija naziva zadatka  \\ \hline 
+			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID)  	\\ \hline  
+			\SetCell{LightBlue} NatjecanjeID & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeID)  	\\ \hline  
 			
-			\subsection{Dijagram baze podataka}
-				\textit{ U ovom potpoglavlju potrebno je umetnuti dijagram baze podataka. Primarni i strani ključevi moraju biti označeni, a tablice povezane. Bazu podataka je potrebno normalizirati. Podsjetite se kolegija "Baze podataka".}
+		\end{longtblr}
+		
+		\noindent \textbf{Test Primjeri} \space \space Ovaj entitet sadržava sve važne informacije o testnim primjerima za zasebne zadatke.
+		Sadrži atribute:  Zadatak ID, ulaz testa, izlaz testa. Ovaj entitet u vezi je	Many-to-One s entitetom Zadatak preko ID-a zadatka.
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Test Primjeri}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Ulaz & VARCHAR	&  ulaz testa  	\\ \hline
+			\SetCell{LightGreen}Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline 
+			Izlaz	& VARCHAR & željeni izlaz testa	\\ \hline
 			
-			\eject
+		\end{longtblr}
+		
+		\noindent \textbf{Upload Rjesenja} \space \space Ovaj entitet sadržava sve informacije koje su bitne oko uploada rješenja na zadatak.
+		Sadrži atribute:  Zadatak ID, korisnikov id, vrijeme predaje rješenja, predano rješenje, prolaznost, prosječno vrijeme izvršavanja, aktivnost natjecanja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika  te u vezi Many-to-One s entitetom Zadatak preko ID-a zadatka.
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Upload Rjesenja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Vrijeme Predaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
+			\SetCell{LightGreen} Korisnik ID	& INT & Korisnik ID (korisnik.KorisnikID)  	\\ \hline 
+			\SetCell{LightGreen} Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline
+			Predano Rjesenje	& VARCHAR &  datoteka koju je predao korisnik	\\ \hline 
+			Prolaznost & NUMERIC	&  posto riješenosti primjera zadataka		\\ \hline 
+			ProsjVrijeme Izvrs & NUMERIC	&  prosječno vrijeme izvršavanja po primjeru		\\ \hline 
+			NatjecanjeTraje & BOOLEAN & zadatkova veza s natjecanjima(1-natjecanje trenutno traje,0-natjecanje trenutno ne traje)  \\ \hline  
+		\end{longtblr}
+		
+		\noindent \textbf{Virtualno Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o Virtualnim natjecanjima.
+		Sadrži atribute:  Korisnikov ID, ID natjecanja, ID random zadatka težine 2, ID random zadatka težine 3, ID random zadatka težine 4 te ID random zadatka težine 5. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika, u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja te u 4 veze Many-to-One s entitetom Zadatak preko ID-ova zadataka.
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Virt Natjecanje}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ 	\hline
+			\SetCell{LightBlue}Natjecanje ID	& INT & (Opcionalno) Natjecanje ID (natjecanje.NatjecanjeID) \\ \hline
+			\SetCell{LightBlue}RandZadTez2	& INT & (Opcionalno) slučajno odabrani zadatak težine 2 (zadatak.ZadatakID)	\\ \hline
+			\SetCell{LightBlue}RandZadTez3	& INT & (Opcionalno)  slučajno odabrani zadatak težine 3 (zadatak.ZadatakID) 	\\ \hline 
+			\SetCell{LightBlue}RandZadTez4 & INT	& (Opcionalno) slučajno odabrani zadatak težine 4 (zadatak.ZadatakID)	\\ \hline 
+			\SetCell{LightBlue}RandZadTez5 & INT	& (Opcionalno)  slučajno odabrani zadatak težine 5 (zadatak.ZadatakID)	\\ \hline 
+		\end{longtblr}
+		
+		
+		\noindent \textbf{Trofej} \space \space Ovaj entitet sadržava sve važne informacije o trofejima.
+		Sadrži atribute:  Trofej ID, ime trofeja, slika trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika, u vezi One-to-Many s entitetom Natjecanje preko ID-a trofeja te u vezi Many-to-Many s Je-Osvojio preko ID-a trofeja.
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Trofej}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}TrofejID & INT	&  jedinstveni indikator trofeja  	\\ \hline
+			ImeTrofeja	& VARCHAR & ime trofeja	\\ \hline 
+			SlikaTrofeja	& VARCHAR & slika trofeja	\\ \hline
+			
+		\end{longtblr}
+		
+		\noindent \textbf{Sudjeluje Na} \space \space Ovaj entitet sadržavi listu svih sudjelovanja korisnika na natjecanjima.
+		Sadrži atribute:  Korisnik ID, Natjecanje ID.
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Sudjeluje Na}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ \hline
+			\SetCell{LightGreen}Natjecanje ID	& INT & Natjecanje ID (natjecanje.NatjecanjeID)	\\ \hline 
+			
+		\end{longtblr}
+		
+		\noindent \textbf{Je Osvojio} \space \space Ovaj entitet sadržava listu svih korisnika s osvojenim peharima.
+		Sadrži atribute:  Korisnik ID, Trofej ID. Ovaj entitet u vezi je One-To-Many s entitetom Natjecanje preko ID-a klase natjecanja.
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Je Osvojio}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)  	\\ \hline
+			\SetCell{LightGreen}Trofej ID	& INT & Trofej ID (trofej.TrofejID)  	\\ \hline 
+			
+		\end{longtblr}
+		
+		
+		\noindent \textbf{Klasa Natjecanja} \space \space Ovaj entitet sadržava sve informacije o klasi natjecanja.
+		Sadrži atribute:   ID klase natjecanja, naziv klase natjecanja.
+		
+		
+		
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Klasa Natjecanja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}ID Klase Natjecanje & INT	&  jedinstveni indikator klase natjecanje  	\\ \hline
+			Naziv Klase Natjecanja	& VARCHAR & naziv klase natjecanja 	\\ \hline 
+			
+		\end{longtblr}
+		
+		
+		
+		\subsection{Dijagram baze podataka}
+		\begin{figure}[H]
+			\includegraphics[width=\textwidth]{slike/RelacijskaShema.PNG} %veličina u odnosu na širinu linije
+			\caption{E-R dijagram baze podataka}
+			\label{fig:RelacijskaShema} %label mora biti drugaciji za svaku sliku
+		\end{figure}
+		
+		\eject
 			
 			
 		\section{Dijagram razreda}
-		
-			\textit{Potrebno je priložiti dijagram razreda s pripadajućim opisom. Zbog preglednosti je moguće dijagram razlomiti na više njih, ali moraju biti grupirani prema sličnim razinama apstrakcije i srodnim funkcionalnostima.}\\
+			Na slici 4.2. vidimo osnovni model UML dijagrama koji prikazuje osnovne klase koje koristimo na backendu.
+				
+			Trenutni dijagram razreda opisuje izgled klasa i njihovih metoda koje će nam biti potrebne u projektu. 
+			Trenutno pošto imamo registraciju, ulogiravanje i validaciju, koristimo samo klasu Korisnik te njene metode. 
+			Imamo privatnu metodu koja se zove \verb*|__get_id()| preko koje dobivamo korisnikid iz baze podataka,
+			zato što je to metoda koja dohvaća privatni ključ te ne želimo da korisnik ikad ima pristup tome.
+			Tu metodu trenutno ne koristimo previše već će biti jako korisna kasnije u konekcijama s instancama ostalim
+			klasa prilikom dobivanja informacija iz ostalih tablica baze podataka. Kao što se vidi, svaka klasa ima 
+			konstruktor \verb*|__init__()| te primaju informacije koje su identične onima iz njihovih modela iz baze podataka.
+
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/DijagramRazreda.png} %veličina u odnosu na širinu linije
+				\caption{Dijagram razreda}
+				\label{fig:DijagramRazreda} %label mora biti drugaciji za svaku sliku
+			\end{figure}	
 			
-			\textbf{\textit{dio 1. revizije}}\\
-			
-			\textit{Prilikom prve predaje projekta, potrebno je priložiti potpuno razrađen dijagram razreda vezan uz \textbf{generičku funkcionalnost} sustava. Ostale funkcionalnosti trebaju biti idejno razrađene u dijagramu sa sljedećim komponentama: nazivi razreda, nazivi metoda i vrste pristupa metodama (npr. javni, zaštićeni), nazivi atributa razreda, veze i odnosi između razreda.}\\
+
+			Budući da radimo u programskom jeziku Python, ne možemo lako prikazati Data Transfer objects.
+			Međutim, prilikom registracije, sve informacije koje dobivamo s frontenda prosljeđujemo u konstruktor
+			Korisnik. Kasnije, prilikom login-a, preko korisničkog imena dobivamo podatke iz baze te izrađujemo instancu Korisnik.
+			S tim Korisnikom možemo baratati pomoću njegovih podataka. Tražimo iz baze podataka je li aktiviran te odgovara li
+			hash unesene lozinke hashu lozinke koja je spremljena u bazu podataka, tj. u instanci Korisnik.
+
+			Naša klasa Korisnik se zapravo referira i na voditelja i na administratora. Oni svi imaju identične podatke te duplikacija koda
+			nije potrebna. Velika razlika je samo u njihovom podatku NivouPrava o kojem će ovisiti kakve ovlasti na stranici ima.
+			To će također biti funkcija koju će biti privatna. Voditelj će za razliku od natjecatelja imati pristup stranicama
+			za  kreiranje zadataka te stvaranju natjecanja. Administrator će uz to sve moći uređivati ovlasti svih korisnika te će pomoću toga imati mogućnost potvrditi voditelja što će biti na posebnoj stranici.
+
+
+
+				\eject
 			
 			\textbf{\textit{dio 2. revizije}}\\			
 			
@@ -69,7 +310,7 @@
 		
 		\section{Dijagram stanja}
 			
-			
+		
 			\textbf{\textit{dio 2. revizije}}\\
 			
 			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
