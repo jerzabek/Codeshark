@@ -12,6 +12,7 @@
     "bootstrap-icons": "^1.7.1",
     "env-cmd": "^10.1.0",
     "react": "^17.0.2",
+    "react-calendar": "^3.5.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-router": "^6.0.2",
