@@ -69,10 +69,10 @@ function Task(props) {
                         html: <p>{res.data.result}</p>
                     })
                 } else {
-                    MySwall.fire({
-                        title: <p>error</p>,
-                        html: <p>something went wrong</p>
-                    })
+                     MySwall.fire({
+                         title: <p>Success</p>,
+                         html: <p>All tests passed!</p>
+                     })
                 }
             } catch (err) {
                 console.log(err)
