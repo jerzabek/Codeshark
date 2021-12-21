@@ -12,6 +12,8 @@ const MySwall = withReactContent(Swal)
 function Task(props) {
 
     const userContext = useContext(UserContext)
+    const [showTests, setShowTests] = useState(false)
+
 
     const { handle } = useParams()
     const [list, setList] = useState([]);
@@ -45,8 +47,7 @@ function Task(props) {
 
     function handleRunAndSave(lang, code) {
 
-        console.log({lang})
-
+        setShowTests(true)
         const username = userContext.user.username
 
         const executeTaskData = {
@@ -55,7 +56,7 @@ function Task(props) {
             "lang": lang,
             "code": code
         };
-        
+
 
         (async () => {
             try {
@@ -66,7 +67,7 @@ function Task(props) {
                         title: <p>Success</p>,
                         html: <p>{res.data.result}</p>
                     })
-                }else {
+                } else {
                     MySwall.fire({
                         title: <p>error</p>,
                         html: <p>something went wrong</p>
@@ -88,10 +89,21 @@ function Task(props) {
         { value: 'cpp', label: 'C++' }
     ]
 
-    const [state,setState] = React.useState(
+    const [state, setState] = React.useState(
         'py3'
     );
-   
+
+
+    //mock tests
+    
+    let mock = []
+
+    for(var i = 0 ; i < 10 ; i++) {
+        mock.push({ passed: 'passed', description: 'all correct' })
+    }
+    //delete this
+
+
     return (
         <React.Fragment>
             <div style={{ marginLeft: 30, marginTop: 20 }}>
@@ -127,11 +139,31 @@ function Task(props) {
             />
 
             <button className='btn btn-info  btn-dark rounded-0 btn-cta px-2'
-                style={{ float: 'right', marginRight: 190 }}
+                style={{ float: 'right', marginRight: 190 , marginBottom: 50}}
                 onClick={(e) => handleRunAndSave(state, code)}>
                 Run and save!
             </button>
-
+            {
+                showTests ? (
+                    <div style={{marginLeft: 220, marginRight: 220, marginTop: 70, marginBottom: 50}}>
+                    <h2>Result : 100%</h2>
+                    <table className="table table-striped table-hover competition-table">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            {mock && mock.map(test =>
+                                <tr key={test.passed}>
+                                    <td></td>
+                                    <td style={{ color: 'green'}}>{test.passed}</td>
+                                    <td>{test.description}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                    <h3 style={{ color: 'white'}}>-</h3>
+                    </div>
+                ) : (<div></div>)
+            }
         </React.Fragment>
 
     );
