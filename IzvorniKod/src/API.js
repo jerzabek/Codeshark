@@ -68,6 +68,17 @@ function getCompetitions() {
     })
 }
 
+function profileInfo(username) {
+  return axiosInstance.get(`members/${username}`)
+    .then((res) => {
+      if ([400, 401].includes(res.status)) throw new Error(res.data.error)
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [400, 401].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 function getCompetition(competition_id) {
   return axiosInstance.get(`competition/${competition_id}`)
     .then((res) => {
@@ -132,5 +143,6 @@ export {
   setupCreateCompetition,
   createCompetition,
   loadUsers,
-  getHomeContests
+  getHomeContests,
+  profileInfo
 }
