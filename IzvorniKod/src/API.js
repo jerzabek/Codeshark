@@ -1,6 +1,6 @@
 import * as axios from 'axios'
 
-const baseUrl = process.env.REACT_APP_API_URL
+const baseUrl = process.env.REACT_APP_API_URL 
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -68,6 +68,16 @@ function getCompetitions() {
     })
 }
 
+function getTasks() {
+  return axiosInstance.get('tasks')
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 function profileInfo(username) {
   return axiosInstance.get(`members/${username}`)
     .then((res) => {
@@ -79,12 +89,32 @@ function profileInfo(username) {
     })
 }
 
+function getTask(slug) {
+  return axiosInstance.get(`task/${slug}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 function getCompetition(competition_id) {
   return axiosInstance.get(`competition/${competition_id}`)
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
       if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function executeTask(data) {
+  return axiosInstance.post('execute_task', data)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [413,400].includes(err.response.status)) return handleError(err.response.data.error)
       return handleError()
     })
 }
@@ -144,5 +174,8 @@ export {
   createCompetition,
   loadUsers,
   getHomeContests,
-  profileInfo
+  profileInfo,
+  getTasks,
+  getTask,
+  executeTask
 }
