@@ -43,6 +43,7 @@ function Task(props) {
             }
         })();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function handleRunAndSave(lang, code) {
