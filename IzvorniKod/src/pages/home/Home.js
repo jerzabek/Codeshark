@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import bannerImage from '../../assets/images/header/header-home.jpg';
 import '../../assets/style/common/banner.css';
 import { Link } from 'react-router-dom';
-import { REGISTER } from '../../Routes';
+import { REGISTER, TASK } from '../../Routes';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { getHomeContests } from '../../API';
+import { useNavigate } from 'react-router';
 
 function Home(props) {
 
@@ -15,6 +16,11 @@ function Home(props) {
   const compsArr = [];
 
   const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR;
+
+  const navigate = useNavigate()
+  function linkToTask(slug) {
+    navigate(TASK + "/" + slug);
+  }
 
   useEffect(() => {
 
@@ -97,11 +103,11 @@ function Home(props) {
           <h2>Recent Tasks</h2>
           <div class="d-flex flex-row justify-content-center">
             {tasks.map((task) => (
-              <div class="card" style={{ width: "20rem", height: "10rem", margin: "0.25rem" }}>
+              <div class="card" onClick={(e) => linkToTask(task.slug)} style={{ width: "20rem", height: "10rem", margin: "0.25rem" }}>
                 <div class="card-body">
                   <h5 class="card-title">{task.name}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.tezina}</h6>
-                  <p class="card-text">{task.slug}</p>
+                  {/*<p class="card-text">{task.slug}</p>*/}
 
                 </div>
               </div>
