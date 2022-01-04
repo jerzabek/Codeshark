@@ -3,7 +3,7 @@ import '../../assets/style/common/banner.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { MEMBERS } from '../../Routes';
 import { loadUsers } from '../../API';
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router';
 
 
 
