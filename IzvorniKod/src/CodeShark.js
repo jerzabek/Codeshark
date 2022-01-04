@@ -70,11 +70,19 @@ function CodeShark() {
               </PrivateRoute>
             } />
 
-            <Route path={MEMBERS} element={
-              <PrivateRoute isAuth={user}>
-                <Members />
-              </PrivateRoute>
-            } />
+            <Route path={MEMBERS} >
+                <Route path={":username"} element={
+                    <PrivateRoute isAuth={user}>
+                        <Profile />
+                    </PrivateRoute>
+                } />
+
+                <Route path="" element={
+                    <PrivateRoute isAuth={user}>
+                    <Members />
+                    </PrivateRoute>
+                } />
+            </Route>
 
             <Route path={COMPETITIONS}>
               <Route path={CREATE} element={
