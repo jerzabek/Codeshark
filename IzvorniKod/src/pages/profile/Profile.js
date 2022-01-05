@@ -60,17 +60,17 @@ function Profile(props) {
         const res2 = await profileInfo(userContext.user.username)
 
         if (res2.success) {
-          setFirstname(res2.data.ime)
-          setLastname(res2.data.prezime)
-          setProfilePicture(res2.data.slikaprofila_url)
+          setFirstname(res2.data.name)
+          setLastname(res2.data.last_name)
+          setProfilePicture(res2.data.pfp_url)
           setEmail(res2.data.email)
           setTrophies(res2.data.trophies)
           setRank(res2.data.rank)
-          setLevel(res2.data.titula)
-          setAttempted(res2.data.pokusano_zad)
-          setSolved(res2.data.uspjesno_zad)
-          setPercentage(res2.data.postotak_uspjesnih)
-          setTaskUploads(res2.data.submitted_tasks)
+          setLevel(res2.data.title)
+          setAttempted(res2.data.attempted)
+          setSolved(res2.data.solved)
+          setPercentage(res2.data.correctly_solved)
+          setTaskUploads(res2.data.submitted_solutions)
           setOrganizedCompetitions(res2.data.created_competitions)
         }
 
@@ -86,12 +86,12 @@ function Profile(props) {
   function renderUploads() {
     var rows = [];
     for (var i = 0; i < taskUploads.length; i++) {
-      rows.push(<tr key={taskUploads[i].vrijeme_predaje}>
-        <td style={cells}>{taskUploads[i].zadatak_id}</td>
-        <td style={cells}>{taskUploads[i].predano_rjesenje}</td>
-        <td style={cells}>{taskUploads[i].prolaznost}</td>
-        <td style={cells}>{taskUploads[i].vrijeme_predaje}</td>
-        <td style={cells}>{taskUploads[i].prosj_vrijeme_izvrsenja}</td>
+      rows.push(<tr key={taskUploads[i].submitted_time}>
+        <td style={cells}>{taskUploads[i].task_name}</td>
+        <td style={cells}>{taskUploads[i].submitted_solution}</td>
+        <td style={cells}>{taskUploads[i].result}</td>
+        <td style={cells}>{taskUploads[i].submitted_time}</td>
+        <td style={cells}>{taskUploads[i].avg_exe_time}</td>
       </tr>)
     }
     return <tbody>{rows}</tbody>;
@@ -100,27 +100,27 @@ function Profile(props) {
   function renderCompetitions() {
     var rows = [];
     for (var i = 0; i < organizedCompetitions.length; i++) {
-      var image = "https://cdn.domefan.club/trophy/" + organizedCompetitions[i].slika_trofeja
-      rows.push(<tr key={organizedCompetitions[i].natjecanje_id}>
-        <td style={cells}>{organizedCompetitions[i].natjecanje_id}</td>
-        <td style={cells}>{organizedCompetitions[i].ime_natjecanja}</td>
-        <td style={cells}>{organizedCompetitions[i].vrijeme_pocetak}</td>
-        <td style={cells}>{organizedCompetitions[i].vrijeme_kraj}</td>
+      var image = process.env.REACT_APP_TROPHY_PREFIX + organizedCompetitions[i].trophy_img
+      rows.push(<tr key={organizedCompetitions[i].comp_id}>
+        <td style={cells}>{organizedCompetitions[i].comp_id}</td>
+        <td style={cells}>{organizedCompetitions[i].comp_name}</td>
+        <td style={cells}>{organizedCompetitions[i].start_time}</td>
+        <td style={cells}>{organizedCompetitions[i].end_time}</td>
         <td style={cells}><img src={image} width="30" height="30" alt="Competition trophy" on></img></td>
-        <td style={cells}>{organizedCompetitions[i].broj_zadataka}</td>
-        <td style={cells}>{organizedCompetitions[i].ime_klase_natjecanja}</td>
+        <td style={cells}>{organizedCompetitions[i].task_length}</td>
+        <td style={cells}>{organizedCompetitions[i].comp_class_name}</td>
       </tr>)
     }
     return <tbody>{rows}</tbody>;
   }
 
-  function renderThrophies() {
+  function renderTrophies() {
     var rows = []
     for (var i = 0; i < trophies.length; i++) {
-      var image = "https://cdn.domefan.club/trophy/" + trophies[i].img
-      rows.push(<div key={trophies[i].name} className="container py-2">
+      var image = process.env.REACT_APP_TROPHY_PREFIX + trophies[i].trophy_img
+      rows.push(<div key={trophies[i].trophy_name} className="container py-2">
         <img src={image} width="30" height="30" alt="Competition trophy"></img>
-        {trophies[i].name}
+        {trophies[i].trophy_name}
       </div>)
     }
     return <div>{rows}</div>;
@@ -201,7 +201,7 @@ function Profile(props) {
             {trophies !== undefined && trophies.length !== 0 ?
               <div className="container py-2">
                 <b>Trophies: </b>
-                {renderThrophies()}
+                {renderTrophies()}
               </div> :
               <div className="container py-2">
                 <b>Trophies: </b>No trophies
@@ -225,11 +225,11 @@ function Profile(props) {
                 <table style={tables}>
                   <thead>
                     <tr>
-                      <th style={cells}>Task ID</th>
-                      <th style={cells}>Uploaded Solution</th>
+                      <th style={cells}>Task name</th>
+                      <th style={cells}>Uploaded solution</th>
                       <th style={cells}>Result</th>
-                      <th style={cells}>Time of Upload</th>
-                      <th style={cells}>Execution Time</th>
+                      <th style={cells}>Time of upload</th>
+                      <th style={cells}>Execution time</th>
                     </tr>
                   </thead>
                   {renderUploads()}
