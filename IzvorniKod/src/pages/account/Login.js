@@ -19,8 +19,8 @@ function Login({ login: loginUser, isAuth }) {
     e.preventDefault()
 
     let loginData = {
-      korisnickoime: username,
-      lozinka: password
+      username: username,
+      password: password
     }
 
     const attemptLogin = async () => {
