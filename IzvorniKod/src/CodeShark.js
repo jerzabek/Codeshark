@@ -66,14 +66,14 @@ function CodeShark() {
 
             <Route path={PROFILE} element={
               <PrivateRoute isAuth={user}>
-                <Profile />
+                <Profile visitor={false}/>
               </PrivateRoute>
             } />
 
             <Route path={MEMBERS} >
               <Route path={":username"} element={
                 <PrivateRoute isAuth={user}>
-                  <Profile />
+                  <Profile visitor={true}/>
                 </PrivateRoute>
               } />
 

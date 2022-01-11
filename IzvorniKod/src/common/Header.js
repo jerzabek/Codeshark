@@ -20,7 +20,7 @@ function Header(props) {
         const res = await getAvatar(userContext.user.username)
 
         if (res.success) {
-          setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.url)
+          setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.pfp_url)
 
           document.getElementById('avatar').classList.remove('visually-hidden');
           document.getElementById('avatar-spinner').classList.add('visually-hidden');

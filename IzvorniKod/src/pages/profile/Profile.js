@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { getAvatar } from '../../API';
 import { UserContext } from './../../common/UserContext';
+import { useParams } from 'react-router'
 import '../../assets/style/common/avatar.css'
 import { profileInfo } from '../../API'
 import Calendar from 'react-calendar'
@@ -13,12 +14,14 @@ function Profile(props) {
   const [avatar, setAvatar] = useState(defaultAvatar)
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
-  const [username, setUsername] = useState('')
+  const [ownerUsername, setUsername] = useState('')
   const [email, setEmail] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [profilePicture, setProfilePicture] = useState()
   const [trophies, setTrophies] = useState()
   const [rank, setRank] = useState('0')
+  const [visitorRank, setVisitorRank] = useState('0')
+  // eslint-disable-next-line no-unused-vars
   const [level, setLevel] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [attempted, setAttempted] = useState('0')
@@ -40,16 +43,21 @@ function Profile(props) {
     padding: "8px"
   }
 
+  const { username } = useParams()
+
   useEffect(() => {
     // Loading the profile picture
     (async () => {
       try {
-        const res = await getAvatar(userContext.user.username)
+        let res = await getAvatar(userContext.user.username)
+
+        if (props.visitor === true)
+          res = await getAvatar(username)
 
         console.log(res)
 
         if (res.success) {
-          setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.url)
+          setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.pfp_url)
 
           document.getElementById('avatar-profile').classList.remove('visually-hidden');
           document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
@@ -57,21 +65,39 @@ function Profile(props) {
           document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         }
         setUsername(userContext.user.username)
-        const res2 = await profileInfo(userContext.user.username)
+        const owner = await profileInfo(userContext.user.username)
 
-        if (res2.success) {
-          setFirstname(res2.data.name)
-          setLastname(res2.data.last_name)
-          setProfilePicture(res2.data.pfp_url)
-          setEmail(res2.data.email)
-          setTrophies(res2.data.trophies)
-          setRank(res2.data.rank)
-          setLevel(res2.data.title)
-          setAttempted(res2.data.attempted)
-          setSolved(res2.data.solved)
-          setPercentage(res2.data.correctly_solved)
-          setTaskUploads(res2.data.submitted_solutions)
-          setOrganizedCompetitions(res2.data.created_competitions)
+        if (owner.success) {
+          setFirstname(owner.data.name)
+          setLastname(owner.data.last_name)
+          setProfilePicture(owner.data.pfp_url)
+          setEmail(owner.data.email)
+          setTrophies(owner.data.trophies)
+          setRank(owner.data.rank)
+          setLevel(owner.data.title)
+          setAttempted(owner.data.attempted)
+          setSolved(owner.data.solved)
+          setPercentage(owner.data.correctly_solved)
+          setTaskUploads(owner.data.submitted_solutions)
+          setOrganizedCompetitions(owner.data.created_competitions)
+        }
+        if (props.visitor === true) {
+          const visitor = await profileInfo(username)
+
+          if (visitor.success) {
+            setFirstname(visitor.data.name)
+            setLastname(visitor.data.last_name)
+            setProfilePicture(visitor.data.pfp_url)
+            setEmail(visitor.data.email)
+            setTrophies(visitor.data.trophies)
+            setVisitorRank(visitor.data.rank)
+            setLevel(visitor.data.title)
+            setAttempted(visitor.data.attempted)
+            setSolved(visitor.data.solved)
+            setPercentage(visitor.data.correctly_solved)
+            setTaskUploads(visitor.data.submitted_solutions)
+            setOrganizedCompetitions(visitor.data.created_competitions)
+          }
         }
 
       } catch (err) {
@@ -89,7 +115,7 @@ function Profile(props) {
       rows.push(<tr key={taskUploads[i].submitted_time}>
         <td style={cells}>{taskUploads[i].task_name}</td>
         <td style={cells}>{taskUploads[i].submitted_solution}</td>
-        <td style={cells}>{taskUploads[i].result}</td>
+        <td style={cells}>{taskUploads[i].passed}</td>
         <td style={cells}>{taskUploads[i].submitted_time}</td>
         <td style={cells}>{taskUploads[i].avg_exe_time}</td>
       </tr>)
@@ -101,13 +127,13 @@ function Profile(props) {
     var rows = [];
     for (var i = 0; i < organizedCompetitions.length; i++) {
       var image = process.env.REACT_APP_TROPHY_PREFIX + organizedCompetitions[i].trophy_img
-      rows.push(<tr key={organizedCompetitions[i].comp_id}>
-        <td style={cells}>{organizedCompetitions[i].comp_id}</td>
+      rows.push(<tr key={organizedCompetitions[i].comp_slug}>
+        <td style={cells}>{organizedCompetitions[i].comp_slug}</td>
         <td style={cells}>{organizedCompetitions[i].comp_name}</td>
         <td style={cells}>{organizedCompetitions[i].start_time}</td>
         <td style={cells}>{organizedCompetitions[i].end_time}</td>
-        <td style={cells}><img src={image} width="30" height="30" alt="Competition trophy" on></img></td>
-        <td style={cells}>{organizedCompetitions[i].task_length}</td>
+        <td style={cells}><img src={image} width="30" height="30" alt="Competition trophy"></img></td>
+        <td style={cells}>{organizedCompetitions[i].task_count}</td>
         <td style={cells}>{organizedCompetitions[i].comp_class_name}</td>
       </tr>)
     }
@@ -145,13 +171,15 @@ function Profile(props) {
           </div>
           <div className="col-12 col-md-10 col-lg-9">
             <div className="container py-2">
-              <h1 className='mb-2'>Your profile {(rank === 3) && <span>(admin)</span>}</h1>
+              {(props.visitor === false) ? <h1 className='mb-2'>Your profile {(rank === 3) && <span>(admin)</span>}</h1>
+              : <h1 className='mb-2'>Profile page {(visitorRank === 3) && <span>(admin)</span>}</h1>}
             </div>
             <div className="container py-2">
-              <h2>Currently logged in as {userContext.user.username}</h2>
+              {(props.visitor === false) ? <h2>Currently logged in as {ownerUsername}</h2>
+              : <h2>Currently viewing {username}'s profile</h2>}
             </div>
             <div className="container py-2">
-              <button type="button" className="btn btn-primary btn-lg">Change Profile Picture</button>
+              {(props.visitor === false || rank === 3) && <button type="button" className="btn btn-primary btn-lg">Change Profile Picture</button>}
             </div>
           </div>
         </div>
@@ -159,7 +187,7 @@ function Profile(props) {
       <div className="container py-4">
         <div className="row">
           <div className="col-12 col-md-6 col-lg-6"><h2><u>Profile Info:</u></h2></div>
-          <div className="col-12 col-md-6 col-lg-6"><h2><u>Your Competitions:</u></h2></div>
+          <div className="col-12 col-md-6 col-lg-6"><h2><u>Scheduled Competitions:</u></h2></div>
         </div>
         <div className="row">
           <div className="col-12 col-md-6 col-lg-6">
@@ -167,7 +195,7 @@ function Profile(props) {
               <div className="row">
                 <div className="col-12 col-md-10 col-lg-9"><b>First Name: </b>{firstname}</div>
                 <div className="col-12 col-md-2 col-lg-3">
-                  <button type="button" className="btn btn-primary btn-sm">Edit</button>
+                  {(props.visitor === false || rank === 3) && <button type="button" className="btn btn-primary btn-sm">Edit</button>}
                 </div>
               </div>
             </div>
@@ -175,20 +203,28 @@ function Profile(props) {
               <div className="row">
                 <div className="col-12 col-md-10 col-lg-9"><b>Last Name: </b>{lastname}</div>
                 <div className="col-12 col-md-2 col-lg-3">
-                  <button type="button" className="btn btn-primary btn-sm">Edit</button>
+                  {(props.visitor === false || rank === 3) && <button type="button" className="btn btn-primary btn-sm">Edit</button>}
                 </div>
               </div>
             </div>
             <div className="container py-2">
               <div className="row">
-                <div className="col-12 col-md-10 col-lg-9"><b>Username: </b>{username}</div>
+                <div className="col-12 col-md-10 col-lg-9"><b>Username: </b>{(props.visitor === false) ? ownerUsername : username}</div>
                 <div className="col-12 col-md-2 col-lg-3">
                   {(rank === 3) && <button type="button" className="btn btn-primary btn-sm">Edit</button>}
                 </div>
               </div>
             </div>
             <div className="container py-2">
-              <div className="col-12 col-md-10 col-lg-9"><b>Rank: </b>{level}</div>
+              <div className="row">
+                <div className="col-12 col-md-10 col-lg-9"><b>Rank: </b>
+                  {(props.visitor === true) ? (visitorRank === 1) ? "Competitor" : (visitorRank === 2) ? "Leader" : "Admin"
+                  : (rank === 1) ? "Competitor" : (rank === 2) ? "Leader" : "Admin"}
+                </div>
+                <div className="col-12 col-md-2 col-lg-3">
+                  {(rank === 3) && <button type="button" className="btn btn-primary btn-sm">Edit</button>}
+                </div>
+              </div>
             </div>
             <div className="container py-2">
               <div className="row">
@@ -208,7 +244,7 @@ function Profile(props) {
               </div>}
             <div className="container py-2"><b>Percentage of solved problems: </b>{Number((percentage * 100).toFixed(1))}<b>%</b></div>
             <div className="container py-2">
-              <button type="button" className="btn btn-primary">Change Password</button>
+              {(props.visitor === false || rank === 3) && <button type="button" className="btn btn-primary">Change Password</button>}
             </div>
           </div>
           <div className="col-12 col-md-6 col-lg-6">
@@ -236,7 +272,7 @@ function Profile(props) {
                 </table>
               </div>
             </div>
-          </div> : (rank === 1) ?
+          </div> : (props.visitor === true && visitorRank === 1 || props.visitor === false && rank === 1) ?
             <div className="container py-4">
               <div className="row">
                 <div className="col-12 col-md-12 col-lg-12">
@@ -254,7 +290,7 @@ function Profile(props) {
                 <table style={tables}>
                   <thead>
                     <tr>
-                      <th style={cells}>Competition ID</th>
+                      <th style={cells}>Competition Slug</th>
                       <th style={cells}>Competition Name</th>
                       <th style={cells}>Starting Time</th>
                       <th style={cells}>Ending Time</th>
@@ -267,7 +303,7 @@ function Profile(props) {
                 </table>
               </div>
             </div>
-          </div> : (rank !== 1) ?
+          </div> : (props.visitor === true && visitorRank !== 1 || props.visitor === false && rank !== 1) ?
             <div className="container py-4">
               <div className="row">
                 <div className="col-12 col-md-12 col-lg-12">
