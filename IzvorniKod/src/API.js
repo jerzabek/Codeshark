@@ -1,6 +1,6 @@
 import * as axios from 'axios'
 
-const baseUrl = process.env.REACT_APP_API_URL
+const baseUrl = process.env.REACT_APP_API_URL 
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   validateStatus: (status) => (status >= 200 && status < 300)
 })
 
-const handleError = (err) => ({ success: false, error: err.error || err || 'Greška na serveru' })
+const handleError = (err) => ({ success: false, error: err?.error || err || 'Greška na serveru' })
 const handleSuccess = (data) => ({ success: true, data })
 
 function login(data) {
@@ -58,6 +58,93 @@ function getAvatar(username) {
     })
 }
 
+function getCompetitions() {
+  return axiosInstance.get(`competitions`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function getTasks() {
+  return axiosInstance.get('tasks')
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function profileInfo(username) {
+  return axiosInstance.get(`members/${username}`)
+    .then((res) => {
+      if ([400, 401].includes(res.status)) throw new Error(res.data.error)
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [400, 401].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function getTask(slug) {
+  return axiosInstance.get(`task/${slug}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function getCompetition(competition_id) {
+  return axiosInstance.get(`competition/${competition_id}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function executeTask(data) {
+  return axiosInstance.post('execute_task', data)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if(err && err.response && [413,400].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function setupCreateCompetition(username) {
+  return axiosInstance.get(`create_competition`, {
+    headers: {
+      'session': username
+    }
+  })
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      return handleError(err)
+    })
+}
+
+function createCompetition(data) {
+  return axiosInstance.post(`create_competition`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 function loadUsers() {
   return axiosInstance.get('users').then((res) => {
     return handleSuccess(res.data)
@@ -81,6 +168,14 @@ export {
   register,
   verifyAccount,
   getAvatar,
+  getCompetitions,
+  getCompetition,
+  setupCreateCompetition,
+  createCompetition,
   loadUsers,
-  getHomeContests
+  getHomeContests,
+  profileInfo,
+  getTasks,
+  getTask,
+  executeTask
 }

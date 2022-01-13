@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -17,7 +17,12 @@ import Profile from './pages/profile/Profile'
 import Logout from './common/Logout'
 import Register from './pages/account/Register'
 import EmailVerification from './pages/account/EmailVerification'
+import Competitions from './pages/competitions/Competitions'
+import CreateCompetition from './pages/competitions/CreateCompetition'
+import Competition from './pages/competitions/single/Competition'
 import Members from './pages/members/Members'
+import Problems from "./pages/problems/Problems"
+import Task from "./pages/problems/Task"
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -64,14 +69,54 @@ function CodeShark() {
                 <Profile />
               </PrivateRoute>
             } />
-            
-            <Route path={MEMBERS} element={
+
+            <Route path={MEMBERS} >
+              <Route path={":username"} element={
+                <PrivateRoute isAuth={user}>
+                  <Profile />
+                </PrivateRoute>
+              } />
+
+              <Route path="" element={
+                <PrivateRoute isAuth={user}>
+                  <Members />
+                </PrivateRoute>
+              } />
+            </Route>
+
+            <Route path={COMPETITIONS}>
+              <Route path={CREATE} element={
+                <PrivateRoute isAuth={user}>
+                  <CreateCompetition />
+                </PrivateRoute>
+              } />
+
+              <Route path={":competition_id"} element={
+                <PrivateRoute isAuth={user}>
+                  <Competition />
+                </PrivateRoute>
+              } />
+
+              <Route path="" element={
+                <PrivateRoute isAuth={user}>
+                  <Competitions />
+                </PrivateRoute>
+              } />
+            </Route>
+
+            <Route path={TASK + '/:handle'} element={
               <PrivateRoute isAuth={user}>
-                <Members />
+                <Task />
               </PrivateRoute>
             } />
 
             <Route path="*" element={<Navigate to={HOME} />} />
+
+            <Route path={PROBLEMS} element={
+              <PrivateRoute isAuth={user}>
+                <Problems />
+              </PrivateRoute>
+            } />
           </Routes>
         </main>
       </UserContext.Provider>

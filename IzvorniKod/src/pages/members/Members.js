@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import '../../assets/style/common/banner.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { MEMBERS } from '../../Routes';
 import { loadUsers } from '../../API';
+import { useNavigate } from 'react-router';
+
+
 
 function Members(props) {
-
+    
   const [users, setUsers] = useState([]);
-
+  
+  const navigate = useNavigate()
+  function linkToMember(username) {
+    navigate(MEMBERS + "/" + username);
+  }
+    
   const items = [];
 
   const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR
@@ -35,6 +44,7 @@ function Members(props) {
       }
     })();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -52,15 +62,15 @@ function Members(props) {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr style={{ textAlign: "center", verticalAlign: "middle"}}>
+              <tr onClick={(e) => linkToMember(user.korisnickoime)} style={{ textAlign: "center", verticalAlign: "middle" }}>
                 <th scope="row">
-                  <img src={process.env.REACT_APP_IMAGE_PREFIX + user.slikaprofila} style={{ width: "2.5rem", height: "2.5rem"}}
+                  <img src={process.env.REACT_APP_IMAGE_PREFIX + user.slikaprofila} style={{ width: "2.5rem", height: "2.5rem" }}
                     onError={(e) => {
                       if (!e.target.src.includes(defaultAvatar)) {
                         // So that it doesnt keep spamming if the default avatar is not available
                         e.target.onerror = null; e.target.src = defaultAvatar
                       }
-                    }} alt="Juan image didn't load"/>
+                    }} alt="Fallback Juan didn't load" />
                 </th>
                 <td>{user.ime_prezime}</td>
                 <td>{user.korisnickoime}</td>

@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER } from '../Routes'
+import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER, COMPETITIONS, MEMBERS, PROBLEMS } from '../Routes'
 import { UserContext } from './UserContext'
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import logo from '../assets/images/logo-black.png'
 import { getAvatar } from '../API'
@@ -51,8 +50,9 @@ function Header(props) {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav w-100 align-items-baseline">
             <NavLink to={HOME} className='nav-link'>Home</NavLink>
-            <NavLink to={HOME} className='nav-link'>Problems</NavLink>
-            <NavLink to={HOME} className='nav-link'>Leaderboards</NavLink>
+            <NavLink to={PROBLEMS} className='nav-link'>Problems</NavLink>
+            <NavLink to={MEMBERS} className='nav-link'>Members</NavLink>
+            <NavLink to={COMPETITIONS} className='nav-link'>Competitions</NavLink>
             {
               isLogged ?
                 <React.Fragment>
