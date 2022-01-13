@@ -23,18 +23,18 @@ function CompetitionCalender({ events }) {
     setFormattedEvents(
       events
         .map((event) => {
-          const startAt = new Date(event.vrijeme_pocetak);
-          const finishAt = new Date(event.vrijeme_kraj);
+          const startAt = new Date(event.start_time);
+          const finishAt = new Date(event.end_time);
           const date = startAt.getDate() + "-" + (startAt.getMonth() + 1) + "-" + startAt.getFullYear();
 
           return {
-            id: event.natjecanje_id,
+            id: event.comp_slug,
             startAt: startAt.toISOString(),
             endAt: finishAt.toISOString(),
             date,
-            summary: event.ime_natjecanja,
+            summary: event.comp_name,
             color: 'blue',
-            trophy: event.slika_trofeja
+            trophy: event.trophy_img
           }
         }).reduce(function (reducer, currEvent) {
           const key = currEvent.date

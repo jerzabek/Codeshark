@@ -91,7 +91,7 @@ function CodeShark() {
                 </PrivateRoute>
               } />
 
-              <Route path={":competition_id"} element={
+              <Route path={":competition_slug"} element={
                 <PrivateRoute isAuth={user}>
                   <Competition />
                 </PrivateRoute>

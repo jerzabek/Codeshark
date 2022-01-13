@@ -12,7 +12,7 @@ function CompetitionTable({ data, columns, loading }) {
 
   useEffect(() => {
     setDisplayData(
-      data.filter((row) => row.ime_natjecanja.toLowerCase().includes(filterName.toLowerCase()))
+      data.filter((row) => row.comp_name.toLowerCase().includes(filterName.toLowerCase()))
     )
   }, [filterName, data])
 
@@ -73,19 +73,19 @@ function CompetitionTable({ data, columns, loading }) {
         <tbody>
           {
             displayData.map((row, rowIndex) => {
-              var start = new Date(row.vrijeme_pocetak)
+              var start = new Date(row.start_time)
               start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr")
 
-              var end = new Date(row.vrijeme_kraj)
+              var end = new Date(row.end_time)
               end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr")
 
               return (
-                <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.natjecanje_id)} className="hover-pointer align-middle">
-                  <td><img className="rounded-circle" style={{ width: "3em" }} src={process.env.REACT_APP_TROPHY_PREFIX + row.slika_trofeja} alt="Trophy" /></td>
-                  <td>{row.ime_natjecanja}</td>
+                <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.comp_slug)} className="hover-pointer align-middle">
+                  <td><img className="rounded-circle" style={{ width: "3em" }} src={process.env.REACT_APP_TROPHY_PREFIX + row.trophy_img} alt="Trophy" /></td>
+                  <td>{row.comp_name}</td>
                   <td>{start}</td>
                   <td>{end}</td>
-                  <td>{row.ime_klase_natjecanja}</td>
+                  <td>{row.comp_class_name}</td>
                 </tr>
               )
             }

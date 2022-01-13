@@ -10,20 +10,20 @@ function Competition(props) {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
 
-  const { competition_id } = useParams()
+  const { competition_slug } = useParams()
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await getCompetition(competition_id)
+        const res = await getCompetition(competition_slug)
 
         console.log(res)
 
         if (res.success) {
           setCompetition(res.data)
 
-          var start = new Date(res.data.vrijeme_poc)
-          var end = new Date(res.data.vrijeme_kraj)
+          var start = new Date(res.data.start_time)
+          var end = new Date(res.data.end_time)
 
           setDate(start.toLocaleDateString("hr"))
           setTime(start.toLocaleTimeString("hr") + " - " + end.toLocaleTimeString("hr"))
@@ -52,12 +52,12 @@ function Competition(props) {
     <div className="container py-4">
       <div className="row mb-4">
         <div className="col-12 col-sm-4 col-lg-2">
-          <img className="align-self-center img-fluid" src={process.env.REACT_APP_TROPHY_PREFIX + competition.slika_trofeja} alt="Competition trophy" />
+          <img className="align-self-center img-fluid" src={process.env.REACT_APP_TROPHY_PREFIX + competition.trophy_img} alt="Competition trophy" />
         </div>
         <div className="col-12 col-sm-8 col-md-8 col-lg-8">
-          <h1>{competition.ime_natjecanja}</h1>
-          <p className="text-muted"><i class="bi bi-person-circle"></i> Author: {competition.ime_prezime_autora}</p>
-          <p className="text-muted"><i class="bi bi-file-bar-graph"></i> Competition class: {competition.ime_klase_natjecanja}</p>
+          <h1>{competition.comp_name}</h1>
+          <p className="text-muted"><i class="bi bi-person-circle"></i> Author: {competition.author_name}</p>
+          <p className="text-muted"><i class="bi bi-file-bar-graph"></i> Competition class: {competition.comp_class_name}</p>
           <button onClick={apply} className="btn btn-success"><i class="bi bi-send-plus"></i> Apply for competition</button>
         </div>
         <div className="col-12 col-md-4 col-lg-2 text-md-center mt-3 mt-sm-4 mt-lg-0">
@@ -66,7 +66,7 @@ function Competition(props) {
         </div>
       </div>
 
-      <p>{competition.tekst_natjecanja}</p>
+      <p>{competition.comp_text}</p>
 
     </div>
   );
