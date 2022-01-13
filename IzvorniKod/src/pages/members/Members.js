@@ -62,7 +62,7 @@ function Members(props) {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr onClick={(e) => linkToMember(user.korisnickoime)} style={{ textAlign: "center", verticalAlign: "middle" }}>
+              <tr onClick={(e) => linkToMember(user.username)} style={{ textAlign: "center", verticalAlign: "middle" }}>
                 <th scope="row">
                   <img src={process.env.REACT_APP_IMAGE_PREFIX + user.slikaprofila} style={{ width: "2.5rem", height: "2.5rem" }}
                     onError={(e) => {
@@ -72,8 +72,8 @@ function Members(props) {
                       }
                     }} alt="Fallback Juan didn't load" />
                 </th>
-                <td>{user.ime_prezime}</td>
-                <td>{user.korisnickoime}</td>
+                <td>{user.name} {user.last_name}</td>
+                <td>{user.username}</td>
               </tr>
             ))}
           </tbody>
