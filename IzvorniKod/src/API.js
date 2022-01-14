@@ -99,9 +99,22 @@ function getTask(slug) {
     })
 }
 
-function getCompetition(competition_id) {
-  return axiosInstance.get(`competition/${competition_id}`)
+function getCompetition(competition_slug) {
+  return axiosInstance.get(`competition/${competition_slug}`)
     .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function getVirtualCompetitions(username) {
+  return axiosInstance.get(`virtual_competitions`, {
+    headers: {
+      'session': username
+    }
+  }).then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
       if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
@@ -177,5 +190,6 @@ export {
   profileInfo,
   getTasks,
   getTask,
-  executeTask
+  executeTask,
+  getVirtualCompetitions
 }

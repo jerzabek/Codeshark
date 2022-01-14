@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import { getCompetitions } from '../../API'
+import React, { useEffect, useState, useContext } from 'react'
+import { getCompetitions, getVirtualCompetitions } from '../../API'
 import CompetitionTable from './CompetitionTable'
 import { Link } from 'react-router-dom'
 import { CREATE, COMPETITIONS } from '../../Routes'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import CompetitionCalender from './CompetitionCalender'
+import { UserContext } from './../../common/UserContext';
 
 const COMPETITION_TABLE_HEADERS = [
   '',
@@ -16,6 +16,8 @@ const COMPETITION_TABLE_HEADERS = [
 ]
 
 function Competitions(props) {
+  const userContext = useContext(UserContext)
+
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,26 @@ function Competitions(props) {
       }
     })();
 
+
+    (async () => {
+      try {
+        const res = await getVirtualCompetitions(userContext.user.username)
+
+        console.log(res)
+
+        // if (res.success) {
+        //   setCompetition(res.data)
+
+        //   var start = new Date(res.data.start_time)
+        //   var end = new Date(res.data.end_time)
+
+        //   setDate(start.toLocaleDateString("hr"))
+        //   setTime(start.toLocaleTimeString("hr") + " - " + end.toLocaleTimeString("hr"))
+        // }
+      } catch (err) {
+        console.log(err)
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,7 +71,7 @@ function Competitions(props) {
           </div>
           <div className="row">
             <div className="col-12">
-              <CompetitionCalender events={list}/>
+              <CompetitionCalender events={list} />
             </div>
           </div>
         </div>

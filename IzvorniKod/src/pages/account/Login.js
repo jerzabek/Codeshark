@@ -19,8 +19,8 @@ function Login({ login: loginUser, isAuth }) {
     e.preventDefault()
 
     let loginData = {
-      username: username,
-      password: password
+      username,
+      password
     }
 
     const attemptLogin = async () => {
@@ -36,7 +36,7 @@ function Login({ login: loginUser, isAuth }) {
           MySwal.fire({
             title: <p>Successfully signed in!</p>,
             icon: 'success'
-          }).then(() => window.location.href = HOME)
+          }).finally(() => window.location.href = HOME)
         } else {
           MySwal.fire({
             title: <p>Could not sign in!</p>,

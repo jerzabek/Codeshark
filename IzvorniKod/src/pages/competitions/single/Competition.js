@@ -1,14 +1,17 @@
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
-import { useParams } from 'react-router'
-import { getCompetition } from '../../../API'
-import 'bootstrap-icons/font/bootstrap-icons.css'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { getCompetition, getTask } from '../../../API';
+import { HOME } from '../../../Routes';
+import Task from '../../problems/Task';
+import './competition.css'
 
-function Competition(props) {
+function Competition({ isVirtual }) {
+  const [tasks, setTasks] = useState()
+  const [taskComponents, setTaskComponents] = useState([])
   const [competition, setCompetition] = useState()
-  const [date, setDate] = useState('')
-  const [time, setTime] = useState('')
+  const [timerInterval, setTimerInterval] = useState()
+  const [timeLeft, setTimeLeft] = useState()
+  const [selectedTask, setSelectedTask] = useState(0)
 
   const { competition_slug } = useParams()
 
@@ -17,59 +20,120 @@ function Competition(props) {
       try {
         const res = await getCompetition(competition_slug)
 
-        console.log(res)
-
         if (res.success) {
+          let end_time = new Date(res.data.end_time)
+          let start_time = new Date(res.data.start_time)
+
+          let rightNow = new Date()
+
+          if (rightNow < start_time || end_time < rightNow) {
+            // User tried launching competition that is not in progress - we do not allow it
+            // window.location.href = HOME
+            // return;
+          }
+
           setCompetition(res.data)
 
-          var start = new Date(res.data.start_time)
-          var end = new Date(res.data.end_time)
+          await Promise.all(res.data.tasks.map(async (taskSlug) => {
+            const res = await getTask(taskSlug)
 
-          setDate(start.toLocaleDateString("hr"))
-          setTime(start.toLocaleTimeString("hr") + " - " + end.toLocaleTimeString("hr"))
+            if (res.success) {
+              return res.data
+            }
+            // TODO: Handle when tasks can not be loaded - invalid competition
+          })).then((tasks) => {
+            if (tasks[0] === undefined) {
+              return;
+            }
+
+            setTasks(tasks)
+            setTaskComponents(tasks.map((taskSlug, index) =>
+              <Task key={index} preloadedTask={taskSlug} />
+            ))
+          })
+
         }
       } catch (err) {
         console.log(err)
       }
     })();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  function apply() {
-    console.log('ok')
-  }
+  useEffect(() => {
+    if (competition === undefined) return;
 
-  // eslint-disable-next-line eqeqeq
-  if (competition == undefined) {
-    return (
-      <div className="container py-4">
-        <p className="text-center text-muted">Loading...</p>
-      </div>
-    )
+    var countDownDate = new Date(competition.start_time).getTime();
+
+    let setTimer = function () {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="demo"
+      setTimeLeft(hours + "h " + minutes + "m " + seconds + "s")
+
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(timerInterval);
+      }
+    }
+
+    // Update the count down every 1 second
+    setTimerInterval(setInterval(setTimer, 1000))
+    setTimer() // We call the function immediatelly, since setInterval starts with a delay
+
+    return () => clearInterval(timerInterval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [competition])
+
+  function switchTask(newIndex) {
+    setSelectedTask(newIndex)
   }
 
   return (
     <div className="container py-4">
-      <div className="row mb-4">
-        <div className="col-12 col-sm-4 col-lg-2">
-          <img className="align-self-center img-fluid" src={process.env.REACT_APP_TROPHY_PREFIX + competition.trophy_img} alt="Competition trophy" />
+      <div className="row">
+        <div className="col-12 col-md-3">
+          <div className="container-fluid">
+
+          </div>
+          <div className="card">
+            <div className="card-header">
+              Tasks:
+            </div>
+            <ul className="list-group list-group-flush">
+              {tasks && tasks.map(({ task_name, task_slug }, index) =>
+                <li onClick={(e) => switchTask(index)} className={"list-group-item task-item hover-pointer" + (index === selectedTask ? " bg-info bg-opacity-25 fw-bold" : "")} key={index + "-" + task_slug}>{task_name}</li>
+              )}
+            </ul>
+          </div>
         </div>
-        <div className="col-12 col-sm-8 col-md-8 col-lg-8">
-          <h1>{competition.comp_name}</h1>
-          <p className="text-muted"><i class="bi bi-person-circle"></i> Author: {competition.author_name}</p>
-          <p className="text-muted"><i class="bi bi-file-bar-graph"></i> Competition class: {competition.comp_class_name}</p>
-          <button onClick={apply} className="btn btn-success"><i class="bi bi-send-plus"></i> Apply for competition</button>
-        </div>
-        <div className="col-12 col-md-4 col-lg-2 text-md-center mt-3 mt-sm-4 mt-lg-0">
-          <p className="text-muted mb-0"><i class="bi bi-calendar-day"></i> {date}</p>
-          <p className="text-muted">{time}</p>
+        <div className="col-12 col-md-9 text-center text-muted">
+          {
+            timeLeft ? (
+              <p>Time left: {timeLeft}</p>
+            ) : (<React.Fragment />)
+          }
         </div>
       </div>
-
-      <p>{competition.comp_text}</p>
-
+      {taskComponents.map((task, index) =>
+        <div className={index === selectedTask ? "" : "d-none"}>
+          {task}
+        </div>
+      )}
     </div>
   );
 }
 
-export default Competition;
+export default Competition; 

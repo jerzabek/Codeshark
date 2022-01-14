@@ -12,7 +12,7 @@ function ProblemsTable({ data, columns, loading }) {
 
   useEffect(() => {
     setDisplayData(
-      data.filter((row) => row.name.includes(filterName))
+      data.filter((row) => row.task_name.includes(filterName))
     )
   }, [filterName, data])
 
@@ -67,8 +67,8 @@ function ProblemsTable({ data, columns, loading }) {
           {displayData && displayData.map(task =>
             <tr  key={task.slug}> 
               <td></td>
-              <td>{task.name}</td>
-              <td>{task.tezina} / 5 </td>
+              <td>{task.task_name}</td>
+              <td>{task.difficulty} / 5 </td>
               <td><Link to={TASK + '/' + task.slug} className='btn btn-info btn-outline-light rounded-50 btn-cta p-1'>Solve!</Link></td>
             </tr>
           )}
