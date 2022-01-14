@@ -36,7 +36,7 @@ function Profile(props) {
   const [percentage, setPercentage] = useState('0')
   const [solutionUploads, setSolutionUploads] = useState()
   const [organizedCompetitions, setOrganizedCompetitions] = useState()
-  const [taskUploads, setTaskUploads] = useState()
+  const [taskUploads, setTaskUploads] = useState([])
 
   const tables = {
     fontFamily: "arial, sans-serif",
@@ -61,6 +61,8 @@ function Profile(props) {
   const [emailClicked, setEmailClicked] = useState(false)
   const [passwordClicked, setPasswordClicked] = useState(false)
   const [pfpClicked, setPfpClicked] = useState(false)
+  const [taskData, setTaskData] = useState([]);
+  const [sortType, setSortType] = useState('name');
 
   function formSubmit(e) {
     e.preventDefault()
@@ -99,7 +101,8 @@ function Profile(props) {
           MySwal.fire({
             title: <p>Successfully edited profile!</p>,
             icon: 'success'
-          }).then(() => window.location.href = PROFILE)
+          }).then(() => (props.visitor === false) ?
+          window.location.href = PROFILE : window.location.href = MEMBERS + "/" + username)
         } else {
           MySwal.fire({
             title: <p>Could not edit profile!</p>,
@@ -293,15 +296,38 @@ function Profile(props) {
 
   function renderUploadedTasks() {
     var rows = [];
-    for (var i = 0; i < taskUploads.length; i++) {
-      rows.push(<tr key={taskUploads[i].slug}>
-        <td style={cells}>{taskUploads[i].slug}</td>
-        <td style={cells}>{taskUploads[i].name}</td>
-        <td style={cells}>{taskUploads[i].difficulty}</td>
-      </tr>)
+    if (taskData.length === 0) {
+      for (var i = 0; i < taskUploads.length; i++) {
+        rows.push(<tr key={taskUploads[i].slug}>
+          <td style={cells}>{taskUploads[i].slug}</td>
+          <td style={cells}>{taskUploads[i].name}</td>
+          <td style={cells}>{taskUploads[i].difficulty}</td>
+        </tr>)
+      }
+    } else {
+      for (var i = 0; i < taskData.length; i++) {
+        rows.push(<tr key={taskData[i].slug}>
+          <td style={cells}>{taskData[i].slug}</td>
+          <td style={cells}>{taskData[i].name}</td>
+          <td style={cells}>{taskData[i].difficulty}</td>
+        </tr>)
+      }
     }
     return <tbody>{rows}</tbody>;
   }
+
+  useEffect(() => {
+    function sortArray(type) {
+      const types = {
+        name: 'name',
+        difficulty: 'difficulty'
+      };
+      const sortProperty = types[type];
+      const sorted = [...taskUploads].sort((a, b) => a[sortProperty] - b[sortProperty]);
+      setTaskData(sorted);
+    }
+    sortArray(sortType);
+  }, [sortType])
 
   function renderTrophies() {
     var rows = []
@@ -509,6 +535,12 @@ function Profile(props) {
             <div className="row">
               <div className="col-12 col-md-12 col-lg-12">
                 <h2><u>All uploaded tasks:</u></h2>
+                <div style={{textAlign: "right"}}>Sort by:
+                  <select onChange={(e) => setSortType(e.target.value)}>
+                    <option value="name">Name</option>
+                    <option value="difficulty">Difficulty</option>
+                  </select>
+                </div>
                 <table style={tables}>
                   <thead>
                     <tr>
