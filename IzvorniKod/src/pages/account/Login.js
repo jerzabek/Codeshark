@@ -10,7 +10,7 @@ const MySwal = withReactContent(Swal)
 function Login({ login: loginUser, isAuth }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  
+
   if (isAuth) {
     return <Navigate to={HOME} />;
   }
@@ -19,8 +19,8 @@ function Login({ login: loginUser, isAuth }) {
     e.preventDefault()
 
     let loginData = {
-      username: username,
-      password: password
+      username,
+      password
     }
 
     const attemptLogin = async () => {
@@ -31,12 +31,12 @@ function Login({ login: loginUser, isAuth }) {
         const res = await login(loginData)
 
         if (res.success) {
-          loginUser({ username })
+          loginUser({ username, rank: res.data.rank })
 
           MySwal.fire({
             title: <p>Successfully signed in!</p>,
             icon: 'success'
-          }).then(() => window.location.href = HOME)
+          }).finally(() => window.location.href = HOME)
         } else {
           MySwal.fire({
             title: <p>Could not sign in!</p>,

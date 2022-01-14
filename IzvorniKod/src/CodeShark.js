@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK, COMPETITIONS_SOLVE, VIRTUAL_COMPETITIONS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -19,11 +19,12 @@ import Register from './pages/account/Register'
 import EmailVerification from './pages/account/EmailVerification'
 import Competitions from './pages/competitions/Competitions'
 import CreateCompetition from './pages/competitions/CreateCompetition'
-import Competition from './pages/competitions/single/Competition'
+import CompetitionDetails from './pages/competitions/single/CompetitionDetails'
 import Members from './pages/members/Members'
 import Problems from "./pages/problems/Problems"
 import Task from "./pages/problems/Task"
 import CreateTask from "./pages/problems/CreateTask"
+import Competition from './pages/competitions/single/Competition'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -92,17 +93,34 @@ function CodeShark() {
                 </PrivateRoute>
               } />
 
-              <Route path={":competition_id"} element={
-                <PrivateRoute isAuth={user}>
-                  <Competition />
-                </PrivateRoute>
-              } />
+              <Route path={":competition_slug"}>
+                <Route path={COMPETITIONS_SOLVE} element={
+                  <PrivateRoute isAuth={user}>
+                    <Competition />
+                  </PrivateRoute>
+                } />
+
+                <Route path="" element={
+                  <PrivateRoute isAuth={user}>
+                    <CompetitionDetails />
+                  </PrivateRoute>
+                } />
+              </Route>
 
               <Route path="" element={
                 <PrivateRoute isAuth={user}>
                   <Competitions />
                 </PrivateRoute>
               } />
+            </Route>
+
+            <Route path={VIRTUAL_COMPETITIONS}>
+              <Route path={":competition_id"} element={
+                <PrivateRoute isAuth={user}>
+                  <Competition isVirtual={true} />
+                </PrivateRoute>
+              } />
+
             </Route>
 
             <Route path={TASK + '/:handle'} element={

@@ -1,18 +1,23 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { COMPETITIONS } from '../../Routes';
-import './competition-table.css'
-import { useNavigate } from "react-router-dom";
+import { PROBLEMS, VIRTUAL_COMPETITIONS } from '../../../Routes';
+import '../competition-table.css'
+import { Link, useNavigate } from "react-router-dom";
 
-function CompetitionTable({ data, columns, loading }) {
+function VirtualCompetitionTable({ data, columns, loading }) {
   const [displayData, setDisplayData] = useState(data)
 
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
+    if(data === undefined) return
+
     setDisplayData(
-      data.filter((row) => row.comp_name.toLowerCase().includes(filterName.toLowerCase()))
+      data.filter((row) => 
+      row.name.toLowerCase().includes(filterName.toLowerCase()) ||
+      row.tasks.some(({name}) => name.toLowerCase().includes(filterName.toLowerCase()))
+      )
     )
   }, [filterName, data])
 
@@ -26,7 +31,7 @@ function CompetitionTable({ data, columns, loading }) {
 
   if (!data || data.length === 0) {
     return (
-      <p>No competitions available :(</p>
+      <p className="text-muted">No virtual competitions started!</p>
     )
   }
 
@@ -35,8 +40,9 @@ function CompetitionTable({ data, columns, loading }) {
   }
 
   function linkToCompetition(competition_id) {
-    navigate(COMPETITIONS + "/" + competition_id);
+    navigate(VIRTUAL_COMPETITIONS + "/" + competition_id);
   }
+
 
   // TODO: Sorting
 
@@ -72,23 +78,13 @@ function CompetitionTable({ data, columns, loading }) {
         </thead>
         <tbody>
           {
-            displayData.map((row, rowIndex) => {
-              var start = new Date(row.start_time)
-              start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr")
-
-              var end = new Date(row.end_time)
-              end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr")
-
-              return (
-                <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.comp_slug)} className="hover-pointer align-middle">
-                  <td><img className="rounded-circle" style={{ width: "3em" }} src={process.env.REACT_APP_TROPHY_PREFIX + row.trophy_img} alt="Trophy" /></td>
-                  <td>{row.comp_name}</td>
-                  <td>{start}</td>
-                  <td>{end}</td>
-                  <td>{row.comp_class_name}</td>
-                </tr>
-              )
-            }
+            displayData && displayData.map((row, rowIndex) =>
+              <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.virt_id)} className="hover-pointer align-middle">
+                <td>{row.name}</td>
+                <td>{row.tasks.map(({name, slug}) => 
+                  <Link className="me-2 badge bg-success" to={PROBLEMS + "/" + slug} key={slug}>{name}</Link>
+                )}</td>
+              </tr>
             )
           }
         </tbody>
@@ -97,4 +93,4 @@ function CompetitionTable({ data, columns, loading }) {
   )
 }
 
-export default CompetitionTable;
+export default VirtualCompetitionTable;

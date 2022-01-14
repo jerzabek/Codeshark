@@ -1,6 +1,6 @@
 import * as axios from 'axios'
 
-const baseUrl = process.env.REACT_APP_API_URL 
+const baseUrl = process.env.REACT_APP_API_URL
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -73,7 +73,7 @@ function getTasks() {
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
-      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      if (err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
       return handleError()
     })
 }
@@ -89,18 +89,22 @@ function profileInfo(username) {
     })
 }
 
-function getTask(slug) {
-  return axiosInstance.get(`task/${slug}`)
+function getTask(slug, username) {
+  return axiosInstance.get(`task/${slug}`, {
+    headers: {
+      session: username
+    }
+  })
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
-      if(err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
+      if (err && err.response && [404].includes(err.response.status)) return handleError(err.response.data.error)
       return handleError()
     })
 }
 
-function getCompetition(competition_id) {
-  return axiosInstance.get(`competition/${competition_id}`)
+function getCompetition(competition_slug) {
+  return axiosInstance.get(`competition/${competition_slug}`)
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
@@ -109,12 +113,62 @@ function getCompetition(competition_id) {
     })
 }
 
+function getVirtualCompetition(competition_id) {
+  return axiosInstance.get(`virtual_competition/${competition_id}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function startVirtualRandomCompetition(numOfTasks, username) {
+  return axiosInstance.post('virtual_competition', {
+    task_count: numOfTasks
+  }, {
+    headers: {
+      'session': username
+    }
+  })
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+// Based as in based off of a real competition
+function startVirtualBasedCompetition(competition_slug) {
+  return axiosInstance.post(`virtual_competition/${competition_slug}`)
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
+function getVirtualCompetitions(username) {
+  return axiosInstance.get(`virtual_competitions`, {
+    headers: {
+      'session': username
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 function executeTask(data) {
   return axiosInstance.post('execute_task', data)
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
-      if(err && err.response && [413,400].includes(err.response.status)) return handleError(err.response.data.error)
+      if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
       return handleError()
     })
 }
@@ -191,5 +245,9 @@ export {
   getTasks,
   getTask,
   executeTask,
-  createTask
+  createTask,
+  getVirtualCompetitions,
+  getVirtualCompetition,
+  startVirtualRandomCompetition,
+  startVirtualBasedCompetition
 }

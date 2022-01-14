@@ -14,7 +14,7 @@ const MySwal = withReactContent(Swal.mixin({
     denyButton: 'btn btn-success me-4',
     cancelButton: 'btn btn-danger'
   },
-  buttonsStyling: false
+  buttonsStyling: true
 }))
 
 function CreateCompetition(props) {
@@ -36,8 +36,6 @@ function CreateCompetition(props) {
     (async () => {
       try {
         const res = await setupCreateCompetition(userContext.user.username)
-
-        console.log(res)
 
         if (res.success) {
           setTaskList(res.data.tasks.map((task) => {
@@ -63,6 +61,24 @@ function CreateCompetition(props) {
   function handleSubmit(e) {
     e.preventDefault()
 
+    if (endDate === startDate) {
+      if (endTime <= startTime) {
+        MySwal.fire({
+          title: <p>Invalid time</p>,
+          html: <p>You must specify a correct time.</p>,
+          icon: "warning"
+        })
+        return
+      }
+    } else if (endDate < startDate) {
+      MySwal.fire({
+        title: <p>Invalid time</p>,
+        html: <p>You must specify a correct time.</p>,
+        icon: "warning"
+      })
+      return
+    }
+
     const createCompetitionData = new FormData();
     createCompetitionData.append("imenatjecanja", name);
     createCompetitionData.append("vrijemepoc", startDate + " " + startTime);
@@ -71,10 +87,19 @@ function CreateCompetition(props) {
 
     let tasks = selectedTasks.map(({ value }) => value)
 
+    if (tasks.length !== numOfTasks) {
+      MySwal.fire({
+        title: <p>Invalid data</p>,
+        html: <p>You must have {numOfTasks} tasks selected. You currently have {tasks.length}.</p>,
+        icon: "warning"
+      })
+      return
+    }
+
     createCompetitionData.append("tasks", tasks);
     createCompetitionData.append("trofejid", 3);
     createCompetitionData.append("username", userContext.user.username);
-    createCompetitionData.append("slikatrofeja", 'globe.png');
+    createCompetitionData.append("slikatrofeja", trophy);
 
     (async () => {
       try {
@@ -136,8 +161,8 @@ function CreateCompetition(props) {
             <div className="mb-3">
               <label htmlFor="formFile" className="form-label">Trophy image</label>
               <input className="form-control" type="file" id="formFile"
-                value={trophy}
-                onChange={(e) => setTrophy(e.target.value)} />
+                accept="image/png, image/jpeg, image/jpg"
+                onChange={(e) => setTrophy(e.target.files[0])} />
             </div>
           </div>
         </div>
