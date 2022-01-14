@@ -87,25 +87,34 @@ function Home(props) {
 
           <h2>Recent Competitions</h2>
           <div class="d-flex flex-row justify-content-center">
-            {comps.map((comp) => (
-              <div class="card" onClick={(e) => linkToComp(comp.comp_slug)} style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
-                <img src={'https://cdn.domefan.club/trophy/' + comp.trophy_img} class="card-img-top align-self-center"
-                  style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
-                    if (!e.target.src.includes(defaultAvatar)) {
+            {comps.map((comp) => {
 
-                      e.target.onerror = null; e.target.src = defaultAvatar
-                    }
-                  }} alt={defaultAvatar} />
-                <div class="card-body">
+              var start = new Date(comp.start_time);
+              start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr");
 
-                  <h5 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} class="card-title">{comp.comp_name}</h5>
+              var end = new Date(comp.end_time);
+              end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr");
 
-                  <h6 class="card-subtitle mb-2 text-muted">{comp.start_time}</h6>
-                  <h6 class="card-subtitle mb-2 text-muted">{comp.end_time}</h6>
-                  <p class="card-text">Tasks : {comp.task_count}</p>
+              return (
+                <div class="card" onClick={(e) => linkToComp(comp.comp_slug)} style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
+                  <img src={'https://cdn.domefan.club/trophy/' + comp.trophy_img} class="card-img-top align-self-center"
+                    style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
+                      if (!e.target.src.includes(defaultAvatar)) {
+
+                        e.target.onerror = null; e.target.src = defaultAvatar
+                      }
+                    }} alt={defaultAvatar} />
+                  <div class="card-body">
+
+                    <h5 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} class="card-title">{comp.comp_name}</h5>
+
+                    <h6 class="card-subtitle mb-2 text-muted">{start}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{end}</h6>
+                    <p class="card-text">Tasks : {comp.task_count}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
 
           </div>
         </div>
