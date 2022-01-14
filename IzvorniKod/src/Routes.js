@@ -3,6 +3,7 @@ const LOGIN = '/login'
 const LOGOUT = '/logout'
 const REGISTER = '/register'
 const PROFILE = '/profile'
+const EDIT_PROFILE = 'edit'
 const LEADERBOARDS = '/leaderboards'
 const PROBLEMS = '/problems'
 const EMAIL_VERIFICATION = '/validate'
@@ -11,4 +12,4 @@ const CREATE = 'create'
 const MEMBERS = '/members'
 const TASK = '/task'
 
-export { HOME, LOGIN, LOGOUT, REGISTER, PROFILE, LEADERBOARDS, PROBLEMS, EMAIL_VERIFICATION, COMPETITIONS, CREATE, TASK, MEMBERS }
+export { HOME, LOGIN, LOGOUT, REGISTER, PROFILE, EDIT_PROFILE, LEADERBOARDS, PROBLEMS, EMAIL_VERIFICATION, COMPETITIONS, CREATE, TASK, MEMBERS }

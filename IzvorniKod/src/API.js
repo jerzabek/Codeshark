@@ -89,6 +89,20 @@ function profileInfo(username) {
     })
 }
 
+function editProfile(data) {
+  return axiosInstance.post(`edit_profile`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  }).then((res) => {
+      if ([400, 401].includes(res.status)) throw new Error(res.data.error)
+      return handleSuccess(res.data)
+    }).catch(err => {
+      if (err && err.response && [400, 401].includes(err.response.status)) return handleError(err.response.data.error)
+      return handleError()
+    })
+}
+
 function getTask(slug) {
   return axiosInstance.get(`task/${slug}`)
     .then((res) => {
@@ -175,6 +189,7 @@ export {
   loadUsers,
   getHomeContests,
   profileInfo,
+  editProfile,
   getTasks,
   getTask,
   executeTask

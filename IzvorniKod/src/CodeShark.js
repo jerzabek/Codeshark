@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, EDIT_PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -64,18 +64,34 @@ function CodeShark() {
             <Route path={REGISTER} exact element={<Register isAuth={user} />} />
             <Route path={HOME} exact element={<Home />} />
 
-            <Route path={PROFILE} element={
-              <PrivateRoute isAuth={user}>
-                <Profile visitor={false}/>
-              </PrivateRoute>
-            } />
-
-            <Route path={MEMBERS} >
-              <Route path={":username"} element={
+            <Route path={PROFILE}>
+              <Route path={EDIT_PROFILE} element={
                 <PrivateRoute isAuth={user}>
-                  <Profile visitor={true}/>
+                  <Profile visitor={false}/>
                 </PrivateRoute>
               } />
+
+              <Route path="" element={
+                <PrivateRoute isAuth={user}>
+                  <Profile visitor={false}/>
+                </PrivateRoute>
+              } />
+            </Route>
+
+            <Route path={MEMBERS}>
+              <Route path={":username"}>
+                <Route path={EDIT_PROFILE} element={
+                  <PrivateRoute isAuth={user}>
+                    <Profile visitor={true}/>
+                  </PrivateRoute>
+                } />
+
+                <Route path="" element={
+                  <PrivateRoute isAuth={user}>
+                    <Profile visitor={true}/>
+                  </PrivateRoute>
+                } />
+              </Route>
 
               <Route path="" element={
                 <PrivateRoute isAuth={user}>
