@@ -3,12 +3,17 @@ import { login } from '../../API'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { HOME } from '../../Routes';
+import { Navigate } from 'react-router-dom';
 
 const MySwal = withReactContent(Swal)
 
-function Login({ login: loginUser }) {
+function Login({ login: loginUser, isAuth }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  
+  if (isAuth) {
+    return <Navigate to={HOME} />;
+  }
 
   function formSubmit(e) {
     e.preventDefault()
@@ -40,12 +45,13 @@ function Login({ login: loginUser }) {
           })
         }
 
-        document.getElementById('login-button').classList.remove('disabled')
-        document.getElementById('login-spinner').classList.add('visually-hidden')
+        document.getElementById('login-button')?.classList.remove('disabled')
+        document.getElementById('login-spinner')?.classList.add('visually-hidden')
       } catch (err) {
-        document.getElementById('login-button').classList.remove('disabled')
-        document.getElementById('login-spinner').classList.add('visually-hidden')
+        document.getElementById('login-button')?.classList.remove('disabled')
+        document.getElementById('login-spinner')?.classList.add('visually-hidden')
 
+        console.log(err)
         if (typeof err === 'object') {
           MySwal.fire({
             title: <p>An error unknown error occurred :(</p>,
@@ -76,7 +82,7 @@ function Login({ login: loginUser }) {
               <div className="col-12">
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">Username</label>
-                  <input type="text" className="form-control" name="username" autocomplete="off" placeholder="Username"
+                  <input type="text" className="form-control" name="username" autoComplete="off" placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required></input>
