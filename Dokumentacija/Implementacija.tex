@@ -11,27 +11,99 @@
 		
 	
 		\section{Ispitivanje programskog rješenja}
-			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{U ovom poglavlju je potrebno opisati provedbu ispitivanja implementiranih funkcionalnosti na razini komponenti i na razini cijelog sustava s prikazom odabranih ispitnih slučajeva. Studenti trebaju ispitati temeljnu funkcionalnost i rubne uvjete.}
+		
+			 Svi testovi izvršeni su pomoću skripte u Pythonu koristeći Selenium WebDriver i pytest. Ispitivanje se radilo po obrascima uporabe kako bi se provjerila osnovna funkcionalnost sustava, ali i nasumičnim kretanjima po aplikaciji kako bi se pronašle neočekivane greške(”bugovi”) ili nepredviđena ponašanja. Svaki dio sustava je ispitan, no zbog jednostavnosti u dokumentaciji će biti prikazan samo dio ispitivanja.
 	
 			
 			\subsection{Ispitivanje komponenti}
-			\textit{Potrebno je provesti ispitivanje jedinica (engl. unit testing) nad razredima koji implementiraju temeljne funkcionalnosti. Razraditi \textbf{minimalno 6 ispitnih slučajeva} u kojima će se ispitati redovni slučajevi, rubni uvjeti te izazivanje pogreške (engl. exception throwing). Poželjno je stvoriti i ispitni slučaj koji koristi funkcionalnosti koje nisu implementirane. Potrebno je priložiti izvorni kôd svih ispitnih slučajeva te prikaz rezultata izvođenja ispita u razvojnom okruženju (prolaz/pad ispita). }
+			\textbf{Ispitni slučajevi}: \newline
+			Provedeno je ispitivanje jedinca za 6 ispitnih slučajeva. Ti su slučajevi redom:
+			\begin{enumerate}
+				\item Konekcija na bazu podataka
+				\item Provjera postojanja korisnika
+				\item Dohvaćanje imena klase natjecanja
+				\item Dohvaćanje zadatka
+				\item Dohvaćanje imena zadatka
+				\item Dohvaćanje virtualnog natjecanja
+			\end{enumerate}
+			
+			\noindent  \textbf{Očekivani rezultati}: 
+			\begin{enumerate}
+				\item Uspješna spajanje s bazom podataka
+				\item Uspješno/Neuspješno postojanje korisnika ovisno o parametrima
+				\item Uspješno dohvaćanje imena klase natjecanja
+				\item Uspješno dohvaćanje zadatka
+				\item Uspješno dohvaćanje punog imena zadatka
+				\item Uspješno dohvaćanje virtualnog natjecanja
+			\end{enumerate}
+			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeKomponenti.png} %veličina u odnosu na širinu linije
+				\caption{Ispitivanje komponenti}
+				\label{fig:IspitivanjeKomponenti} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+		
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeKomponentiRez.png} %veličina u odnosu na širinu linije
+				\caption{Rezultat ispitivanja komponenti}
+				\label{fig:IspitivanjeKomponentiRez} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+		
+			\noindent \textbf{Rezultat}: 
+			\newline 
+			Svi očekivani rezultati su zadovoljeni.
 			
 			
 			
 			\subsection{Ispitivanje sustava}
+			\textbf{Ispitni slučajevi}: \newline
+			Provedeno je ispitivanje jedinca za 6 ispitnih slučajeva. Ti su slučajevi redom:
+			\begin{enumerate}
+				\item Dohvaćanje početne stranice
+				\item Dohvaćanje popisa korisnika od strane neregistriranog korisnika
+				\item Dohvaćanje popisa korisnika od strane registriranog korisnika
+				\item Testiranje prijave
+				\item Dohvaćanje profilne stranice od strane neregistriranog korisnika
+				\item Dohvaćanje profilne stranice od strane registriranog korisnika
+			\end{enumerate}
 			
-			 \textit{Potrebno je provesti i opisati ispitivanje sustava koristeći radni okvir Selenium\footnote{\url{https://www.seleniumhq.org/}}. Razraditi \textbf{minimalno 4 ispitna slučaja} u kojima će se ispitati redovni slučajevi, rubni uvjeti te poziv funkcionalnosti koja nije implementirana/izaziva pogrešku kako bi se vidjelo na koji način sustav reagira kada nešto nije u potpunosti ostvareno. Ispitni slučaj se treba sastojati od ulaza (npr. korisničko ime i lozinka), očekivanog izlaza ili rezultata, koraka ispitivanja i dobivenog izlaza ili rezultata.\\ }
+			\noindent  \textbf{Očekivani rezultati}: 
+			\begin{enumerate}
+				\item Stranica je uspješno dohvaćena
+				\item Stranica preusmjeruje na stranicu prijave
+				\item Stranica je uspješno dohvaćena
+				\item Uspješna/Neuspješna prijava ovisno o parametrima
+				\item Stranica preusmjeruje na stranicu prijave
+				\item Stranica je uspješno dohvaćena
+			\end{enumerate}
+			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeSustavaPrviDio.png} %veličina u odnosu na širinu linije
+				\caption{Ispitivanje sustava prvi dio}
+				\label{fig:IspitivanjeSustavaPrviDio} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeSustavaDrugiDio.png} %veličina u odnosu na širinu linije
+				\caption{Ispitivanje sustava drugi dio}
+				\label{fig:IspitivanjeSustavaDrugiDio} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+		
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeSustavaTreciDio.png} %veličina u odnosu na širinu linije
+				\caption{Ispitivanje sustava treći dio}
+				\label{fig:IspitivanjeSustavaTrećoDio} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/IspitivanjeSustavaRez.png} %veličina u odnosu na širinu linije
+				\caption{Rezultat ispitivanja sustava}
+				\label{fig:IspitivanjeSustavaRez} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+			
+			\noindent  \textbf{Rezultat}: \newline
+			Svi očekivani rezultati su zadovoljeni.
 			 
-			 \textit{Izradu ispitnih slučajeva pomoću radnog okvira Selenium moguće je provesti pomoću jednog od sljedeća dva alata:}
-			 \begin{itemize}
-			 	\item \textit{dodatak za preglednik \textbf{Selenium IDE} - snimanje korisnikovih akcija radi automatskog ponavljanja ispita	}
-			 	\item \textit{\textbf{Selenium WebDriver} - podrška za pisanje ispita u jezicima Java, C\#, PHP koristeći posebno programsko sučelje.}
-			 \end{itemize}
-		 	\textit{Detalji o korištenju alata Selenium bit će prikazani na posebnom predavanju tijekom semestra.}
+			 
 			
 			\eject 
 		
