@@ -9,70 +9,79 @@ import withReactContent from 'sweetalert2-react-content';
 
 const MySwall = withReactContent(Swal)
 
-function Task(props) {
-
+function Task({ taskSlug, preloadedTask }) {
     const userContext = useContext(UserContext)
     const [showTests, setShowTests] = useState(false)
-
-
+    const [testResults, setTestResults] = useState()
     const { handle } = useParams()
-    const [list, setList] = useState([]);
+
+    // We prioritize the slug we recieve in props over the slug in the URL
+    const [slug, setSlug] = useState(taskSlug === undefined ? handle : taskSlug)
+
+    const [task, setTask] = useState([]);
 
     useEffect(() => {
+        // But we give even higher priority to a task if it is directly passed as a prop
+        if (preloadedTask !== undefined) {
+            setTask(preloadedTask);
+            setSlug(preloadedTask.slug)
+            return;
+        }
 
         (async () => {
             try {
-                const res = await getTask(handle)
+                const res = await getTask(slug)
 
                 if (res.success) {
-                    setList(res.data)
+                    setTask(res.data)
                 } else {
-                    let mock = []
+                    // TODO: Error handle
+                    // let mock = []
 
-                    for (var i = 0; i < 20; i++) {
-                        mock.push({
-                            ime_prezime_autora: 'marko markic', ime_zadatka: 'zadatak', max_vrijeme_izvrsavanja: '2.4',
-                            slag: 'zadatak', tekst_zadatka: 'tekst tekst tekst tekst', tezina: '1'
-                        })
-                    }
+                    // for (var i = 0; i < 20; i++) {
+                    //     mock.push({
+                    //         name_last_name: 'marko markic', task_name: 'zadatak', max_exe_time: '2.4',
+                    //         slug: 'zadatak', task_text: 'tekst tekst tekst tekst', difficulty: '1'
+                    //     })
+                    // }
 
-                    setList(mock)
+                    // setTask(mock)
                 }
             } catch (err) {
                 console.log(err)
             }
         })();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function handleRunAndSave(lang, code) {
-
-        setShowTests(true)
         const username = userContext.user.username
-
+        console.log(lang)
         const executeTaskData = {
-            "slug": handle,
-            "korisnickoime": username,
+            "slug": slug,
+            "username": username,
             "lang": lang,
             "code": code
         };
 
-
         (async () => {
             try {
                 const res = await executeTask(executeTaskData)
+                setShowTests(true)
 
                 if (res.success) {
                     MySwall.fire({
                         title: <p>Success</p>,
                         html: <p>{res.data.result}</p>
                     })
+
+                    setTestResults(res.data.tests)
                 } else {
-                     MySwall.fire({
-                         title: <p>Success</p>,
-                         html: <p>All tests passed!</p>
-                     })
+                    MySwall.fire({
+                        title: <p>Error</p>,
+                        html: <p>Could not run tests!</p>
+                    })
                 }
             } catch (err) {
                 console.log(err)
@@ -92,80 +101,72 @@ function Task(props) {
 
     const [state, setState] = React.useState(
         'py3'
+
     );
 
-
-    //mock tests
-    
-    let mock = []
-
-    for(var i = 0 ; i < 10 ; i++) {
-        mock.push({ passed: 'passed', description: 'all correct' })
-    }
-    //delete this
-
-
     return (
-        <React.Fragment>
-            <div style={{ marginLeft: 30, marginTop: 20 }}>
-                <h3>{list.ime_zadatka}</h3>
-                <p>{list.tekst_zadatka}</p>
-                <div><b>Author:</b> {list.ime_prezime_autora}</div>
-                <div><b>Compile time limit: </b>{list.max_vrijeme_izvrsavanja} sec</div>
-                <div><b>Difficulty: </b>{list.tezina}/5</div>
+        <div className="m-4">
+            <div className="py-2">
+                <h3>{task.task_name}</h3>
+                <p>{task.task_text}</p>
+                <div><b>Author:</b> {task.name_last_name}</div>
+                <div><b>Compile time limit: </b>{task.max_exe_time} sec</div>
+                <div><b>Difficulty: </b>{task.difficulty}/5</div>
             </div>
-            <div style={{ float: 'right', marginRight: 190 }} >
-                <Select options={options}
-                    className="basic-single "
-                    defaultValue={options[0]}
-                    onChange={(evn) => setState(evn.value)}
-                />
+            <div className="row">
+                <div className="col-12 mb-2">
+                    <Select options={options}
+                        className="basic-single float-end"
+                        defaultValue={options[0]}
+                        onChange={(evn) => setState(evn.value)}
+                    />
+                </div>
+                <div className="col-12">
+                    <CodeEditor
+                        language={state}
+                        placeholder="Please enter your code."
+                        onChange={(evn) => setCode(evn.target.value)}
+                        padding={15}
+                        style={{
+                            fontSize: 12,
+                            backgroundColor: "#f5f5f5",
+                            fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                            // marginLeft: 190,
+                            // marginRight: 190,
+                            // marginTop: 50,
+                            // marginBottom: 10,
+                            minHeight: 400,
+                        }}
+                    />
+                </div>
             </div>
-            <CodeEditor
 
-                language="c"
-                placeholder="Please enter your code."
-                onChange={(evn) => setCode(evn.target.value)}
-                padding={15}
-                style={{
-                    fontSize: 12,
-                    backgroundColor: "#f5f5f5",
-                    fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                    marginLeft: 190,
-                    marginRight: 190,
-                    marginTop: 50,
-                    marginBottom: 10,
-                    minHeight: 400,
-                }}
-            />
-
-            <button className='btn btn-info  btn-dark rounded-0 btn-cta px-2'
-                style={{ float: 'right', marginRight: 190 , marginBottom: 50}}
+            <button className='btn btn-info btn-dark rounded-0 btn-cta px-2 float-end mt-2'
                 onClick={(e) => handleRunAndSave(state, code)}>
                 Run and save!
             </button>
             {
                 showTests ? (
-                    <div style={{marginLeft: 220, marginRight: 220, marginTop: 70, marginBottom: 50}}>
-                    <h2>Result : 100%</h2>
-                    <table className="table table-striped table-hover competition-table">
-                        <thead>
-                        </thead>
-                        <tbody>
-                            {mock && mock.map(test =>
-                                <tr key={test.passed}>
-                                    <td></td>
-                                    <td style={{ color: 'green'}}>{test.passed}</td>
-                                    <td>{test.description}</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                    <h3 style={{ color: 'white'}}>-</h3>
+                    <div style={{ marginLeft: 220, marginRight: 220, marginTop: 70, marginBottom: 50 }}>
+                        <h2>Result: 100%</h2>
+                        <table className="table table-striped table-hover competition-table">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                {testResults && Object.entries(testResults).map(([key, { description, passed }]) =>
+                                    <tr key={key}>
+                                        <td>#{Number(key) + 1}</td>
+                                        <td className={passed ? "text-success" : "text-danger"}>{passed ? "OK" : "Failed"}</td>
+                                        <td>{description}</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                        <h3 style={{ color: 'white' }}>-</h3>
                     </div>
                 ) : (<div></div>)
             }
-        </React.Fragment>
+        </div>
 
     );
 
