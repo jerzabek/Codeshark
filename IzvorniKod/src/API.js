@@ -163,6 +163,19 @@ function getHomeContests() {
   })
 }
 
+function createTask(data, username) {
+  return axiosInstance.post(`create_task`, data, {
+    headers: {
+      'session': username
+    }
+  })
+    .then((res) => {
+      return handleSuccess(res.data)
+    }).catch(err => {
+      return handleError(err)
+    })
+}
+
 export {
   login,
   register,
@@ -177,5 +190,6 @@ export {
   profileInfo,
   getTasks,
   getTask,
-  executeTask
+  executeTask,
+  createTask
 }
