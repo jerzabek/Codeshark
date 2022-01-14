@@ -19,7 +19,6 @@ function CompetitionCalender({ events }) {
   const [formattedEvents, setFormattedEvents] = useState(events)
 
   useEffect(() => {
-    console.log(events)
     setFormattedEvents(
       events
         .map((event) => {
@@ -45,7 +44,6 @@ function CompetitionCalender({ events }) {
         }, Object.create(null))
     )
 
-    console.log('formattedEvents', formattedEvents)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events])
 

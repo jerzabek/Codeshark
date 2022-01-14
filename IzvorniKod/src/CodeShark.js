@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK, COMPETITIONS_SOLVE } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK, COMPETITIONS_SOLVE, VIRTUAL_COMPETITIONS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -111,6 +111,15 @@ function CodeShark() {
                   <Competitions />
                 </PrivateRoute>
               } />
+            </Route>
+
+            <Route path={VIRTUAL_COMPETITIONS}>
+              <Route path={":competition_id"} element={
+                <PrivateRoute isAuth={user}>
+                  <Competition isVirtual={true} />
+                </PrivateRoute>
+              } />
+
             </Route>
 
             <Route path={TASK + '/:handle'} element={

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { getCompetition, getTask } from '../../../API';
+import { getCompetition, getTask, getVirtualCompetition } from '../../../API';
 import { HOME } from '../../../Routes';
 import Task from '../../problems/Task';
 import './competition.css'
@@ -14,28 +14,36 @@ function Competition({ isVirtual }) {
   const [selectedTask, setSelectedTask] = useState(0)
 
   const { competition_slug } = useParams()
+  const { competition_id } = useParams()
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await getCompetition(competition_slug)
+        // We get the virtual competitions on a different endpoint than regular competitions
+        const res = isVirtual ?
+          await getVirtualCompetition(competition_id)
+          :
+          await getCompetition(competition_slug);
 
         if (res.success) {
-          let end_time = new Date(res.data.end_time)
-          let start_time = new Date(res.data.start_time)
+          if (!isVirtual) {
+            // Virtual competitions do not have a set time frame
+            let end_time = new Date(res.data.end_time)
+            let start_time = new Date(res.data.start_time)
 
-          let rightNow = new Date()
+            let rightNow = new Date()
 
-          if (rightNow < start_time || end_time < rightNow) {
-            // User tried launching competition that is not in progress - we do not allow it
-            // window.location.href = HOME
-            // return;
+            if (rightNow < start_time || end_time < rightNow) {
+              // User tried launching competition that is not in progress - we do not allow it
+              window.location.href = HOME
+              return;
+            }
           }
 
           setCompetition(res.data)
 
           await Promise.all(res.data.tasks.map(async (taskSlug) => {
-            const res = await getTask(taskSlug)
+            const res = await getTask(isVirtual ? taskSlug.slug : taskSlug)
 
             if (res.success) {
               return res.data
@@ -63,6 +71,7 @@ function Competition({ isVirtual }) {
 
   useEffect(() => {
     if (competition === undefined) return;
+    if (isVirtual) return
 
     var countDownDate = new Date(competition.start_time).getTime();
 
@@ -105,9 +114,6 @@ function Competition({ isVirtual }) {
     <div className="container py-4">
       <div className="row">
         <div className="col-12 col-md-3">
-          <div className="container-fluid">
-
-          </div>
           <div className="card">
             <div className="card-header">
               Tasks:
@@ -119,19 +125,40 @@ function Competition({ isVirtual }) {
             </ul>
           </div>
         </div>
-        <div className="col-12 col-md-9 text-center text-muted">
-          {
-            timeLeft ? (
-              <p>Time left: {timeLeft}</p>
-            ) : (<React.Fragment />)
-          }
-        </div>
+        {
+          competition && (
+            !isVirtual ? (
+              <div className="col-12 col-md-9 py-2">
+                <div className="row">
+                  <div className="col-12 col-sm-9 text-center text-sm-end">
+                    <h4>{competition.comp_name}</h4>
+
+                    {
+                      timeLeft ? (
+                        <p className="text-muted">Time left: {timeLeft}</p>
+                      ) : (<React.Fragment />)
+                    }
+                  </div>
+                  <div className="col-12 col-sm-3">
+                    <img src={process.env.REACT_APP_TROPHY_PREFIX + competition.trophy_img} alt="Trophy for competition" className="img-thumbnail" />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="col-12 col-md-9 py-2">
+                <h4>{competition.name}</h4>
+                <p className="text-muted">This is a virtual competition. There is no time limit. Good luck!</p>
+              </div>
+            )
+          )
+        }
       </div>
       {taskComponents.map((task, index) =>
-        <div className={index === selectedTask ? "" : "d-none"}>
+        <div key={index} className={index === selectedTask ? "" : "d-none"}>
           {task}
         </div>
       )}
+      <div style={{ height: '200px' }}></div>
     </div>
   );
 }

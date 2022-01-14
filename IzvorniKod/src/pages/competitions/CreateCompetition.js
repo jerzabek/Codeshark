@@ -37,8 +37,6 @@ function CreateCompetition(props) {
       try {
         const res = await setupCreateCompetition(userContext.user.username)
 
-        console.log(res)
-
         if (res.success) {
           setTaskList(res.data.tasks.map((task) => {
             return {

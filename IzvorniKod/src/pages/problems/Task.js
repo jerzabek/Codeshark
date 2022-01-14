@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { getTask, executeTask } from '../../API'
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import Select from 'react-select'
 import { UserContext } from './../../common/UserContext';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content';
+import { MEMBERS } from '../../Routes';
 
 const MySwall = withReactContent(Swal)
 
@@ -14,12 +15,15 @@ function Task({ taskSlug, preloadedTask }) {
     const [showTests, setShowTests] = useState(false)
     const [testResults, setTestResults] = useState()
     const { handle } = useParams()
-    
+
     // We prioritize the slug we recieve in props over the slug in the URL
     const [slug, setSlug] = useState(taskSlug === undefined ? handle : taskSlug)
 
     const [task, setTask] = useState([]);
-
+    const [solutionsAvailable, setSolutionsAvailable] = useState(false)
+    const [code, setCode] = React.useState(
+        `function add(a, b) {\n  return a + b;\n}`
+    );
     useEffect(() => {
         // But we give even higher priority to a task if it is directly passed as a prop
         if (preloadedTask !== undefined) {
@@ -30,10 +34,20 @@ function Task({ taskSlug, preloadedTask }) {
 
         (async () => {
             try {
-                const res = await getTask(slug)
+                const res = await getTask(slug, userContext.user.username)
 
                 if (res.success) {
                     setTask(res.data)
+
+                    if (res.data.uploaded_solutions.length > 0) {
+                        if ("code" in res.data.uploaded_solutions[0]) {
+                            setSolutionsAvailable(true)
+                        }
+                    }
+
+                    if(res.data.last_user_solution) {
+                        setCode(res.data.last_user_solution)
+                    }
                 } else {
                     // TODO: Error handle
                     // let mock = []
@@ -57,7 +71,6 @@ function Task({ taskSlug, preloadedTask }) {
 
     function handleRunAndSave(lang, code) {
         const username = userContext.user.username
-        console.log(slug)
         const executeTaskData = {
             "slug": slug,
             "username": username,
@@ -89,10 +102,6 @@ function Task({ taskSlug, preloadedTask }) {
         })();
     }
 
-    const [code, setCode] = React.useState(
-        `function add(a, b) {\n  return a + b;\n}`
-    );
-
     const options = [
         { value: 'py3', label: 'Python' },
         { value: 'c', label: 'C' },
@@ -102,6 +111,13 @@ function Task({ taskSlug, preloadedTask }) {
     const [state, setState] = React.useState(
         'py3'
     );
+
+    function displayCode(code, user) {
+        MySwall.fire({
+            title: "Code solution from user " + user,
+            html: <pre>{code}</pre>
+        })
+    }
 
     return (
         <div className="m-4">
@@ -124,6 +140,7 @@ function Task({ taskSlug, preloadedTask }) {
                     <CodeEditor
                         language={state}
                         placeholder="Please enter your code."
+                        value={code}
                         onChange={(evn) => setCode(evn.target.value)}
                         padding={15}
                         style={{
@@ -152,7 +169,7 @@ function Task({ taskSlug, preloadedTask }) {
                             <thead>
                             </thead>
                             <tbody>
-                                {testResults && Object.entries(testResults).map(([key, {description, passed}]) =>
+                                {testResults && Object.entries(testResults).map(([key, { description, passed }]) =>
                                     <tr key={key}>
                                         <td>#{Number(key) + 1}</td>
                                         <td className={passed ? "text-success" : "text-danger"}>{passed ? "OK" : "Failed"}</td>
@@ -165,6 +182,39 @@ function Task({ taskSlug, preloadedTask }) {
                     </div>
                 ) : (<div></div>)
             }
+
+            <div className="mt-4 container">
+                <h3>Top solutions for this task:</h3>
+                <p className="text-muted">Other competitors that have attempted to solve this task have achieved these results:</p>
+                <table className="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <td>Avg. execution time</td>
+                            <td>Score</td>
+                            <td>User</td>
+                            {
+                                solutionsAvailable && (
+                                    <td>Solution</td>
+                                )
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {task && task?.uploaded_solutions?.map(row =>
+                            <tr key={row.username}>
+                                <td>{row.avg_exe_time} seconds</td>
+                                <td>{row.score}</td>
+                                <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
+                                {
+                                    solutionsAvailable && (
+                                        <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
+                                    )
+                                }
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     );
