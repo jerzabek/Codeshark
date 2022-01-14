@@ -123,13 +123,66 @@
 		
 		\section{Upute za puštanje u pogon}
 		
-			\textbf{Instalacija poslužitelja baze podataka}\\
 		
-			 Potrebno je preuzeti Oracle MySql bazu podataka (za operacijski sustav Windows).
-			 Poželjno je skinuti čitav paket Oracle Workbench. Nakon toga je potrebno provesti standardnu instalaciju s postavljanjem korisnika.
+			
+			Ove upute su prilagođene očekivanom produkcijskom okruženju softverskih aplikacija. U našem slučaju to znači izvođenje na Linux platformi.
+			
+			\textbf{Instalacija poslužitelja baze podataka}\\
+			
+			Potrebno je preuzeti PostgreSQL server za Linux ubuntu platformu.
+			Nakon preuzimanja softverske podrške za trenutnu platformu potrebno je postaviti korisnika te bazu podataka na koju taj korisnik ima pristup.\newline
 			
 			
-			 \textit{Dovršenu aplikaciju potrebno je pokrenuti na javno dostupnom poslužitelju. Studentima se preporuča korištenje neke od sljedećih besplatnih usluga: \href{https://aws.amazon.com/}{Amazon AWS}, \href{https://azure.microsoft.com/en-us/}{Microsoft Azure} ili \href{https://www.heroku.com/}{Heroku}. Mobilne aplikacije trebaju biti objavljene na F-Droid, Google Play ili Amazon App trgovini.}
+			\textbf{Konfiguracija DBMS poslužitelja}\\
+			
+			Nakon uspješne instalacije DBMS poslužitelja potrebno je postaviti host i port. Preporučeno je zatvoriti defaultni Postgres port (5432) na razini sustava kako nitko iz vana ne bi mogao pristupiti bazi.
+			Dapače moguće je i otvoriti port Postgres baze u sustavskom vatrozidu tijekom razvoja aplikacije kako bi programeri imali olakšani pristup sustavu.
+			Poslužitelj baze podataka radi kao servis kada ga instaliramo u CLI okruženju (što je standardan postupak) te ga ovisno o distribuciji servera možemo ponovno pokrenuti ili zaustaviti pomoću jedne jednostavne naredbe (npr. \textit{service postgres start}).\newline
+			
+			
+			\textbf{Punjenje baze podataka}
+			
+			Punjenje baze podataka jest doista jednostavno. Uz preuzetu datoteku dump.sql možemo izvršiti jednostavnu naredbu u terminalu \textit{psql -U username dbname < dbexport.pgsql}\newline
+			
+			
+			\textbf{Web poslužitelj NGINX}
+			
+			U našoj implementaciji koristimo web poslužitelj NGINX kojime obrađujemo dolazne HTTP zahtjeve i usmjerujemo ih ka pravom odredištu. Ovo nije potpuno nužno za pokretanje aplikacije no preporučeno je kako bi se osigurali stilizirani linkovi na samu aplikaciju.
+			Kod postavljanja tzv. Server blockova za poslužitelj moramo obratiti pozornost da dolazne zahtjeve preusmjerimo na ispravan port. NGINX Web poslužitelj je vrlo često instaliran već na poslužiteljima baziranima na linux operacijskom sustavu. Alternativno NGINX-u postoji Apache web poslužitelj koji ispunjava istu ulogu.
+			
+			Unutar direktorija /var/www/ se tipično nalaze datoteke koje web poslužitelj poslužuje na vanjske zahtjeve. Svaka domena na sustavu ima svoju pod-mapu.
+			
+			Frontend naše aplikacije izgrađen je u React razvojnom okruženju što nam osigurava mogućnost građenja statičkih minimiziranih datoteka koje su spremne za posluživanje. To osigurava dugotrajnost i stabilnost aplikacije. Naredbom "npm run build" možemo izgraditi verziju frontenda spremnu za produkcijsko okruženje.
+			Bitna napomena kod ovog koraka pokretanja aplikacije jesu konfiguracijske varijable, ".env.production" te ".env.development". One sadrže bitne informacije poput adrese poslužitelja te poveznica do određenih resursa.
+			
+			Tijekom lokalnog razvoja moguće je pokrenuti naredbu "npm start" kojom aplikaciju dižemo na lokalnom računalu u svrhu razvoja.\newline
+			
+			\textbf{Backend sustav}
+			
+			Backend infrastruktura naše aplikacije bazirana je na Flask i Gunicorn razvojnim okruženjima u jeziku python. Prije pokretanja je bitno prilagoditi konfiguracijske varijable u datoteci "codeshark.cfg". Tamo se nalaze informacije o putanjama na disku za pohranu, podaci za pristup bazi podataka itd. Nakon ispravne konfiguracije te datoteke moguće je pokrenuti backend naredbom "gunicorn --config gunicorn\_config.py".\newline
+			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/backendKonfiguracija.png} %veličina u odnosu na širinu linije
+				\caption{Primjer konfiguracije backend poslužitelja aplikacije}
+				\label{fig:DijagramRazmještaja} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+			
+			
+			\textbf{Postavljanje servisa na linux platformi}\\
+			
+			Održavanje ovakvih aplikacijskih sustava uvelike olakšava mogućnost stvaranja Linux servisa za backend procese. Oni nam omogućavaju jednostavno pokretanje i nadzor nad našim kodom.
+			Unutar servisa moguće je specificirati točno na koji način se aplikacija ponaša. Ovdje je bitno obratiti pozornost na korisnika koji izvršava naš kod, njegove dozvole na Linux poslužitelju te putanju do same aplikacije.
+			Ovaj dio koda nam omogućava da se čak i u slučaju greške backend sam automatski može ponovno pokrenut. Dodatne pomoćne naredbe bi bile "journalctl -xe -f -u codeshark-testing" pomoću koje u pravom vremenu možemo promatrati izlaz aplikacije, te tako možemo vidjeti trenutno stanje i potencijalne greške tijekom izvođenja.
+			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/backendServis.png} %veličina u odnosu na širinu linije
+				\caption{Primjer konfiguracije servisa za backend poslužitelja}
+				\label{fig:DijagramRazmještaja} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+			
+			Ovaj postupak nije potreban za frontend naše aplikacije pošto je naše web sučelje statički izgrađeno - sav potreban JavaScript kod se izvršava kod klijenta u pregledniku te ne postoji potreba za aktivnim procesom na našem poslužitelju.
+			
+			\eject
 			
 			
 			\eject 
