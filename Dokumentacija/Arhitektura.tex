@@ -42,8 +42,8 @@
 		\end{packed_item}
 		\subsection{Opis Tablica}
 		\noindent \textbf{Korisnik} \space \space Ovaj entitet sadržava sve važne informacije o korisniku aplikacije.
-		Sadrži atribute: Korisnikov ID, Korisničko ime, lozinku, ime, prezime, sliku profila, email, titulu i korisnikovu razinu ovlasti. Ovaj entitet u vezi je
-		One-to-Many s entitetom Natjecanje preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a korisnika (AutorID), u vezi Many-to-Many s  Je-Osvojio preko ID-a korisnika, u vezi Many-to-Many s  Sudjeluje-na preko ID-a korisnika, u vezi One-to-Many s entitetom Upload-Rjesenja preko ID-a korisnika  te u vezi One-to-Many s entitetom VirtNatjecanje preko ID-a korisnika.
+		Sadrži atribute: Korisnikov ID, Korisničko ime, lozinku, ime, prezime, sliku profila, email, titulu, nivou prava, token, vrijeme generacije tokena i stanje aktivacije korisnika. Ovaj entitet u vezi je
+		One-to-Many s entitetom Natjecanje preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Sesija preko ID-a korisnika (KorisnikId), u vezi Many-to-Many s  Je-Osvojio preko ID-a korisnika, u vezi Many-to-Many s  Sudjeluje-na preko ID-a korisnika, u vezi One-to-Many s entitetom Upload-Rjesenja preko ID-a korisnika  te u vezi One-to-Many s entitetom VirtNatjecanje preko ID-a korisnika.
 		
 		
 		\begin{longtblr}[
@@ -55,7 +55,7 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Korisnik}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  jedinstveni indikator korisnika  	\\ \hline
+			\SetCell{LightGreen}KorisnikId & SERIAL	&  jedinstveni indikator korisnika  	\\ \hline
 			KorisnickoIme	& VARCHAR & identificirajuće ime korisnika  	\\ \hline 
 			Lozinka	& VARCHAR & hash lozinke 	\\ \hline
 			SlikaProfila	& VARCHAR &  slika profila korisnika 	\\ \hline 
@@ -66,12 +66,12 @@
 			NivouPrava	& INT & razina ovlasti korisnika  	\\ \hline
 			Token	& VARCHAR & token napravljen za korisnika 	\\ \hline  
 			Token Generiran	& TIMESTAMP & vrijeme kada je token generiran\\ \hline  
-			Aktivan	& Boolean & stanje verifikacije korisnika  	\\ \hline    
+			Aktivan	& BOOLEAN & stanje verifikacije korisnika  	\\ \hline    
 			
 		\end{longtblr}
 		
 		\noindent \textbf{Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o održavanju natjecanja.
-		Sadrži atribute:  ID Natjecanja, ime natjecanja, tekst natjecanja, vrijeme kraja natjecanja, vrijeme početka natjecanja, sliku trofeja, broj zadataka, ID autora natjecanja, ID klase natjecanja, ID trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a natjecanja , u vezi One-to-Many s  VirtNatjecanje preko ID-a natjecanja, u vezi One-to-One s  entitetom Trofej preko ID-a trofeja te u vezi Many-to-One s entitetom IDKlasaNatjecanja preko ID-a klase natjecanja.
+		Sadrži atribute:  ID Natjecanja, ime natjecanja, tekst natjecanja, vrijeme kraja natjecanja, vrijeme početka natjecanja, sliku trofeja, broj zadataka, ID autora natjecanja, ID klase natjecanja, ID trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorId), u vezi One-to-Many s entitetom Zadatak preko ID-a natjecanja , u vezi One-to-Many s  VirtNatjecanje preko ID-a natjecanja, u vezi One-to-One s  entitetom Trofej preko ID-a trofeja te u vezi Many-to-One s entitetom IDKlasaNatjecanja preko ID-a klase natjecanja.
 		
 		
 		\begin{longtblr}[
@@ -83,20 +83,21 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Natjecanje}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}NatjecanjeID & INT	&  jedinstveni indikator natjecanja  	\\ \hline
+			\SetCell{LightGreen}NatjecanjeId & SERIAL	&  jedinstveni indikator natjecanja  	\\ \hline
 			ImeNatjecanja	& VARCHAR & identificirajuće ime natjecanja  	\\ \hline 
 			Tekst Natjecanja	& VARCHAR & sadržaj teksta natjecanja 	\\ \hline
 			VrijemeKraj	& TIMESTAMP & vrijeme završetka natjecanja 	\\ \hline 
 			VrijemePoc & TIMESTAMP	&  vrijeme početka natjecanje		\\ \hline 
 			SlikaTrofeja & VARCHAR	&  sličica trofeja		\\ \hline 
 			BrojZadataka & INT & broj zadataka u natjecanju  \\ \hline 
-			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
-			\SetCell{LightBlue} ID Klase Natjecanja & INT & ID Klase Natjecanja (klasanatjecanja.IDKlaseNatjecanja)  	\\ \hline  
+			Slug & VARCHAR & slug verzija imena natjecanja  \\ \hline
+			\SetCell{LightBlue} AutorId	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
+			\SetCell{LightBlue} ID Klase Natjecanja & INT & ID Klase Natjecanja (klasanatjecanja.IdKlaseNatjecanja)  	\\ \hline  
 			\SetCell{LightBlue} TrofejID	& INT & Trofej ID (trofej.TrofejID)   	\\ \hline 
 		\end{longtblr}
 		
 		\noindent \textbf{Zadatak} \space \space Ovaj entitet sadržava sve važne informacije o zadacima.
-		Sadrži atribute:  Zadatak ID, ime zadatka, tekst zadatka, bodovi zadatka, maksimalno vrijeme izvršavanja zadatka, privatnost zadatka, slag naziv zadatka, id autora , id natjecanja(opcionalno). Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja , u vezi One-to-Many s  TestPrimjeri preko ID-a zadatka, u vezi One-to-Many s  entitetom UploadRjesenja preko ID-a zadatka te u 4 veze One-to-Many s entitetom VirtNatjecanje preko ID-a zadataka.
+		Sadrži atribute:  Zadatak ID, ime zadatka, tekst zadatka, bodovi zadatka, maksimalno vrijeme izvršavanja zadatka, privatnost zadatka, slug naziv zadatka, id autora , id natjecanja(opcionalno). Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja , u vezi One-to-Many s  TestPrimjeri preko ID-a zadatka  te u vezi One-to-Many s  entitetom UploadRjesenja preko ID-a zadatka.
 		
 		\begin{longtblr}[
 			label=none,
@@ -107,15 +108,15 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Zadatak}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}ZadatakID & INT	&  jedinstveni indikator zadatka  	\\ \hline
+			\SetCell{LightGreen}ZadatakId & SERIAL	&  jedinstveni indikator zadatka  	\\ \hline
 			ImeZadatka	& VARCHAR & identificirajući naziv zadatka  \\ \hline
 			Bodovi	& INT & broj bodova(težina 1-5)	\\ \hline
 			MaxVrijeme Izvrs	& NUMERIC &  maksimalno vrijeme izvršavanja programa 	\\ \hline 
 			TekstZadatka & VARCHAR	&  sadržaj teksta zadatka		\\ \hline 
-			Privatnost & Boolean	&  stanje privatnosti zadatka	\\ \hline 
-			Slag & VARCHAR & slag verzija naziva zadatka  \\ \hline 
-			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID)  	\\ \hline  
-			\SetCell{LightBlue} NatjecanjeID & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeID)  	\\ \hline  
+			Privatnost & BOOLEAN	&  stanje privatnosti zadatka	\\ \hline 
+			Slug & VARCHAR & slug verzija naziva zadatka  \\ \hline 
+			\SetCell{LightBlue} AutorId	& INT & autorov Korisnik ID (korisnik.KorisnikId)  	\\ \hline  
+			\SetCell{LightBlue} NatjecanjeId & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeId)  	\\ \hline  
 			
 		\end{longtblr}
 		
@@ -130,9 +131,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Test Primjeri}}	 \\ \hline[3pt]
+			\hline \multicolumn{3}{|c|}{\textbf{TestPrimjeri}}	 \\ \hline[3pt]
 			\SetCell{LightGreen}Ulaz & VARCHAR	&  ulaz testa  	\\ \hline
-			\SetCell{LightGreen}Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline 
+			\SetCell{LightGreen}ZadatakId	& INT & Zadatak ID (zadatak.ZadatakId)  	\\ \hline 
 			Izlaz	& VARCHAR & željeni izlaz testa	\\ \hline
 			
 		\end{longtblr}
@@ -149,14 +150,14 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Upload Rjesenja}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Vrijeme Predaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
-			\SetCell{LightGreen} Korisnik ID	& INT & Korisnik ID (korisnik.KorisnikID)  	\\ \hline 
-			\SetCell{LightGreen} Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline
+			\hline \multicolumn{3}{|c|}{\textbf{UploadRjesenja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}VrijemePredaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
+			\SetCell{LightGreen} KorisnikId	& INT & Korisnik ID (korisnik.KorisnikId)  	\\ \hline 
+			\SetCell{LightGreen} ZadatakId	& INT & Zadatak ID (zadatak.ZadatakId)  	\\ \hline
 			Predano Rjesenje	& VARCHAR &  datoteka koju je predao korisnik	\\ \hline 
 			Prolaznost & NUMERIC	&  posto riješenosti primjera zadataka		\\ \hline 
 			ProsjVrijeme Izvrs & NUMERIC	&  prosječno vrijeme izvršavanja po primjeru		\\ \hline 
-			NatjecanjeTraje & BOOLEAN & zadatkova veza s natjecanjima(1-natjecanje trenutno traje,0-natjecanje trenutno ne traje)  \\ \hline  
+			 
 		\end{longtblr}
 		
 		\noindent \textbf{Virtualno Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o Virtualnim natjecanjima.
@@ -171,13 +172,13 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Virt Natjecanje}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ 	\hline
-			\SetCell{LightBlue}Natjecanje ID	& INT & (Opcionalno) Natjecanje ID (natjecanje.NatjecanjeID) \\ \hline
-			\SetCell{LightBlue}RandZadTez2	& INT & (Opcionalno) slučajno odabrani zadatak težine 2 (zadatak.ZadatakID)	\\ \hline
-			\SetCell{LightBlue}RandZadTez3	& INT & (Opcionalno)  slučajno odabrani zadatak težine 3 (zadatak.ZadatakID) 	\\ \hline 
-			\SetCell{LightBlue}RandZadTez4 & INT	& (Opcionalno) slučajno odabrani zadatak težine 4 (zadatak.ZadatakID)	\\ \hline 
-			\SetCell{LightBlue}RandZadTez5 & INT	& (Opcionalno)  slučajno odabrani zadatak težine 5 (zadatak.ZadatakID)	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{VirtNatjecanje}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}VirtNatjecanje Id & SERIAL	& identifikacijski broj virtualnog natjecanja\\ 	\hline
+			Vrijeme Kreacije & TIMESTAMP & vrijeme kreacije virtualnog natjecanja \\ \hline
+			Zadaci	& INTEGER[] & (Opcionalno) array svih random odaberenih zadataka \\ \hline
+			\SetCell{LightBlue}NatjecanjeId	& INT & (Opcionalno) Natjecanje ID (natjecanje.NatjecanjeId) \\ \hline
+			\SetCell{LightBlue}KorisnikId & INT	&  Korisnik ID  (korisnik.KorisnikId)	\\ 	\hline
+			 
 		\end{longtblr}
 		
 		
@@ -193,7 +194,7 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Trofej}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}TrofejID & INT	&  jedinstveni indikator trofeja  	\\ \hline
+			\SetCell{LightGreen}TrofejID & SERIAL	&  jedinstveni indikator trofeja  	\\ \hline
 			ImeTrofeja	& VARCHAR & ime trofeja	\\ \hline 
 			SlikaTrofeja	& VARCHAR & slika trofeja	\\ \hline
 			
@@ -210,9 +211,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Sudjeluje Na}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ \hline
-			\SetCell{LightGreen}Natjecanje ID	& INT & Natjecanje ID (natjecanje.NatjecanjeID)	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{SudjelujeNa}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}KorisnikId & INT	&  Korisnik ID (korisnik.KorisnikId)	\\ \hline
+			\SetCell{LightGreen}NatjecanjeId	& INT & Natjecanje ID (natjecanje.NatjecanjeId)	\\ \hline 
 			
 		\end{longtblr}
 		
@@ -227,9 +228,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Je Osvojio}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)  	\\ \hline
-			\SetCell{LightGreen}Trofej ID	& INT & Trofej ID (trofej.TrofejID)  	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{JeOsvojio}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}KorisnikId & INT	&  Korisnik ID (korisnik.KorisnikId)  	\\ \hline
+			\SetCell{LightGreen}TrofejId	& INT & Trofej ID (trofej.TrofejId)  	\\ \hline 
 			
 		\end{longtblr}
 		
@@ -249,9 +250,31 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Klasa Natjecanja}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}ID Klase Natjecanje & INT	&  jedinstveni indikator klase natjecanje  	\\ \hline
-			Naziv Klase Natjecanja	& VARCHAR & naziv klase natjecanja 	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{KlasaNatjecanja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}IdKlase Natjecanja & INT	&  jedinstveni indikator klase natjecanje  	\\ \hline
+			NazivKlase Natjecanja	& VARCHAR & naziv klase natjecanja 	\\ \hline 
+			
+		\end{longtblr}
+	
+		\noindent \textbf{Sesija} \space \space Ovaj entitet sadržava sve informacije o korisničkoj sesiji.
+		Sadrži atribute:  Sesija ID, Pocetak sesije, korisnikov ID.
+		
+		
+		
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Sesija}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}SesijaId & VARCHAR	&  jedinstveni indikator sesije 	\\ \hline
+			PocetakSesije	& TIMESTAMP & timestamp pocetka sesije 	\\ \hline 
+			\SetCell{LightBlue}KorisnikId & INT & id vlasnika sesije (Korisnik.KorisnikId) \\ \hline
 			
 		\end{longtblr}
 		
