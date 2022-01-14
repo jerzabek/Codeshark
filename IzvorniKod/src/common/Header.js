@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { PROFILE, LOGIN, LOGOUT, HOME, REGISTER, COMPETITIONS, MEMBERS, PROBLEMS } from '../Routes'
 import { UserContext } from './UserContext'
 import 'bootstrap/dist/js/bootstrap.min.js'
-import logo from '../assets/images/logo-black.png'
+import logo from '../assets/images/logo-gold-black-long.png'
 import { getAvatar } from '../API'
 import '../assets/style/common/avatar.css'
 

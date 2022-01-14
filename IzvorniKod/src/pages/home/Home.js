@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import bannerImage from '../../assets/images/header/header-home.jpg';
 import '../../assets/style/common/banner.css';
 import { Link } from 'react-router-dom';
-import { REGISTER, TASK } from '../../Routes';
+import { COMPETITIONS, REGISTER, TASK, PROBLEMS } from '../../Routes';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { getHomeContests } from '../../API';
 import { useNavigate } from 'react-router';
+import { UserContext } from './../../common/UserContext';
 
 function Home(props) {
+
+  const userContext = useContext(UserContext);
 
   const [tasks, setTasks] = useState([]);
   const tasksArr = [];
@@ -18,6 +21,9 @@ function Home(props) {
   const defaultAvatar = process.env.REACT_APP_IMAGE_PREFIX + process.env.REACT_APP_DEFAULT_AVATAR;
 
   const navigate = useNavigate()
+  function linkToComp(slug) {
+    navigate(COMPETITIONS + "/" + slug);
+  }
   function linkToTask(slug) {
     navigate(TASK + "/" + slug);
   }
@@ -45,8 +51,8 @@ function Home(props) {
           setComps(compsArr);
 
         } else {
-          tasksArr.push('Yikes');
-          compsArr.push('Yikes');
+          tasksArr.push('Error');
+          compsArr.push('Error');
         }
       } catch (err) {
         console.log(err)
@@ -66,7 +72,11 @@ function Home(props) {
               <h1 className="banner-title fw-700">Welcome to<br /><span className="fw-800">CodeShark</span></h1>
               <p className="banner-description">Wish to participate in coding contests or create one yourself? Join CodeShark today!</p>
               <p className="banner-description">When it comes to competition, CodeShark has none - besides the ones it hosts.</p>
-              <Link to={REGISTER} className='btn btn-info btn-lg btn-outline-light rounded-0 btn-cta px-5'>Sign up now!</Link>
+              {(userContext.user === undefined) ?
+                <Link to={REGISTER} className='btn btn-info btn-lg btn-outline-light rounded-0 btn-cta px-5'>Sign up now!</Link>
+                :
+                <Link to={PROBLEMS} className='btn btn-info btn-lg btn-outline-light rounded-0 btn-cta px-5'>Get Started</Link>
+              }
             </div>
           </div>
         </div>
@@ -77,23 +87,34 @@ function Home(props) {
 
           <h2>Recent Competitions</h2>
           <div class="d-flex flex-row justify-content-center">
-            {comps.map((comp) => (
-              <div class="card" style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
-                <img src={'https://cdn.domefan.club/trophy/' + comp.slika_trofeja} class="card-img-top align-self-center"
-                  style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
-                    if (!e.target.src.includes(defaultAvatar)) {
+            {comps.map((comp) => {
 
-                      e.target.onerror = null; e.target.src = defaultAvatar
-                    }
-                  }} alt={defaultAvatar} />
-                <div class="card-body">
-                  <h5 class="card-title">{comp.ime_natjecanja}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_pocetak}</h6>
-                  <h6 class="card-subtitle mb-2 text-muted">{comp.vrijeme_kraj}</h6>
-                  <p class="card-text">Tasks : {comp.broj_zadataka}</p>
+              var start = new Date(comp.start_time);
+              start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr");
+
+              var end = new Date(comp.end_time);
+              end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr");
+
+              return (
+                <div class="card" onClick={(e) => linkToComp(comp.comp_slug)} style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
+                  <img src={'https://cdn.domefan.club/trophy/' + comp.trophy_img} class="card-img-top align-self-center"
+                    style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
+                      if (!e.target.src.includes(defaultAvatar)) {
+
+                        e.target.onerror = null; e.target.src = defaultAvatar
+                      }
+                    }} alt={defaultAvatar} />
+                  <div class="card-body">
+
+                    <h5 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} class="card-title">{comp.comp_name}</h5>
+
+                    <h6 class="card-subtitle mb-2 text-muted">{start}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">{end}</h6>
+                    <p class="card-text">Tasks : {comp.task_count}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
 
           </div>
         </div>
@@ -103,10 +124,10 @@ function Home(props) {
           <h2>Recent Tasks</h2>
           <div class="d-flex flex-row justify-content-center">
             {tasks.map((task) => (
-              <div class="card" onClick={(e) => linkToTask(task.slug)} style={{ width: "20rem", height: "10rem", margin: "0.25rem" }}>
+              <div class="card" onClick={(e) => linkToTask(task.slug)} style={{ width: "20rem", height: "5rem", margin: "0.25rem" }}>
                 <div class="card-body">
                   <h5 class="card-title">{task.name}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.tezina}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.difficulty}</h6>
                   {/*<p class="card-text">{task.slug}</p>*/}
 
                 </div>
@@ -122,8 +143,9 @@ function Home(props) {
         <p className='mb-1'>Brought to you with <i className="bi bi-suit-heart-fill text-danger"></i> by <span className="fw-bold">DomeFanClub</span></p>
         <p className="text-muted">Work in progress #proginz 2021./2022.</p>
       </div>
-    </div>
+    </div >
   );
+
 }
 
 export default Home;

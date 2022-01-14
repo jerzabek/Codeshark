@@ -4,7 +4,8 @@ import { HOME } from '../Routes';
 
 function Logout({ logout: logoutUser }) {
   useEffect(() => {
-    logoutUser()
+    window.location.href = HOME;
+    logoutUser();
 
     // We use an empty array on purpose - this runs only when the component is mounted
     // eslint-disable-next-line react-hooks/exhaustive-deps
