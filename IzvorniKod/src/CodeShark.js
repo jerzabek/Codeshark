@@ -23,6 +23,7 @@ import Competition from './pages/competitions/single/Competition'
 import Members from './pages/members/Members'
 import Problems from "./pages/problems/Problems"
 import Task from "./pages/problems/Task"
+import CreateTask from "./pages/problems/CreateTask"
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -112,11 +113,20 @@ function CodeShark() {
 
             <Route path="*" element={<Navigate to={HOME} />} />
 
-            <Route path={PROBLEMS} element={
-              <PrivateRoute isAuth={user}>
-                <Problems />
-              </PrivateRoute>
-            } />
+            <Route path={PROBLEMS}>
+              <Route path={CREATE} element={
+                <PrivateRoute isAuth={user}>
+                  <CreateTask />
+                </PrivateRoute>
+              } />
+
+              <Route path="" element={
+                <PrivateRoute isAuth={user}>
+                  <Problems />
+                </PrivateRoute>
+              } />
+            </Route>
+
           </Routes>
         </main>
       </UserContext.Provider>
