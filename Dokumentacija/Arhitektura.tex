@@ -39,11 +39,12 @@
 			\item Sudjeluje-Na
 			\item Je-Osvojio
 			\item Klasa-Natjecanja
+			\item Sesija
 		\end{packed_item}
 		\subsection{Opis Tablica}
 		\noindent \textbf{Korisnik} \space \space Ovaj entitet sadržava sve važne informacije o korisniku aplikacije.
-		Sadrži atribute: Korisnikov ID, Korisničko ime, lozinku, ime, prezime, sliku profila, email, titulu i korisnikovu razinu ovlasti. Ovaj entitet u vezi je
-		One-to-Many s entitetom Natjecanje preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a korisnika (AutorID), u vezi Many-to-Many s  Je-Osvojio preko ID-a korisnika, u vezi Many-to-Many s  Sudjeluje-na preko ID-a korisnika, u vezi One-to-Many s entitetom Upload-Rjesenja preko ID-a korisnika  te u vezi One-to-Many s entitetom VirtNatjecanje preko ID-a korisnika.
+		Sadrži atribute: Korisnikov ID, Korisničko ime, lozinku, ime, prezime, sliku profila, email, titulu, nivou prava, token, vrijeme generacije tokena i stanje aktivacije korisnika. Ovaj entitet u vezi je
+		One-to-Many s entitetom Natjecanje preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Sesija preko ID-a korisnika (KorisnikId), u vezi Many-to-Many s  Je-Osvojio preko ID-a korisnika, u vezi Many-to-Many s  Sudjeluje-na preko ID-a korisnika, u vezi One-to-Many s entitetom Upload-Rjesenja preko ID-a korisnika  te u vezi One-to-Many s entitetom VirtNatjecanje preko ID-a korisnika.
 		
 		
 		\begin{longtblr}[
@@ -55,7 +56,7 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Korisnik}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  jedinstveni indikator korisnika  	\\ \hline
+			\SetCell{LightGreen}KorisnikId & SERIAL	&  jedinstveni indikator korisnika  	\\ \hline
 			KorisnickoIme	& VARCHAR & identificirajuće ime korisnika  	\\ \hline 
 			Lozinka	& VARCHAR & hash lozinke 	\\ \hline
 			SlikaProfila	& VARCHAR &  slika profila korisnika 	\\ \hline 
@@ -66,12 +67,12 @@
 			NivouPrava	& INT & razina ovlasti korisnika  	\\ \hline
 			Token	& VARCHAR & token napravljen za korisnika 	\\ \hline  
 			Token Generiran	& TIMESTAMP & vrijeme kada je token generiran\\ \hline  
-			Aktivan	& Boolean & stanje verifikacije korisnika  	\\ \hline    
+			Aktivan	& BOOLEAN & stanje verifikacije korisnika  	\\ \hline    
 			
 		\end{longtblr}
 		
 		\noindent \textbf{Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o održavanju natjecanja.
-		Sadrži atribute:  ID Natjecanja, ime natjecanja, tekst natjecanja, vrijeme kraja natjecanja, vrijeme početka natjecanja, sliku trofeja, broj zadataka, ID autora natjecanja, ID klase natjecanja, ID trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi One-to-Many s entitetom Zadatak preko ID-a natjecanja , u vezi One-to-Many s  VirtNatjecanje preko ID-a natjecanja, u vezi One-to-One s  entitetom Trofej preko ID-a trofeja te u vezi Many-to-One s entitetom IDKlasaNatjecanja preko ID-a klase natjecanja.
+		Sadrži atribute:  ID Natjecanja, ime natjecanja, tekst natjecanja, vrijeme kraja natjecanja, vrijeme početka natjecanja, sliku trofeja, broj zadataka, ID autora natjecanja, ID klase natjecanja, ID trofeja. Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorId), u vezi One-to-Many s entitetom Zadatak preko ID-a natjecanja , u vezi One-to-Many s  VirtNatjecanje preko ID-a natjecanja, u vezi One-to-One s  entitetom Trofej preko ID-a trofeja te u vezi Many-to-One s entitetom IDKlasaNatjecanja preko ID-a klase natjecanja.
 		
 		
 		\begin{longtblr}[
@@ -83,20 +84,21 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Natjecanje}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}NatjecanjeID & INT	&  jedinstveni indikator natjecanja  	\\ \hline
+			\SetCell{LightGreen}NatjecanjeId & SERIAL	&  jedinstveni indikator natjecanja  	\\ \hline
 			ImeNatjecanja	& VARCHAR & identificirajuće ime natjecanja  	\\ \hline 
 			Tekst Natjecanja	& VARCHAR & sadržaj teksta natjecanja 	\\ \hline
 			VrijemeKraj	& TIMESTAMP & vrijeme završetka natjecanja 	\\ \hline 
 			VrijemePoc & TIMESTAMP	&  vrijeme početka natjecanje		\\ \hline 
 			SlikaTrofeja & VARCHAR	&  sličica trofeja		\\ \hline 
 			BrojZadataka & INT & broj zadataka u natjecanju  \\ \hline 
-			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
-			\SetCell{LightBlue} ID Klase Natjecanja & INT & ID Klase Natjecanja (klasanatjecanja.IDKlaseNatjecanja)  	\\ \hline  
+			Slug & VARCHAR & slug verzija imena natjecanja  \\ \hline
+			\SetCell{LightBlue} AutorId	& INT & autorov Korisnik ID (korisnik.KorisnikID) 	\\ \hline  
+			\SetCell{LightBlue} ID Klase Natjecanja & INT & ID Klase Natjecanja (klasanatjecanja.IdKlaseNatjecanja)  	\\ \hline  
 			\SetCell{LightBlue} TrofejID	& INT & Trofej ID (trofej.TrofejID)   	\\ \hline 
 		\end{longtblr}
 		
 		\noindent \textbf{Zadatak} \space \space Ovaj entitet sadržava sve važne informacije o zadacima.
-		Sadrži atribute:  Zadatak ID, ime zadatka, tekst zadatka, bodovi zadatka, maksimalno vrijeme izvršavanja zadatka, privatnost zadatka, slag naziv zadatka, id autora , id natjecanja(opcionalno). Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja , u vezi One-to-Many s  TestPrimjeri preko ID-a zadatka, u vezi One-to-Many s  entitetom UploadRjesenja preko ID-a zadatka te u 4 veze One-to-Many s entitetom VirtNatjecanje preko ID-a zadataka.
+		Sadrži atribute:  Zadatak ID, ime zadatka, tekst zadatka, bodovi zadatka, maksimalno vrijeme izvršavanja zadatka, privatnost zadatka, slug naziv zadatka, id autora , id natjecanja(opcionalno). Ovaj entitet u vezi je	Many-to-One s entitetom Korisnik preko ID-a korisnika (AutorID), u vezi Many-to-One s entitetom Natjecanje preko ID-a natjecanja , u vezi One-to-Many s  TestPrimjeri preko ID-a zadatka  te u vezi One-to-Many s  entitetom UploadRjesenja preko ID-a zadatka.
 		
 		\begin{longtblr}[
 			label=none,
@@ -107,15 +109,15 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Zadatak}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}ZadatakID & INT	&  jedinstveni indikator zadatka  	\\ \hline
+			\SetCell{LightGreen}ZadatakId & SERIAL	&  jedinstveni indikator zadatka  	\\ \hline
 			ImeZadatka	& VARCHAR & identificirajući naziv zadatka  \\ \hline
 			Bodovi	& INT & broj bodova(težina 1-5)	\\ \hline
 			MaxVrijeme Izvrs	& NUMERIC &  maksimalno vrijeme izvršavanja programa 	\\ \hline 
 			TekstZadatka & VARCHAR	&  sadržaj teksta zadatka		\\ \hline 
-			Privatnost & Boolean	&  stanje privatnosti zadatka	\\ \hline 
-			Slag & VARCHAR & slag verzija naziva zadatka  \\ \hline 
-			\SetCell{LightBlue} AutorID	& INT & autorov Korisnik ID (korisnik.KorisnikID)  	\\ \hline  
-			\SetCell{LightBlue} NatjecanjeID & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeID)  	\\ \hline  
+			Privatnost & BOOLEAN	&  stanje privatnosti zadatka	\\ \hline 
+			Slug & VARCHAR & slug verzija naziva zadatka  \\ \hline 
+			\SetCell{LightBlue} AutorId	& INT & autorov Korisnik ID (korisnik.KorisnikId)  	\\ \hline  
+			\SetCell{LightBlue} NatjecanjeId & INT &(opcionalno) Natjecanje ID (natjecanje.NatjecanjeId)  	\\ \hline  
 			
 		\end{longtblr}
 		
@@ -130,9 +132,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Test Primjeri}}	 \\ \hline[3pt]
+			\hline \multicolumn{3}{|c|}{\textbf{TestPrimjeri}}	 \\ \hline[3pt]
 			\SetCell{LightGreen}Ulaz & VARCHAR	&  ulaz testa  	\\ \hline
-			\SetCell{LightGreen}Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline 
+			\SetCell{LightGreen}ZadatakId	& INT & Zadatak ID (zadatak.ZadatakId)  	\\ \hline 
 			Izlaz	& VARCHAR & željeni izlaz testa	\\ \hline
 			
 		\end{longtblr}
@@ -149,14 +151,14 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Upload Rjesenja}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Vrijeme Predaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
-			\SetCell{LightGreen} Korisnik ID	& INT & Korisnik ID (korisnik.KorisnikID)  	\\ \hline 
-			\SetCell{LightGreen} Zadatak ID	& INT & Zadatak ID (zadatak.ZadatakID)  	\\ \hline
+			\hline \multicolumn{3}{|c|}{\textbf{UploadRjesenja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}VrijemePredaje & TIMESTAMP	&  vrijeme predaje rješenja  	\\ \hline
+			\SetCell{LightGreen} KorisnikId	& INT & Korisnik ID (korisnik.KorisnikId)  	\\ \hline 
+			\SetCell{LightGreen} ZadatakId	& INT & Zadatak ID (zadatak.ZadatakId)  	\\ \hline
 			Predano Rjesenje	& VARCHAR &  datoteka koju je predao korisnik	\\ \hline 
 			Prolaznost & NUMERIC	&  posto riješenosti primjera zadataka		\\ \hline 
 			ProsjVrijeme Izvrs & NUMERIC	&  prosječno vrijeme izvršavanja po primjeru		\\ \hline 
-			NatjecanjeTraje & BOOLEAN & zadatkova veza s natjecanjima(1-natjecanje trenutno traje,0-natjecanje trenutno ne traje)  \\ \hline  
+			 
 		\end{longtblr}
 		
 		\noindent \textbf{Virtualno Natjecanje} \space \space Ovaj entitet sadržava sve važne informacije o Virtualnim natjecanjima.
@@ -171,13 +173,13 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Virt Natjecanje}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ 	\hline
-			\SetCell{LightBlue}Natjecanje ID	& INT & (Opcionalno) Natjecanje ID (natjecanje.NatjecanjeID) \\ \hline
-			\SetCell{LightBlue}RandZadTez2	& INT & (Opcionalno) slučajno odabrani zadatak težine 2 (zadatak.ZadatakID)	\\ \hline
-			\SetCell{LightBlue}RandZadTez3	& INT & (Opcionalno)  slučajno odabrani zadatak težine 3 (zadatak.ZadatakID) 	\\ \hline 
-			\SetCell{LightBlue}RandZadTez4 & INT	& (Opcionalno) slučajno odabrani zadatak težine 4 (zadatak.ZadatakID)	\\ \hline 
-			\SetCell{LightBlue}RandZadTez5 & INT	& (Opcionalno)  slučajno odabrani zadatak težine 5 (zadatak.ZadatakID)	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{VirtNatjecanje}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}VirtNatjecanje Id & SERIAL	& identifikacijski broj virtualnog natjecanja\\ 	\hline
+			Vrijeme Kreacije & TIMESTAMP & vrijeme kreacije virtualnog natjecanja \\ \hline
+			Zadaci	& INTEGER[] & (Opcionalno) array svih random odaberenih zadataka \\ \hline
+			\SetCell{LightBlue}NatjecanjeId	& INT & (Opcionalno) Natjecanje ID (natjecanje.NatjecanjeId) \\ \hline
+			\SetCell{LightBlue}KorisnikId & INT	&  Korisnik ID  (korisnik.KorisnikId)	\\ 	\hline
+			 
 		\end{longtblr}
 		
 		
@@ -193,7 +195,7 @@
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 			\hline \multicolumn{3}{|c|}{\textbf{Trofej}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}TrofejID & INT	&  jedinstveni indikator trofeja  	\\ \hline
+			\SetCell{LightGreen}TrofejID & SERIAL	&  jedinstveni indikator trofeja  	\\ \hline
 			ImeTrofeja	& VARCHAR & ime trofeja	\\ \hline 
 			SlikaTrofeja	& VARCHAR & slika trofeja	\\ \hline
 			
@@ -210,9 +212,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Sudjeluje Na}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)	\\ \hline
-			\SetCell{LightGreen}Natjecanje ID	& INT & Natjecanje ID (natjecanje.NatjecanjeID)	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{SudjelujeNa}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}KorisnikId & INT	&  Korisnik ID (korisnik.KorisnikId)	\\ \hline
+			\SetCell{LightGreen}NatjecanjeId	& INT & Natjecanje ID (natjecanje.NatjecanjeId)	\\ \hline 
 			
 		\end{longtblr}
 		
@@ -227,9 +229,9 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Je Osvojio}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}Korisnik ID & INT	&  Korisnik ID (korisnik.KorisnikID)  	\\ \hline
-			\SetCell{LightGreen}Trofej ID	& INT & Trofej ID (trofej.TrofejID)  	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{JeOsvojio}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}KorisnikId & INT	&  Korisnik ID (korisnik.KorisnikId)  	\\ \hline
+			\SetCell{LightGreen}TrofejId	& INT & Trofej ID (trofej.TrofejId)  	\\ \hline 
 			
 		\end{longtblr}
 		
@@ -249,9 +251,31 @@
 				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 				rowhead = 1,
 			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-			\hline \multicolumn{3}{|c|}{\textbf{Klasa Natjecanja}}	 \\ \hline[3pt]
-			\SetCell{LightGreen}ID Klase Natjecanje & INT	&  jedinstveni indikator klase natjecanje  	\\ \hline
-			Naziv Klase Natjecanja	& VARCHAR & naziv klase natjecanja 	\\ \hline 
+			\hline \multicolumn{3}{|c|}{\textbf{KlasaNatjecanja}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}IdKlase Natjecanja & INT	&  jedinstveni indikator klase natjecanje  	\\ \hline
+			NazivKlase Natjecanja	& VARCHAR & naziv klase natjecanja 	\\ \hline 
+			
+		\end{longtblr}
+	
+		\noindent \textbf{Sesija} \space \space Ovaj entitet sadržava sve informacije o korisničkoj sesiji.
+		Sadrži atribute:  Sesija ID, Pocetak sesije, korisnikov ID.
+		
+		
+		
+		
+		
+		\begin{longtblr}[
+			label=none,
+			entry=none
+			]{
+				width = \textwidth,
+				colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
+				rowhead = 1,
+			} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
+			\hline \multicolumn{3}{|c|}{\textbf{Sesija}}	 \\ \hline[3pt]
+			\SetCell{LightGreen}SesijaId & VARCHAR	&  jedinstveni indikator sesije 	\\ \hline
+			PocetakSesije	& TIMESTAMP & timestamp pocetka sesije 	\\ \hline 
+			\SetCell{LightBlue}KorisnikId & INT & id vlasnika sesije (Korisnik.KorisnikId) \\ \hline
 			
 		\end{longtblr}
 		
@@ -298,11 +322,6 @@
 
 
 
-				\eject
-			
-			\textbf{\textit{dio 2. revizije}}\\			
-			
-			\textit{Prilikom druge predaje projekta dijagram razreda i opisi moraju odgovarati stvarnom stanju implementacije}
 			
 			
 			
@@ -311,22 +330,36 @@
 		\section{Dijagram stanja}
 			
 		
-			\textbf{\textit{dio 2. revizije}}\\
+			Dijagram stanja prikazuje stanja objekta te prijelaze iz jednog stanja u drugo temeljene na događajima. Na slici 4.3 prikazan je dijagram stanja za registriranog natjecatelja. Nakon prijave, natjecatelju se prikazuje početna stranica na kojoj može otiči na stranicu zadataka. Klikom na odabrani zadatak on unosi svoj programski kod koji se šalje na provjeru te dobiva rezultate. Također, može otiči na stranicu natjecanja gdje mi se nudi sva bivša,trenutna i buduća natjecanja. Klikom na natjecanje ga vodi na stranicu tog natjecanje gdje ga ima opciju pokrenuti. Ovisno o statusu trajanja natjecanje, pokreće se različita instanca natjecanja. Na toj instanci se prikazuju zadaci koje je moguće riješiti u ograničenom vremenu. Uz stranice zadataka i natjecanja, natjecatelj uvijek može pristupiti stranici vlastitog profila na kojoj može uređivati svoje podatke, te stranici ostalih članova s koje može gledati profile ostalih korisnika. 
 			
-			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/DijagramStanja.png} %veličina u odnosu na širinu linije
+				\caption{Dijagram stanja}
+				\label{fig:DijagramStanja} %label mora biti drugaciji za svaku sliku
+			\end{figure}
 			
 			
 			\eject 
 		
 		\section{Dijagram aktivnosti}
 			
-			\textbf{\textit{dio 2. revizije}}\\
+			Dijagram aktivnosti primjenjuje se za opis modela toka upravljanja ili toka podataka. Ne upotrebljava se za modeliranje događajima poticanog ponašanja. U modeliranju toka upravljanja svaki novi korak poduzima se nakon završenog prethodnog, a naglasak je na jednostavnosti. Na dijagramu aktivnosti 4.4 prikazan je proces rješavanja zadatka. Korisnik se prijavi u sustav, odabere stranicu sa zadacima te odabere željeni zadatak. Prikažu mu se podaci od odabranog zadatka te prostor za unos rješenja. Nakon unosa svojeg rješenja prikaže mu se njegova prolaznost i vrijeme izvođenja.
 			
-			 \textit{Potrebno je priložiti dijagram aktivnosti s pripadajućim opisom. Dijagram aktivnosti treba prikazivati značajan dio sustava.}
-			
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/DijagramAktivnosti.png} %veličina u odnosu na širinu linije
+				\caption{Dijagram aktivnosti}
+				\label{fig:DijagramAktivnosti} %label mora biti drugaciji za svaku sliku
+			\end{figure}
+						
 			\eject
 		\section{Dijagram komponenti}
 		
-			\textbf{\textit{dio 2. revizije}}\\
+		Dijagram komponenti prikazan na slici 4.5 opisuje organizaciju i međuovisnost komponenti, interne strukture i odnose prema okolini. Sustavu se pristupa preko dva različita sučelja. Preko sučelja za dohvat HTML, CSS i JS datoteka poslužuju se datoteke koje pripadaju frontend dijelu aplikacije. Router je komponenta koja na upit s url određuje koja datoteka će se poslužiti na sučelje. Frontend dio se sastoji od niza JavaScript datoteka koje su rasporedene u logičke cjeline nazvane po tipovima aktora koji im pristupaju. Sve JavaScript datoteke ovise o React biblioteci iz
+		koje dohvaćaju gotove komponente kao što su gumbi, forme i slično. Preko sučelja za dohvat JSON podataka pristupa se REST API komponenti. REST API poslužuje podatke koji pripadaju backend dijelu aplikacije. EntityFrameworkCore je zadužen za dohvaćanje tablica iz baze podataka pomoću SQL upita. Podaci koji su pristigli
+		iz baze se šalju dalje MVC arhitekturi u obliku DTO (Data transfer object). React-view komponenta preko dostupnih sučelja komunicira sa sjedi pa jedi aplikacijom	te ovisno o korisnikovim akcijama osvježava prikaz i dohvaća nove podatke ili datoteke.
 		
-			 \textit{Potrebno je priložiti dijagram komponenti s pripadajućim opisom. Dijagram komponenti treba prikazivati strukturu cijele aplikacije.}
+			\begin{figure}[H]
+				\includegraphics[width=\textwidth]{slike/DijagramKomponenti.png} %veličina u odnosu na širinu linije
+				\caption{Dijagram komponenti}
+				\label{fig:DijagramKomponenti} %label mora biti drugaciji za svaku sliku
+			\end{figure}
