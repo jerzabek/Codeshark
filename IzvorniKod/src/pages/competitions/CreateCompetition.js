@@ -2,12 +2,14 @@ import React, { useEffect, useContext } from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { createCompetition, setupCreateCompetition } from '../../API'
-import { COMPETITIONS } from '../../Routes'
+import { COMPETITIONS, HOME } from '../../Routes'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import Select from 'react-select'
 import { UserContext } from './../../common/UserContext';
 import { useNavigate } from 'react-router'
+import { Navigate } from 'react-router-dom'
+import { ADMIN_RANK, LEADER_RANK } from '../../Constants'
 
 const MySwal = withReactContent(Swal.mixin({
   customClass: {
@@ -51,8 +53,12 @@ function CreateCompetition(props) {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
   const navigate = useNavigate()
+
+  if (!(userContext.user.rank === LEADER_RANK || userContext.user.rank === ADMIN_RANK)) {
+    return <Navigate to={HOME} />;
+  }
+  
 
   function linkToCompetition(competition_id) {
     navigate(COMPETITIONS + "/" + competition_id);

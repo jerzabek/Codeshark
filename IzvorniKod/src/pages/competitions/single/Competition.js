@@ -75,15 +75,16 @@ function Competition({ isVirtual }) {
     if (competition === undefined) return;
     if (isVirtual) return
 
-    var countDownDate = new Date(competition.start_time).getTime();
+    var countDownDate = new Date(competition.end_time);
+    console.log(competition.end_time)
 
     let setTimer = function () {
 
       // Get today's date and time
-      var now = new Date().getTime();
+      var now = new Date();
 
       // Find the distance between now and the count down date
-      var distance = countDownDate - now;
+      var distance = countDownDate.getTime() - now.getTime();
 
       // Time calculations for days, hours, minutes and seconds
       // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -91,6 +92,9 @@ function Competition({ isVirtual }) {
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+      if(countDownDate.getDate() !== now.getDate()) {
+        hours += 24 * (new Date(distance).getUTCDate() - 1);
+      }
       // Display the result in the element with id="demo"
       setTimeLeft(hours + "h " + minutes + "m " + seconds + "s")
 

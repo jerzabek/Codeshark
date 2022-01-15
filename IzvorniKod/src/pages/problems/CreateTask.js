@@ -6,8 +6,10 @@ import withReactContent from 'sweetalert2-react-content'
 import Select from 'react-select'
 import { UserContext } from './../../common/UserContext';
 import { useNavigate } from 'react-router'
-import { PROBLEMS, TASK } from '../../Routes'
+import { Navigate } from 'react-router-dom'
+import { HOME, PROBLEMS, TASK } from '../../Routes'
 import { createTask } from '../../API'
+import { ADMIN_RANK, LEADER_RANK } from '../../Constants'
 
 const MySwal = withReactContent(Swal.mixin({
   customClass: {
@@ -28,6 +30,10 @@ function CreateTask(props) {
   const navigate = useNavigate()
 
   const [inputList, setInputList] = useState([{ input: "", output: "" }]);
+
+  if (!(userContext.user.rank === LEADER_RANK || userContext.user.rank === ADMIN_RANK)) {
+    return <Navigate to={HOME} />;
+  }
 
   // handle input change
   const handleInputChange = (e, index) => {

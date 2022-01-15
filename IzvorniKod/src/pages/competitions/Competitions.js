@@ -34,7 +34,7 @@ function Competitions(props) {
   const [competitionsLoading, setCompetitionsLoading] = useState(true)
   const [practicesLoading, setPracticesLoading] = useState(true) // Virtual competitions
   const [virtualCompetitions, setVirtualCompetitions] = useState()
-  const [showCreateCompetitionButton, setShowCreateCompetitionButton] = useState(true)
+  const [showCreateCompetitionButton, setShowCreateCompetitionButton] = useState(false)
 
   const navigate = useNavigate();
 
@@ -122,10 +122,10 @@ function Competitions(props) {
         <div className="container py-4">
           <div className="row">
             <div className="col-12 d-flex align-items-center">
-              <h3 className='text-white'>Check out ongoing competitions:</h3>
+              <h3 className='text-white me-auto'>Check out ongoing competitions:</h3>
               {
                 showCreateCompetitionButton && (
-                  <Link to={COMPETITIONS + "/" + CREATE} className="btn btn-success ms-auto"><i className="bi bi-file-earmark-plus"></i> Create new competition</Link>
+                  <Link to={COMPETITIONS + "/" + CREATE} className="btn btn-success"><i className="bi bi-file-earmark-plus"></i> Create new competition</Link>
                 )
               }
               <button onClick={(e) => runVirtRandomCompetition()} className="btn btn-success ms-2"><i className="bi bi-cloud-plus"></i> Start virtual competition</button>

@@ -34,8 +34,6 @@ function Home(props) {
       try {
         const res = await getHomeContests()
 
-        console.log(res)
-
         if (res.success) {
 
           for (const task of res.data.tasks) {
@@ -82,35 +80,37 @@ function Home(props) {
         </div>
       </div>
 
-      <div class="container">
-        <div class="container" style={{ marginTop: "1rem" }}>
+      <div className="container">
+        <div className="container" style={{ marginTop: "1rem" }}>
 
           <h2>Recent Competitions</h2>
-          <div class="d-flex flex-row justify-content-center">
+          <div className="row justify-content-center align-items-strech">
             {comps.map((comp) => {
 
               var start = new Date(comp.start_time);
-              start = start.toLocaleDateString("hr") + " - " + start.toLocaleTimeString("hr");
+              start = start.toLocaleDateString("hr", {day: '2-digit', month: '2-digit'}) + " - " + start.toLocaleTimeString("hr", { hour: '2-digit', minute: '2-digit' });
 
               var end = new Date(comp.end_time);
-              end = end.toLocaleDateString("hr") + " - " + end.toLocaleTimeString("hr");
+              end = end.toLocaleDateString("hr", {day: '2-digit', month: '2-digit'}) + " - " + end.toLocaleTimeString("hr", { hour: '2-digit', minute: '2-digit' });
 
               return (
-                <div class="card" onClick={(e) => linkToComp(comp.comp_slug)} style={{ width: "15rem", height: "15rem", margin: "0.25rem" }}>
-                  <img src={'https://cdn.domefan.club/trophy/' + comp.trophy_img} class="card-img-top align-self-center"
-                    style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
-                      if (!e.target.src.includes(defaultAvatar)) {
+                <div className="col-12 col-sm-6 col-md-4 col-lg-2 mb-2" key={comp.comp_slug}>
+                  <div className="card h-100 hover-pointer" onClick={(e) => linkToComp(comp.comp_slug)}>
+                    <img src={'https://cdn.domefan.club/trophy/' + comp.trophy_img} className="card-img-top align-self-center"
+                      style={{ width: "auto", height: "5rem", margin: "1rem" }} onError={(e) => {
+                        if (!e.target.src.includes(defaultAvatar)) {
 
-                        e.target.onerror = null; e.target.src = defaultAvatar
-                      }
-                    }} alt={defaultAvatar} />
-                  <div class="card-body">
+                          e.target.onerror = null; e.target.src = defaultAvatar
+                        }
+                      }} alt={defaultAvatar} />
+                    <div className="card-body">
 
-                    <h5 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} class="card-title">{comp.comp_name}</h5>
+                      <h5 style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} className="card-title">{comp.comp_name}</h5>
 
-                    <h6 class="card-subtitle mb-2 text-muted">{start}</h6>
-                    <h6 class="card-subtitle mb-2 text-muted">{end}</h6>
-                    <p class="card-text">Tasks : {comp.task_count}</p>
+                      <h6 className="card-subtitle mb-2 text-muted">{start}</h6>
+                      <h6 className="card-subtitle mb-2 text-muted">{end}</h6>
+                      <p className="card-text">Tasks : {comp.task_count}</p>
+                    </div>
                   </div>
                 </div>
               )
@@ -119,17 +119,19 @@ function Home(props) {
           </div>
         </div>
 
-        <div class="container" style={{ marginTop: "1rem" }}>
+        <div className="container" style={{ marginTop: "1rem" }}>
 
           <h2>Recent Tasks</h2>
-          <div class="d-flex flex-row justify-content-center">
+          <div className="row justify-content-center align-items-strech">
             {tasks.map((task) => (
-              <div class="card" onClick={(e) => linkToTask(task.slug)} style={{ width: "20rem", height: "5rem", margin: "0.25rem" }}>
-                <div class="card-body">
-                  <h5 class="card-title">{task.name}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Difficulty : {task.difficulty}</h6>
-                  {/*<p class="card-text">{task.slug}</p>*/}
+              <div className="col-12 col-sm-6 col-md-4 col-lg-2 mb-2" key={task.slug}>
+                <div className="card h-100 hover-pointer" onClick={(e) => linkToTask(task.slug)} >
+                  <div className="card-body">
+                    <h5 className="card-title">{task.name}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">Difficulty : {task.difficulty}</h6>
+                    {/*<p className="card-text">{task.slug}</p>*/}
 
+                  </div>
                 </div>
               </div>
             ))}
@@ -141,7 +143,7 @@ function Home(props) {
       <div className="container py-5 text-center">
         <h1>Welcome to CodeShark</h1>
         <p className='mb-1'>Brought to you with <i className="bi bi-suit-heart-fill text-danger"></i> by <span className="fw-bold">DomeFanClub</span></p>
-        <p className="text-muted">Work in progress #proginz 2021./2022.</p>
+        <p className="text-muted">FER Programsko inženjerstvo 2021./2022.</p>
       </div>
     </div >
   );

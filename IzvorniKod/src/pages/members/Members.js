@@ -23,8 +23,6 @@ function Members() {
       try {
         const res = await loadUsers()
 
-        console.log(res)
-
         if (res.success) {
 
           for (const user of res.data.users.filter((user) => user.username.toLowerCase().includes(filterName.toLowerCase()))) {
@@ -49,7 +47,7 @@ function Members() {
   return (
     <div>
 
-      <div class="container">
+      <div className="container">
 
           <div className="row align-items-end my-3 mb-2">
             <div className="col-12 col-md-4 col-lg-3">
@@ -65,8 +63,8 @@ function Members() {
             </div>
           </div>
 
-        <table class="table table-striped table-hover table-sm" >
-          <thead class="table-dark">
+        <table className="table table-striped table-hover table-sm" >
+          <thead className="table-dark">
             <tr style={{ textAlign: "center" }}>
               <th scope="col">#</th>
               <th scope="col">Name</th>

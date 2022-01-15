@@ -134,8 +134,6 @@ function Profile(props) {
         if (props.visitor === true)
           res = await getAvatar(username)
 
-        console.log(res)
-
         if (res.success) {
           setAvatar(process.env.REACT_APP_IMAGE_PREFIX + res.data.pfp_url)
 
