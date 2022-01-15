@@ -83,13 +83,17 @@ function Competitions(props) {
         inputValidator: (value) => {
           if (!value) {
             return 'You need to write something!'
-          } else if(isNaN(value)) {
+          } else if (isNaN(value)) {
             return 'Enter a number.'
           }
         }
       })
 
-      if(numOfTasks < 0 || numOfTasks > 10 || numOfTasks === undefined) {
+      if (numOfTasks === undefined) {
+        return
+      }
+
+      if (numOfTasks < 0 || numOfTasks > 10) {
         MySwal.fire({
           title: <p>Could not start practice competition!</p>,
           html: <p>You can only practice with a maximum of 10 tasks</p>,
