@@ -1,22 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { TASK, VIRTUAL_COMPETITIONS } from '../../../Routes';
 import '../competition-table.css'
 import { Link, useNavigate } from "react-router-dom";
+import { deleteVirtualCompetition } from '../../../API';
+import withReactContent from 'sweetalert2-react-content'
+import Swal from 'sweetalert2'
+import { UserContext } from '../../../common/UserContext';
+
+const MySwal = withReactContent(Swal)
 
 function VirtualCompetitionTable({ data, columns, loading }) {
   const [displayData, setDisplayData] = useState(data)
+  const userContext = useContext(UserContext)
 
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
-    if(data === undefined) return
+    if (data === undefined) return
 
     setDisplayData(
-      data.filter((row) => 
-      row.name.toLowerCase().includes(filterName.toLowerCase()) ||
-      row.tasks.some(({name}) => name.toLowerCase().includes(filterName.toLowerCase()))
+      data.filter((row) =>
+        row.name.toLowerCase().includes(filterName.toLowerCase()) ||
+        row.tasks.some(({ name }) => name.toLowerCase().includes(filterName.toLowerCase()))
       )
     )
   }, [filterName, data])
@@ -44,7 +51,39 @@ function VirtualCompetitionTable({ data, columns, loading }) {
   }
 
 
-  // TODO: Sorting
+  function deleteCompetition(id) {
+    MySwal.fire({
+      title: 'Do you really want to delete this competition?',
+      showCancelButton: true,
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const res = await deleteVirtualCompetition(id, userContext.user.session)
+
+            if (res.success) {
+              MySwal.fire({
+                title: <p>Successfully deleted competition!</p>,
+                icon: 'success'
+              })
+            } else {
+              MySwal.fire({
+                title: <p>Could not delete competition.</p>,
+                html: <p>{res.error}</p>,
+                icon: 'error'
+              })
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        })();
+      }
+    }).then(res => {
+      console.log(res)
+    })
+  }
 
   return (
     <React.Fragment>
@@ -81,9 +120,10 @@ function VirtualCompetitionTable({ data, columns, loading }) {
             displayData && displayData.map((row, rowIndex) =>
               <tr key={"competitor-row-" + rowIndex} className="hover-pointer align-middle">
                 <td onClick={(e) => linkToCompetition(row.virt_id)}>{row.name}</td>
-                <td>{row.tasks.map(({name, slug}) => 
+                <td>{row.tasks.map(({ name, slug }) =>
                   <Link className="me-2 badge bg-success" to={TASK + "/" + slug} key={slug}>{name}</Link>
                 )}</td>
+                <td><button className="btn btn-sm btn-danger" onClick={(e) => deleteCompetition(row.virt_id)}></button></td>
               </tr>
             )
           }

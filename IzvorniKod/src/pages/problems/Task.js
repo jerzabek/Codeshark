@@ -81,7 +81,8 @@ function Task({ taskSlug, preloadedTask }) {
                 if (res.success) {
                     MySwall.fire({
                         title: <p>Success</p>,
-                        html: <p>{res.data.result}</p>
+                        html: <p>{res.data.result}</p>,
+                        icon: 'success'
                     })
 
                     setTestResults(res.data.tests)
@@ -211,7 +212,7 @@ function Task({ taskSlug, preloadedTask }) {
                     </thead>
                     <tbody>
                         {task && task?.uploaded_solutions?.map(row =>
-                            <tr key={row.username}>
+                            <tr key={row.username} className={row.username === userContext.user.username ? "bg-opacity-50 bg-success" : ""}>
                                 <td>{row.avg_exe_time} seconds</td>
                                 <td>{row.score}</td>
                                 <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>

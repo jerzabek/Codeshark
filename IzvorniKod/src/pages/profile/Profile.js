@@ -377,8 +377,8 @@ function Profile(props) {
       </div>
       <div className="container py-4">
         <div className="row">
-          <div className="col-12 col-md-6 col-lg-6"><h2><u>Profile Info:</u></h2></div>
-          <div className="col-12 col-md-6 col-lg-6"><h2><u>Scheduled Competitions:</u></h2></div>
+          <div className="col-12 col-md-6 col-lg-6"><h2>Profile Info:</h2></div>
+          <div className="col-12 col-md-6 col-lg-6"><h2>Scheduled Competitions:</h2></div>
         </div>
         <div className="row">
           <div className="col-12 col-md-6 col-lg-6">
@@ -471,8 +471,8 @@ function Profile(props) {
           <div className="container py-4">
             <div className="row">
               <div className="col-12 col-md-12 col-lg-12">
-                <h2><u>All uploaded solutions:</u></h2>
-                <table style={tables}>
+                <h2 className="mb-4">All uploaded solutions:</h2>
+                <table style={tables} className="table table-striped table-hover competition-table">
                   <thead>
                     <tr>
                       <th style={cells}>Task name</th>
@@ -500,8 +500,8 @@ function Profile(props) {
           <div className="container py-4">
             <div className="row">
               <div className="col-12 col-md-12 col-lg-12">
-                <h2><u>All organized competitions:</u></h2>
-                <table style={tables}>
+                <h2>All organized competitions:</h2>
+                <table style={tables} className="table table-striped table-hover competition-table">
                   <thead>
                     <tr>
                       <th style={cells}>Competition Slug</th>
@@ -531,14 +531,14 @@ function Profile(props) {
           <div className="container py-4">
             <div className="row">
               <div className="col-12 col-md-12 col-lg-12">
-                <h2><u>All uploaded tasks:</u></h2>
+                <h2>All uploaded tasks:</h2>
                 <div style={{ textAlign: "right" }}>Sort by:
                   <select onChange={(e) => setSortType(e.target.value)}>
                     <option value="name">Name</option>
                     <option value="difficulty">Difficulty</option>
                   </select>
                 </div>
-                <table style={tables}>
+                <table style={tables} className="table table-striped table-hover competition-table">
                   <thead>
                     <tr>
                       <th style={cells}>Task Slug</th>

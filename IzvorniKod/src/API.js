@@ -290,8 +290,8 @@ function finishCompetition(competition_slug, session) {
   })
 }
 
-function deleteCompetition(competition_slug, session) {
-  return axiosInstance.delete(`competition/${competition_slug}`, {}, {
+function deleteVirtualCompetition(competition_id, session) {
+  return axiosInstance.delete(`delete_virtual/${competition_id}`, {}, {
     headers: {
       session
     }
@@ -358,5 +358,5 @@ export {
   getVirtualCompetitionLeaderboards,
   applyToCompetition,
   finishCompetition,
-  deleteCompetition
+  deleteVirtualCompetition
 }

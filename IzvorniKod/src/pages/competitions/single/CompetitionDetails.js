@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
-import { applyToCompetition, deleteCompetition, finishCompetition, getCompetition, startVirtualBasedCompetition } from '../../../API'
+import { applyToCompetition, finishCompetition, getCompetition, startVirtualBasedCompetition } from '../../../API'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { COMPETITIONS_SOLVE, MEMBERS, VIRTUAL_COMPETITIONS } from '../../../Routes'
 import { UserContext } from '../../../common/UserContext'
@@ -23,7 +23,6 @@ function CompetitionDetails(props) {
   const [canParticipate, setCanParticipate] = useState(false)
   const [canApply, setCanApply] = useState(true)
   const [canFinishCompetition, setCanFinishCompetition] = useState(false)
-  const [canDeleteCompetition, setCanDeleteCompetition] = useState(false)
 
   const { competition_slug } = useParams()
   const navigate = useNavigate()
@@ -55,10 +54,9 @@ function CompetitionDetails(props) {
           }
 
           if (userContext.user.rank === ADMIN_RANK || (userContext.user.rank === LEADER_RANK && userContext.user.username === res.data.author_username)) {
-            if (end < currDate) {
+            if (end < currDate && !res.data.is_finished) {
               setCanFinishCompetition(true)
             }
-            setCanDeleteCompetition(true)
           }
 
           if (start !== end) {
@@ -142,41 +140,6 @@ function CompetitionDetails(props) {
     })();
   }
 
-  function deleteCompetitionFn() {
-
-    MySwal.fire({
-      title: 'Do you really want to delete this competition?',
-      showCancelButton: true,
-      confirmButtonText: 'Delete'
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        (async () => {
-          try {
-            const res = await deleteCompetition(competition_slug, userContext.user.session)
-
-            if (res.success) {
-              MySwal.fire({
-                title: <p>Successfully deleted competition!</p>,
-                icon: 'success'
-              })
-            } else {
-              MySwal.fire({
-                title: <p>Could not delete competition.</p>,
-                html: <p>{res.error}</p>,
-                icon: 'error'
-              })
-            }
-          } catch (err) {
-            console.log(err)
-          }
-        })();
-      }
-    }).then(res => {
-      console.log(res)
-    })
-  }
-
   // eslint-disable-next-line eqeqeq
   if (competition == undefined) {
     return (
@@ -216,11 +179,6 @@ function CompetitionDetails(props) {
               <button onClick={endCompetition} className="btn btn-danger ms-2"><i class="bi bi-slash-circle"></i> Finish competition</button>
             )
           }
-          {
-            canDeleteCompetition && (
-              <button onClick={deleteCompetitionFn} className="btn btn-danger ms-2"><i class="bi bi-file-earmark-x"></i> Delete competition</button>
-            )
-          }
         </div>
         <div className="col-12 col-md-4 col-lg-3 text-md-center mt-3 mt-sm-4 mt-lg-0">
           <p className="text-muted mb-0"><i className="bi bi-calendar-day"></i> {date}</p>
@@ -239,6 +197,7 @@ function CompetitionDetails(props) {
                     <tr>
                       <td>Username</td>
                       <td>Score</td>
+                      <td></td>
                     </tr>
                   </thead>
                   <tbody>

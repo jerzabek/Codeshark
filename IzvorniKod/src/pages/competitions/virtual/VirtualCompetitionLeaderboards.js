@@ -18,7 +18,7 @@ function VirtualCompetitionLeaderboards(props) {
         const res = await getVirtualCompetitionLeaderboards(competition_id, userContext.user.session)
 
         if (res.success) {
-          setLeaderboards(res.data)
+          setLeaderboards(res.data.leaderboards)
         }
       } catch (err) {
         console.log(err)
@@ -50,7 +50,7 @@ function VirtualCompetitionLeaderboards(props) {
             </thead>
             <tbody>
               {leaderboards.map(row =>
-                <tr key={row.username}>
+                <tr key={row.username} className={row.username === userContext.user.username ? "bg-opacity-50 bg-success" : ""}>
                   <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
                   <td>{row.score}</td>
                 </tr>
