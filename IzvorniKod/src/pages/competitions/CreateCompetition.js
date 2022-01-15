@@ -58,7 +58,7 @@ function CreateCompetition(props) {
   if (!(userContext.user.rank === LEADER_RANK || userContext.user.rank === ADMIN_RANK)) {
     return <Navigate to={HOME} />;
   }
-  
+
 
   function linkToCompetition(competition_id) {
     navigate(COMPETITIONS + "/" + competition_id);
@@ -80,6 +80,18 @@ function CreateCompetition(props) {
       MySwal.fire({
         title: <p>Invalid time</p>,
         html: <p>You must specify a correct time.</p>,
+        icon: "warning"
+      })
+      return
+    }
+
+    let end = new Date(endDate + " " + endTime)
+    let start = new Date(startDate + " " + startTime)
+
+    if ((end - start) / 1000 / 60 / 60 >= 48) {
+      MySwal.fire({
+        title: <p>Invalid time range</p>,
+        html: <p>Competition can last only up to two days.</p>,
         icon: "warning"
       })
       return

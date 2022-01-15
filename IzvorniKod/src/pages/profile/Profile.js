@@ -143,6 +143,7 @@ function Profile(props) {
           document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         }
         setOwnerUsername(userContext.user.username)
+        setOwnerRank(userContext.user.rank)
 
         if (props.visitor === true) {
           const visitor = await profileInfo(username)
@@ -174,7 +175,6 @@ function Profile(props) {
             setNewProfilePicture(owner.data.pfp_url)
             setEmail(owner.data.email)
             setTrophies(owner.data.trophies)
-            setOwnerRank(owner.data.rank)
             setLevel(owner.data.title)
             setAttempted(owner.data.attempted)
             setSolved(owner.data.solved)
