@@ -7,8 +7,7 @@ import { PROFILE, EDIT_PROFILE, MEMBERS } from '../../Routes';
 import { profileInfo, editProfile } from '../../API'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css'
+import CompetitionCalender from '../competitions/CompetitionCalender'
 
 const MySwal = withReactContent(Swal)
 
@@ -35,7 +34,7 @@ function Profile(props) {
   const [solved, setSolved] = useState('0')
   const [percentage, setPercentage] = useState('0')
   const [solutionUploads, setSolutionUploads] = useState()
-  const [organizedCompetitions, setOrganizedCompetitions] = useState()
+  const [organizedCompetitions, setOrganizedCompetitions] = useState([])
   const [taskUploads, setTaskUploads] = useState([])
 
   const tables = {
@@ -68,11 +67,9 @@ function Profile(props) {
     e.preventDefault()
     const editProfileData = new FormData();
 
-    editProfileData.append("fromuser", ownerUsername);
-
     if (props.visitor === true)
       editProfileData.append("foruser", username);
-  
+
     editProfileData.append("name", firstname);
     editProfileData.append("last_name", lastname);
 
@@ -102,7 +99,7 @@ function Profile(props) {
             title: <p>Successfully edited profile!</p>,
             icon: 'success'
           }).then(() => (props.visitor === false) ?
-          window.location.href = PROFILE : window.location.href = MEMBERS + "/" + username)
+            window.location.href = PROFILE : window.location.href = MEMBERS + "/" + username)
         } else {
           MySwal.fire({
             title: <p>Could not edit profile!</p>,
@@ -148,24 +145,7 @@ function Profile(props) {
           document.getElementById('avatar-profile-spinner').classList.add('visually-hidden');
         }
         setOwnerUsername(userContext.user.username)
-        const owner = await profileInfo(userContext.user.username)
 
-        if (owner.success) {
-          setFirstname(owner.data.name)
-          setLastname(owner.data.last_name)
-          setProfilePicture(owner.data.pfp_url)
-          setNewProfilePicture(owner.data.pfp_url)
-          setEmail(owner.data.email)
-          setTrophies(owner.data.trophies)
-          setOwnerRank(owner.data.rank)
-          setLevel(owner.data.title)
-          setAttempted(owner.data.attempted)
-          setSolved(owner.data.solved)
-          setPercentage(owner.data.correctly_solved)
-          setSolutionUploads(owner.data.submitted_solutions)
-          setOrganizedCompetitions(owner.data.created_competitions)
-          setTaskUploads(owner.data.created_tasks)
-        }
         if (props.visitor === true) {
           const visitor = await profileInfo(username)
           setVisitorUsername(username)
@@ -174,7 +154,7 @@ function Profile(props) {
             setFirstname(visitor.data.name)
             setLastname(visitor.data.last_name)
             setProfilePicture(visitor.data.pfp_url)
-            setNewProfilePicture(owner.data.pfp_url)
+            setNewProfilePicture(visitor.data.pfp_url)
             setEmail(visitor.data.email)
             setTrophies(visitor.data.trophies)
             setVisitorRank(visitor.data.rank)
@@ -185,6 +165,25 @@ function Profile(props) {
             setSolutionUploads(visitor.data.submitted_solutions)
             setOrganizedCompetitions(visitor.data.created_competitions)
             setTaskUploads(visitor.data.created_tasks)
+          }
+        } else {
+          const owner = await profileInfo(userContext.user.username)
+
+          if (owner.success) {
+            setFirstname(owner.data.name)
+            setLastname(owner.data.last_name)
+            setProfilePicture(owner.data.pfp_url)
+            setNewProfilePicture(owner.data.pfp_url)
+            setEmail(owner.data.email)
+            setTrophies(owner.data.trophies)
+            setOwnerRank(owner.data.rank)
+            setLevel(owner.data.title)
+            setAttempted(owner.data.attempted)
+            setSolved(owner.data.solved)
+            setPercentage(owner.data.correctly_solved)
+            setSolutionUploads(owner.data.submitted_solutions)
+            setOrganizedCompetitions(owner.data.created_competitions)
+            setTaskUploads(owner.data.created_tasks)
           }
         }
 
@@ -217,49 +216,49 @@ function Profile(props) {
     if (str === "fn") {
       if (!fNameClicked) return firstname
       else return <input type="text" className="form-control" name="firstname" placeholder={firstname}
-                  value={firstname} onChange={(e) => setFirstname(e.target.value)} required></input>
+        value={firstname} onChange={(e) => setFirstname(e.target.value)} required></input>
     } else if (str === "ln") {
       if (!lNameClicked) return lastname
       else return <input type="text" className="form-control" name="lastname" placeholder={lastname}
-                  value={lastname} onChange={(e) => setLastname(e.target.value)} required></input>
+        value={lastname} onChange={(e) => setLastname(e.target.value)} required></input>
     } else if (str === "us") {
       if (!usernameClicked) return (props.visitor === false) ? ownerUsername : visitorUsername
       else return <input type="text" className="form-control" name="username"
-                  placeholder={(props.visitor === false) ? ownerUsername : visitorUsername}
-                  value={(props.visitor === false) ? ownerUsername : visitorUsername}
-                  onChange={(e) => (props.visitor === false) ? setOwnerUsername(e.target.value) : setVisitorUsername(e.target.value)}
-                  required></input>
+        placeholder={(props.visitor === false) ? ownerUsername : visitorUsername}
+        value={(props.visitor === false) ? ownerUsername : visitorUsername}
+        onChange={(e) => (props.visitor === false) ? setOwnerUsername(e.target.value) : setVisitorUsername(e.target.value)}
+        required></input>
     } else if (str === "rk") {
       if (!rankClicked) return (props.visitor === true) ? (visitorRank === 1) ? "Competitor" :
-                                                          (visitorRank === 2) ? "Leader" :
-                                                          "Admin" :
-                                                          (ownerRank === 1) ? "Competitor" :
-                                                          (ownerRank === 2) ? "Leader" :
-                                                          "Admin"
+        (visitorRank === 2) ? "Leader" :
+          "Admin" :
+        (ownerRank === 1) ? "Competitor" :
+          (ownerRank === 2) ? "Leader" :
+            "Admin"
       else return <div>
-                    <div className="form-check">
-                    <input className="form-check-input" type="radio" name="rank" id="competitor" value={1}
-                    checked={visitorRank === 1 && changedRank === '0' || changedRank === '1'}
-                    onChange={(e) => setChangedRank(e.target.value)}></input>
-                    <label className="form-check-label" htmlFor="competitor">Competitor</label>
-                    </div>
-                    <div className="form-check">
-                    <input className="form-check-input" type="radio" name="rank" id="leader" value={2}
-                    checked={visitorRank === 2 && changedRank === '0' || changedRank === '2'}
-                    onChange={(e) => setChangedRank(e.target.value)}></input>
-                    <label className="form-check-label" htmlFor="leader">Leader</label>
-                    </div>
-                    <div className="form-check">
-                    <input className="form-check-input" type="radio" name="rank" id="admin" value={3}
-                    checked={(visitorRank === 3 || props.visitor === false) && changedRank === '0' || changedRank === '3'}
-                    onChange={(e) => setChangedRank(e.target.value)}></input>
-                    <label className="form-check-label" htmlFor="admin">Admin</label>
-                    </div>
-                  </div>
+        <div className="form-check">
+          <input className="form-check-input" type="radio" name="rank" id="competitor" value={1}
+            checked={(visitorRank === 1 && changedRank === '0') || changedRank === '1'}
+            onChange={(e) => setChangedRank(e.target.value)}></input>
+          <label className="form-check-label" htmlFor="competitor">Competitor</label>
+        </div>
+        <div className="form-check">
+          <input className="form-check-input" type="radio" name="rank" id="leader" value={2}
+            checked={(visitorRank === 2 && changedRank === '0') || changedRank === '2'}
+            onChange={(e) => setChangedRank(e.target.value)}></input>
+          <label className="form-check-label" htmlFor="leader">Leader</label>
+        </div>
+        <div className="form-check">
+          <input className="form-check-input" type="radio" name="rank" id="admin" value={3}
+            checked={(visitorRank === 3 || (props.visitor === false && changedRank === '0')) || changedRank === '3'}
+            onChange={(e) => setChangedRank(e.target.value)}></input>
+          <label className="form-check-label" htmlFor="admin">Admin</label>
+        </div>
+      </div>
     } else if (str === "em") {
       if (!emailClicked) return email
       else return <input type="text" className="form-control" name="email" placeholder={email}
-                  value={email} onChange={(e) => setEmail(e.target.value)} required></input>
+        value={email} onChange={(e) => setEmail(e.target.value)} required></input>
     }
   }
 
@@ -297,7 +296,7 @@ function Profile(props) {
   function renderUploadedTasks() {
     var rows = [];
     if (taskData.length === 0) {
-      for (var i = 0; i < taskUploads.length; i++) {
+      for (let i = 0; i < taskUploads.length; i++) {
         rows.push(<tr key={taskUploads[i].slug}>
           <td style={cells}>{taskUploads[i].slug}</td>
           <td style={cells}>{taskUploads[i].name}</td>
@@ -305,7 +304,7 @@ function Profile(props) {
         </tr>)
       }
     } else {
-      for (var i = 0; i < taskData.length; i++) {
+      for (let i = 0; i < taskData.length; i++) {
         rows.push(<tr key={taskData[i].slug}>
           <td style={cells}>{taskData[i].slug}</td>
           <td style={cells}>{taskData[i].name}</td>
@@ -327,7 +326,7 @@ function Profile(props) {
       setTaskData(sorted);
     }
     sortArray(sortType);
-  }, [sortType])
+  }, [sortType, taskUploads])
 
   function renderTrophies() {
     var rows = []
@@ -361,19 +360,19 @@ function Profile(props) {
           <div className="col-12 col-md-10 col-lg-9">
             <div className="container py-2">
               {(props.visitor === false) ? <h1 className='mb-2'>Your profile {(ownerRank === 3) && <span>(admin)</span>}</h1>
-              : <h1 className='mb-2'>Profile page {(visitorRank === 3) && <span>(admin)</span>}</h1>}
+                : <h1 className='mb-2'>Profile page {(visitorRank === 3) && <span>(admin)</span>}</h1>}
             </div>
             <div className="container py-2">
               {(props.visitor === false) ? <h2>Currently logged in as {ownerUsername}</h2>
-              : <h2>Currently viewing {visitorUsername}'s profile</h2>}
+                : <h2>Currently viewing {visitorUsername}'s profile</h2>}
             </div>
             <div className="container py-2">
-            {(props.visitor === false || ownerRank === 3) &&
-              <button type="button" className="btn btn-primary btn-lg"
-              onClick={() => handleClickEvent("pf")}>Change Profile Picture</button>}
-              <input type="file" style={{display:'none'}} name="profilePicture" className="form-control" id="profilePicture"
-              accept="image/png, image/jpeg, image/jpg" ref={hiddenRef}
-              onChange={(e) => setNewProfilePicture(e.target.files[0])}/>
+              {(props.visitor === false || ownerRank === 3) &&
+                <button type="button" className="btn btn-primary btn-lg"
+                  onClick={() => handleClickEvent("pf")}>Change Profile Picture</button>}
+              <input type="file" style={{ display: 'none' }} name="profilePicture" className="form-control" id="profilePicture"
+                accept="image/png, image/jpeg, image/jpg" ref={hiddenRef}
+                onChange={(e) => setNewProfilePicture(e.target.files[0])} />
             </div>
           </div>
         </div>
@@ -383,16 +382,16 @@ function Profile(props) {
           <div className="col-12 col-md-6 col-lg-6"><h2><u>Profile Info:</u></h2></div>
           <div className="col-12 col-md-6 col-lg-6"><h2><u>Scheduled Competitions:</u></h2></div>
         </div>
-          <div className="row">
-            <div className="col-12 col-md-6 col-lg-6">
+        <div className="row">
+          <div className="col-12 col-md-6 col-lg-6">
             <form id="profile-edit-form" onSubmit={formSubmit}>
               <div className="container py-2">
                 <div className="row">
                   <div className="col-12 col-md-10 col-lg-9"><b>First Name: </b>{resolveRender("fn")}</div>
                   <div className="col-12 col-md-2 col-lg-3">
                     {(props.visitor === false || ownerRank === 3) &&
-                    <button type="button" className="btn btn-primary btn-sm"
-                    onClick={() => handleClickEvent("fn")}>Edit</button>}
+                      <button type="button" className="btn btn-primary btn-sm"
+                        onClick={() => handleClickEvent("fn")}>Edit</button>}
                   </div>
                 </div>
               </div>
@@ -401,8 +400,8 @@ function Profile(props) {
                   <div className="col-12 col-md-10 col-lg-9"><b>Last Name: </b>{resolveRender("ln")}</div>
                   <div className="col-12 col-md-2 col-lg-3">
                     {(props.visitor === false || ownerRank === 3) &&
-                    <button type="button" className="btn btn-primary btn-sm"
-                    onClick={() => handleClickEvent("ln")}>Edit</button>}
+                      <button type="button" className="btn btn-primary btn-sm"
+                        onClick={() => handleClickEvent("ln")}>Edit</button>}
                   </div>
                 </div>
               </div>
@@ -411,8 +410,8 @@ function Profile(props) {
                   <div className="col-12 col-md-10 col-lg-9"><b>Username: </b>{resolveRender("us")}</div>
                   <div className="col-12 col-md-2 col-lg-3">
                     {(ownerRank === 3) &&
-                    <button type="button" className="btn btn-primary btn-sm"
-                    onClick={() => handleClickEvent("us")}>Edit</button>}
+                      <button type="button" className="btn btn-primary btn-sm"
+                        onClick={() => handleClickEvent("us")}>Edit</button>}
                   </div>
                 </div>
               </div>
@@ -421,8 +420,8 @@ function Profile(props) {
                   <div className="col-12 col-md-10 col-lg-9"><b>Rank: </b>{resolveRender("rk")}</div>
                   <div className="col-12 col-md-2 col-lg-3">
                     {(ownerRank === 3) &&
-                    <button type="button" className="btn btn-primary btn-sm"
-                    onClick={() => handleClickEvent("rk")}>Edit</button>}
+                      <button type="button" className="btn btn-primary btn-sm"
+                        onClick={() => handleClickEvent("rk")}>Edit</button>}
                   </div>
                 </div>
               </div>
@@ -431,8 +430,8 @@ function Profile(props) {
                   <div className="col-12 col-md-10 col-lg-9"><b>Email: </b>{resolveRender("em")}</div>
                   <div className="col-12 col-md-2 col-lg-3">
                     {(ownerRank === 3) &&
-                    <button type="button" className="btn btn-primary btn-sm"
-                    onClick={() => handleClickEvent("em")}>Edit</button>}
+                      <button type="button" className="btn btn-primary btn-sm"
+                        onClick={() => handleClickEvent("em")}>Edit</button>}
                   </div>
                 </div>
               </div>
@@ -446,29 +445,29 @@ function Profile(props) {
                 </div>}
               <div className="container py-2"><b>Tasks solved / attempted: </b>{solved} / {attempted}</div>
               <div className="container py-2"><b>Percentage of solved problems: </b>{Number((percentage * 100).toFixed(1))}<b>%</b></div>
-              {(props.visitor === false || ownerRank === 3)  &&
+              {(props.visitor === false || ownerRank === 3) &&
                 <div className="container py-2">
                   <div className="row">
                     <div className="col-12 col-md-7 col-lg-7">
                       {(!passwordClicked) ? <button type="button" className="btn btn-primary"
-                      onClick={() => handleClickEvent("ps")}>Change Password</button>
-                      : <input type="text" className="form-control" name="password" placeholder="Your new password"
-                      value={password} onChange={(e) => setPassword(e.target.value)} required></input>}
+                        onClick={() => handleClickEvent("ps")}>Change Password</button>
+                        : <input type="text" className="form-control" name="password" placeholder="Your new password"
+                          value={password} onChange={(e) => setPassword(e.target.value)} required></input>}
                     </div>
                     <div className="col-12 col-md-5 col-lg-5">
                       <button type="submit" id="edit-profile-button" className="btn btn-success"
-                      disabled={!(fNameClicked || lNameClicked || usernameClicked ||
-                      rankClicked || emailClicked || passwordClicked || pfpClicked)}>Save Changes</button>
+                        disabled={!(fNameClicked || lNameClicked || usernameClicked ||
+                          rankClicked || emailClicked || passwordClicked || pfpClicked)}>Save Changes</button>
                     </div>
                   </div>
                 </div>}
             </form>
-            </div>
-            <div className="col-12 col-md-6 col-lg-6">
-              <Calendar className="container py-4" />
-            </div>
+          </div>
+          <div className="col-12 col-md-6 col-lg-6">
+            <CompetitionCalender events={organizedCompetitions} />
           </div>
         </div>
+      </div>
       <div>
         {(solutionUploads !== undefined && solutionUploads.length !== 0) ?
           <div className="container py-4">
@@ -489,7 +488,7 @@ function Profile(props) {
                 </table>
               </div>
             </div>
-          </div> : (props.visitor === true && visitorRank === 1 || props.visitor === false && ownerRank === 1) ?
+          </div> : ((props.visitor === true && visitorRank === 1) || (props.visitor === false && ownerRank === 1)) ?
             <div className="container py-4">
               <div className="row">
                 <div className="col-12 col-md-12 col-lg-12">
@@ -520,7 +519,7 @@ function Profile(props) {
                 </table>
               </div>
             </div>
-          </div> : (props.visitor === true && visitorRank !== 1 || props.visitor === false && ownerRank !== 1) ?
+          </div> : ((props.visitor === true && visitorRank !== 1) || (props.visitor === false && ownerRank !== 1)) ?
             <div className="container py-4">
               <div className="row">
                 <div className="col-12 col-md-12 col-lg-12">
@@ -535,7 +534,7 @@ function Profile(props) {
             <div className="row">
               <div className="col-12 col-md-12 col-lg-12">
                 <h2><u>All uploaded tasks:</u></h2>
-                <div style={{textAlign: "right"}}>Sort by:
+                <div style={{ textAlign: "right" }}>Sort by:
                   <select onChange={(e) => setSortType(e.target.value)}>
                     <option value="name">Name</option>
                     <option value="difficulty">Difficulty</option>
@@ -553,7 +552,7 @@ function Profile(props) {
                 </table>
               </div>
             </div>
-          </div> : (props.visitor === true && visitorRank !== 1 || props.visitor === false && ownerRank !== 1) ?
+          </div> : ((props.visitor === true && visitorRank !== 1) || (props.visitor === false && ownerRank !== 1)) ?
             <div className="container py-4">
               <div className="row">
                 <div className="col-12 col-md-12 col-lg-12">
