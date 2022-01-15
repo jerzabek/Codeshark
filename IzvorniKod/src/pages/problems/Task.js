@@ -6,7 +6,8 @@ import Select from 'react-select'
 import { UserContext } from './../../common/UserContext';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content';
-import { MEMBERS } from '../../Routes';
+import { HOME, MEMBERS } from '../../Routes';
+import { useNavigate } from 'react-router'
 
 const MySwall = withReactContent(Swal)
 
@@ -24,6 +25,9 @@ function Task({ taskSlug, preloadedTask }) {
     const [code, setCode] = React.useState(
         `function add(a, b) {\n  return a + b;\n}`
     );
+
+    const navigate = useNavigate()
+
     useEffect(() => {
         // But we give even higher priority to a task if it is directly passed as a prop
         if (preloadedTask !== undefined) {
@@ -49,17 +53,7 @@ function Task({ taskSlug, preloadedTask }) {
                         setCode(res.data.last_user_solution)
                     }
                 } else {
-                    // TODO: Error handle
-                    // let mock = []
-
-                    // for (var i = 0; i < 20; i++) {
-                    //     mock.push({
-                    //         name_last_name: 'marko markic', task_name: 'zadatak', max_exe_time: '2.4',
-                    //         slug: 'zadatak', task_text: 'tekst tekst tekst tekst', difficulty: '1'
-                    //     })
-                    // }
-
-                    // setTask(mock)
+                    navigate(HOME)
                 }
             } catch (err) {
                 console.log(err)

@@ -105,8 +105,6 @@ function CreateCompetition(props) {
 
     let tasks = selectedTasks.map(({ value }) => value)
 
-    console.log(tasks)
-
     if (tasks.length !== Number(numOfTasks)) {
       MySwal.fire({
         title: <p>Invalid data</p>,
@@ -141,7 +139,7 @@ function CreateCompetition(props) {
         } else {
           MySwal.fire({
             title: <p>An error occurred :(</p>,
-            html: <p>Something went wrong, please try again later</p>
+            html: <p>{res.error}</p>
           })
         }
       } catch (err) {

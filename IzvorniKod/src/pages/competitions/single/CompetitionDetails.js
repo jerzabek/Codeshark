@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
-import { applyToCompetition, getCompetition, startVirtualBasedCompetition } from '../../../API'
+import { applyToCompetition, deleteCompetition, finishCompetition, getCompetition, startVirtualBasedCompetition } from '../../../API'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { COMPETITIONS_SOLVE, MEMBERS, VIRTUAL_COMPETITIONS } from '../../../Routes'
 import { UserContext } from '../../../common/UserContext'
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom'
+import { ADMIN_RANK, LEADER_RANK } from '../../../Constants'
 
 const MySwal = withReactContent(Swal)
 
@@ -21,6 +22,8 @@ function CompetitionDetails(props) {
   const [canMakeVirtual, setCanMakeVirtual] = useState(false)
   const [canParticipate, setCanParticipate] = useState(false)
   const [canApply, setCanApply] = useState(true)
+  const [canFinishCompetition, setCanFinishCompetition] = useState(false)
+  const [canDeleteCompetition, setCanDeleteCompetition] = useState(false)
 
   const { competition_slug } = useParams()
   const navigate = useNavigate()
@@ -49,6 +52,13 @@ function CompetitionDetails(props) {
             if (res.data.is_applied) {
               setCanParticipate(true)
             }
+          }
+
+          if (userContext.user.rank === ADMIN_RANK || (userContext.user.rank === LEADER_RANK && userContext.user.username === res.data.author_username)) {
+            if (end < currDate) {
+              setCanFinishCompetition(true)
+            }
+            setCanDeleteCompetition(true)
           }
 
           if (start !== end) {
@@ -108,6 +118,65 @@ function CompetitionDetails(props) {
     })();
   }
 
+  function endCompetition() {
+    (async () => {
+      try {
+        const res = await finishCompetition(competition_slug, userContext.user.session)
+
+        if (res.success) {
+          MySwal.fire({
+            title: <p>Successfully ended competition!</p>,
+            html: <p>All trophies have been awarded and the competition came to an end.</p>,
+            icon: 'success'
+          })
+        } else {
+          MySwal.fire({
+            title: <p>Could not end competition</p>,
+            html: <p>{res.error}</p>,
+            icon: 'error'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    })();
+  }
+
+  function deleteCompetitionFn() {
+
+    MySwal.fire({
+      title: 'Do you really want to delete this competition?',
+      showCancelButton: true,
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            const res = await deleteCompetition(competition_slug, userContext.user.session)
+
+            if (res.success) {
+              MySwal.fire({
+                title: <p>Successfully deleted competition!</p>,
+                icon: 'success'
+              })
+            } else {
+              MySwal.fire({
+                title: <p>Could not delete competition.</p>,
+                html: <p>{res.error}</p>,
+                icon: 'error'
+              })
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        })();
+      }
+    }).then(res => {
+      console.log(res)
+    })
+  }
+
   // eslint-disable-next-line eqeqeq
   if (competition == undefined) {
     return (
@@ -129,17 +198,27 @@ function CompetitionDetails(props) {
           <p className="text-muted"><i className="bi bi-file-bar-graph"></i> Competition class: {competition.comp_class_name}</p>
           {
             canParticipate && (
-              <a href={competition_slug + "/" + COMPETITIONS_SOLVE} className="btn btn-success me-2"><i className="bi bi-play-circle"></i> Participate now!</a>
+              <a href={competition_slug + "/" + COMPETITIONS_SOLVE} className="btn btn-success"><i className="bi bi-play-circle"></i> Participate now!</a>
             )
           }
           {
             canApply && (
-              <button onClick={apply} className="btn btn-primary"><i className="bi bi-send-plus"></i> Apply for competition</button>
+              <button onClick={apply} className="btn btn-primary ms-2"><i className="bi bi-send-plus"></i> Apply for competition</button>
             )
           }
           {
             canMakeVirtual && (
-              <button onClick={startVirtual} className="btn btn-primary"><i className="bi bi-cloud-plus"></i> Start virtual competition</button>
+              <button onClick={startVirtual} className="btn btn-primary ms-2"><i className="bi bi-cloud-plus"></i> Start virtual competition</button>
+            )
+          }
+          {
+            canFinishCompetition && (
+              <button onClick={endCompetition} className="btn btn-danger ms-2"><i class="bi bi-slash-circle"></i> Finish competition</button>
+            )
+          }
+          {
+            canDeleteCompetition && (
+              <button onClick={deleteCompetitionFn} className="btn btn-danger ms-2"><i class="bi bi-file-earmark-x"></i> Delete competition</button>
             )
           }
         </div>

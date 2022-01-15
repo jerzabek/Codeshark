@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
   }
 })
 
-const handleError = (err) => ({ success: false, error: err?.error || err || 'Greška na serveru' })
+const handleError = (err) => ({ success: false, error: err?.error || err || 'Our server experienced an unexpected error! Sorry.' })
 const handleSuccess = (data) => ({ success: true, data })
 
 function login(data) {
@@ -105,7 +105,7 @@ function getTask(slug, username) {
     if ([400, 401].includes(res.status)) throw new Error(res.data.error)
     return handleSuccess(res.data)
   }).catch(err => {
-    if (err && err.response && [400, 401].includes(err.response.status)) return handleError(err.response.data.error)
+    if (err && err.response && [400, 403].includes(err.response.status)) return handleError(err.response.data.error)
     return handleError()
   })
 }
@@ -232,7 +232,6 @@ function executeTask(data, session) {
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
-      console.log(err.response)
       if (err && err.response && [400].includes(err.response.status)) {
         // Workaround to get the whole error object without bricking other code
         let temp = err.response.data
@@ -268,7 +267,38 @@ function createCompetition(data, session) {
   }).then((res) => {
     return handleSuccess(res.data)
   }).catch(err => {
+    if (err && err.response && [400].includes(err.response.status)){
+      return handleError(err.response.data.error)
+    } else if (err && err.response && [413].includes(err.response.status)){
+      return handleError("The file you have uploaded is too large.")
+    }
+
+    return handleError("The file you have uploaded is too large.")
+  })
+}
+
+function finishCompetition(competition_slug, session) {
+  return axiosInstance.post(`end_competition/${competition_slug}`, {}, {
+    headers: {
+      session
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
     if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
+function deleteCompetition(competition_slug, session) {
+  return axiosInstance.delete(`competition/${competition_slug}`, {}, {
+    headers: {
+      session
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [400].includes(err.response.status)) return handleError(err.response.data.error)
     return handleError()
   })
 }
@@ -326,5 +356,7 @@ export {
   startVirtualRandomCompetition,
   startVirtualBasedCompetition,
   getVirtualCompetitionLeaderboards,
-  applyToCompetition
+  applyToCompetition,
+  finishCompetition,
+  deleteCompetition
 }

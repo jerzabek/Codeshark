@@ -61,7 +61,6 @@ function CreateTask(props) {
   }
 
   function formSubmit(e) {
-    console.log(e);
     e.preventDefault();
 
     (async () => {
@@ -146,8 +145,8 @@ function CreateTask(props) {
             <div className="form-check">
               <label htmlFor="privateTask" className="form-check-label">Is task private?</label>
               <input type="checkbox" className="form-check-input" name="privateTask" id="privateTask"
-                value={privateTask}
-                onChange={(e) => setPrivateTask(e.target.value)} />
+                checked={privateTask}
+                onChange={(e) => setPrivateTask(e.target.checked)} />
             </div>
           </div>
         </div>
