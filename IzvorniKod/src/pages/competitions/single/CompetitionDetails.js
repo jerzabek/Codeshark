@@ -197,7 +197,6 @@ function CompetitionDetails(props) {
                     <tr>
                       <td>Username</td>
                       <td>Score</td>
-                      <td></td>
                     </tr>
                   </thead>
                   <tbody>
