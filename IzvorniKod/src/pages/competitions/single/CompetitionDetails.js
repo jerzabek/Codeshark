@@ -3,11 +3,12 @@ import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
 import { getCompetition, startVirtualBasedCompetition } from '../../../API'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { COMPETITIONS_SOLVE, VIRTUAL_COMPETITIONS } from '../../../Routes'
+import { COMPETITIONS_SOLVE, MEMBERS, VIRTUAL_COMPETITIONS } from '../../../Routes'
 import { UserContext } from '../../../common/UserContext'
 import { useNavigate } from 'react-router'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
 
 const MySwal = withReactContent(Swal)
 
@@ -117,6 +118,35 @@ function CompetitionDetails(props) {
         </div>
       </div>
       <p>{competition.comp_text}</p>
+      {
+        competition?.is_finished && (
+          <div className="row mt-4">
+            <h4>Leaderboards for this competition</h4>
+            {
+              competition.leaderboards.length > 0 ? (
+                <table className="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <td>Username</td>
+                      <td>Score</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {competition && competition.leaderboards.map(row =>
+                      <tr key={row.username}>
+                        <td>{row.username}</td>
+                        <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-muted">No participants found :(</p>
+              )
+            }
+          </div>
+        )
+      }
     </div>
   );
 }
