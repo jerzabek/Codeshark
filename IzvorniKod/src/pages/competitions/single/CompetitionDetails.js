@@ -134,8 +134,8 @@ function CompetitionDetails(props) {
                   <tbody>
                     {competition && competition.leaderboards.map(row =>
                       <tr key={row.username}>
-                        <td>{row.username}</td>
                         <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
+                        <td>{row.score}</td>
                       </tr>
                     )}
                   </tbody>

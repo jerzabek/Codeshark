@@ -197,6 +197,19 @@ function getVirtualCompetitions(username) {
   })
 }
 
+function getVirtualCompetitionLeaderboards(competition_id, session) {
+  return axiosInstance.get(`virtual_competition/${competition_id}/leaderboards`, {
+    headers: {
+      session
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [403].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 function executeTask(data, session) {
   return axiosInstance.post('execute_task', data, {
     headers: {
@@ -289,5 +302,6 @@ export {
   getVirtualCompetitions,
   getVirtualCompetition,
   startVirtualRandomCompetition,
-  startVirtualBasedCompetition
+  startVirtualBasedCompetition,
+  getVirtualCompetitionLeaderboards
 }

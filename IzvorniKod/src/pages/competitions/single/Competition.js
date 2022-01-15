@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { getCompetition, getTask, getVirtualCompetition } from '../../../API';
 import { UserContext } from '../../../common/UserContext';
-import { HOME } from '../../../Routes';
+import { COMPETITIONS_LEADERBOARDS, HOME, VIRTUAL_COMPETITIONS } from '../../../Routes';
 import Task from '../../problems/Task';
 import './competition.css'
 
@@ -154,6 +155,8 @@ function Competition({ isVirtual }) {
               <div className="col-12 col-md-9 py-2">
                 <h4>{competition.name}</h4>
                 <p className="text-muted">This is a virtual competition. There is no time limit. Good luck!</p>
+
+                <Link to={VIRTUAL_COMPETITIONS + "/" + competition_id + "/" + COMPETITIONS_LEADERBOARDS} className="btn btn-success">Competition leaderboards</Link>
               </div>
             )
           )

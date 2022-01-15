@@ -9,7 +9,7 @@ import {
   Navigate
 } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, EDIT_PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK, COMPETITIONS_SOLVE, VIRTUAL_COMPETITIONS } from './Routes'
+import { COMPETITIONS, CREATE, EMAIL_VERIFICATION, HOME, LOGIN, LOGOUT, PROFILE, EDIT_PROFILE, REGISTER, MEMBERS, PROBLEMS, TASK, COMPETITIONS_SOLVE, VIRTUAL_COMPETITIONS, COMPETITIONS_LEADERBOARDS } from './Routes'
 import PrivateRoute from './PrivateRoute'
 import Home from './pages/home/Home'
 import { UserContext } from './common/UserContext'
@@ -25,6 +25,7 @@ import Problems from "./pages/problems/Problems"
 import Task from "./pages/problems/Task"
 import CreateTask from "./pages/problems/CreateTask"
 import Competition from './pages/competitions/single/Competition'
+import VirtualCompetitionLeaderboards from './pages/competitions/virtual/VirtualCompetitionLeaderboards'
 
 function CodeShark() {
   const SESSION_STORAGE_USER = 'user'
@@ -69,13 +70,13 @@ function CodeShark() {
             <Route path={PROFILE}>
               <Route path={EDIT_PROFILE} element={
                 <PrivateRoute isAuth={user}>
-                  <Profile visitor={false}/>
+                  <Profile visitor={false} />
                 </PrivateRoute>
               } />
 
               <Route path="" element={
                 <PrivateRoute isAuth={user}>
-                  <Profile visitor={false}/>
+                  <Profile visitor={false} />
                 </PrivateRoute>
               } />
             </Route>
@@ -84,13 +85,13 @@ function CodeShark() {
               <Route path={":username"}>
                 <Route path={EDIT_PROFILE} element={
                   <PrivateRoute isAuth={user}>
-                    <Profile visitor={true}/>
+                    <Profile visitor={true} />
                   </PrivateRoute>
                 } />
 
                 <Route path="" element={
                   <PrivateRoute isAuth={user}>
-                    <Profile visitor={true}/>
+                    <Profile visitor={true} />
                   </PrivateRoute>
                 } />
               </Route>
@@ -131,12 +132,19 @@ function CodeShark() {
             </Route>
 
             <Route path={VIRTUAL_COMPETITIONS}>
-              <Route path={":competition_id"} element={
-                <PrivateRoute isAuth={user}>
-                  <Competition isVirtual={true} />
-                </PrivateRoute>
-              } />
+              <Route path={":competition_id"}>
+                <Route path={COMPETITIONS_LEADERBOARDS} element={
+                  <PrivateRoute isAuth={user}>
+                    <VirtualCompetitionLeaderboards />
+                  </PrivateRoute>
+                } />
 
+                <Route path={""} element={
+                  <PrivateRoute isAuth={user}>
+                    <Competition isVirtual={true} />
+                  </PrivateRoute>
+                } />
+              </Route>
             </Route>
 
             <Route path={TASK + '/:handle'} element={
@@ -164,7 +172,7 @@ function CodeShark() {
           </Routes>
         </main>
       </UserContext.Provider>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 
