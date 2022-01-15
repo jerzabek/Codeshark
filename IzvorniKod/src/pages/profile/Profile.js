@@ -95,7 +95,7 @@ function Profile(props) {
 
     const attemptProfileEdit = async () => {
       try {
-        const res = await editProfile(editProfileData)
+        const res = await editProfile(editProfileData, userContext.user.session)
 
         if (res.success) {
           MySwal.fire({

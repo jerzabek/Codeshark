@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router';
 import { getCompetition, getTask, getVirtualCompetition } from '../../../API';
+import { UserContext } from '../../../common/UserContext';
 import { HOME } from '../../../Routes';
 import Task from '../../problems/Task';
 import './competition.css'
 
 function Competition({ isVirtual }) {
+  const userContext = useContext(UserContext)
   const [tasks, setTasks] = useState()
   const [taskComponents, setTaskComponents] = useState([])
   const [competition, setCompetition] = useState()
@@ -21,7 +23,7 @@ function Competition({ isVirtual }) {
       try {
         // We get the virtual competitions on a different endpoint than regular competitions
         const res = isVirtual ?
-          await getVirtualCompetition(competition_id)
+          await getVirtualCompetition(competition_id, userContext.user.session)
           :
           await getCompetition(competition_slug);
 
@@ -43,7 +45,7 @@ function Competition({ isVirtual }) {
           setCompetition(res.data)
 
           await Promise.all(res.data.tasks.map(async (taskSlug) => {
-            const res = await getTask(isVirtual ? taskSlug.slug : taskSlug)
+            const res = await getTask(isVirtual ? taskSlug.slug : taskSlug, userContext.user.session)
 
             if (res.success) {
               return res.data

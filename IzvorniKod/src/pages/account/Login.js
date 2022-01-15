@@ -31,7 +31,7 @@ function Login({ login: loginUser, isAuth }) {
         const res = await login(loginData)
 
         if (res.success) {
-          loginUser({ username, rank: res.data.rank })
+          loginUser({ username, rank: res.data.rank, session: res.data.session_id })
 
           MySwal.fire({
             title: <p>Successfully signed in!</p>,

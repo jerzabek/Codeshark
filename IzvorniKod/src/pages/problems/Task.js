@@ -34,7 +34,7 @@ function Task({ taskSlug, preloadedTask }) {
 
         (async () => {
             try {
-                const res = await getTask(slug, userContext.user.username)
+                const res = await getTask(slug, userContext.user.session)
 
                 if (res.success) {
                     setTask(res.data)
@@ -80,7 +80,7 @@ function Task({ taskSlug, preloadedTask }) {
 
         (async () => {
             try {
-                const res = await executeTask(executeTaskData)
+                const res = await executeTask(executeTaskData, userContext.user.session)
                 setShowTests(true)
 
                 if (res.success) {
@@ -107,6 +107,12 @@ function Task({ taskSlug, preloadedTask }) {
         { value: 'c', label: 'C' },
         { value: 'cpp', label: 'C++' }
     ]
+
+    const editorOptions = {
+        "py3": "python",
+        "c": "c",
+        "cpp": "cpp",
+    }
 
     const [state, setState] = React.useState(
         'py3'
@@ -138,7 +144,7 @@ function Task({ taskSlug, preloadedTask }) {
                 </div>
                 <div className="col-12">
                     <CodeEditor
-                        language={state}
+                        language={editorOptions[state]}
                         placeholder="Please enter your code."
                         value={code}
                         onChange={(evn) => setCode(evn.target.value)}

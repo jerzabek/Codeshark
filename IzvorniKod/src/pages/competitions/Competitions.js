@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { getCompetitions, getVirtualCompetitions, startVirtualRandomCompetition } from '../../API'
 import CompetitionTable from './CompetitionTable'
 import { Link } from 'react-router-dom'
-import { CREATE, COMPETITIONS } from '../../Routes'
+import { CREATE, COMPETITIONS, VIRTUAL_COMPETITIONS } from '../../Routes'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import CompetitionCalender from './CompetitionCalender'
 import { UserContext } from './../../common/UserContext';
@@ -10,6 +10,7 @@ import { LEADER_RANK, ADMIN_RANK } from '../../Constants';
 import VirtualCompetitionTable from './virtual/VirtualCompetitionTable'
 import withReactContent from 'sweetalert2-react-content'
 import Swal from 'sweetalert2'
+import { useNavigate } from "react-router-dom";
 
 const MySwal = withReactContent(Swal)
 
@@ -35,6 +36,8 @@ function Competitions(props) {
   const [virtualCompetitions, setVirtualCompetitions] = useState()
   const [showCreateCompetitionButton, setShowCreateCompetitionButton] = useState(true)
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (userContext.user.rank === LEADER_RANK || userContext.user.rank === ADMIN_RANK) {
       setShowCreateCompetitionButton(true)
@@ -57,7 +60,7 @@ function Competitions(props) {
 
     (async () => {
       try {
-        const res = await getVirtualCompetitions(userContext.user.username)
+        const res = await getVirtualCompetitions(userContext.user.session)
 
         setPracticesLoading(false)
 
@@ -86,7 +89,7 @@ function Competitions(props) {
         }
       })
 
-      if(numOfTasks < 0 || numOfTasks > 10) {
+      if(numOfTasks < 0 || numOfTasks > 10 || numOfTasks === undefined) {
         MySwal.fire({
           title: <p>Could not start practice competition!</p>,
           html: <p>You can only practice with a maximum of 10 tasks</p>,
@@ -96,11 +99,10 @@ function Competitions(props) {
       }
 
       try {
-        const res = await startVirtualRandomCompetition(Number(numOfTasks), userContext.user.username)
-
+        const res = await startVirtualRandomCompetition(Number(numOfTasks), userContext.user.session)
 
         if (res.success) {
-
+          navigate(VIRTUAL_COMPETITIONS + "/" + res.data.virt_comp_id)
         } else {
           MySwal.fire({
             title: <p>Could not start practice competition!</p>,

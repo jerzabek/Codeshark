@@ -35,7 +35,7 @@ function CreateCompetition(props) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await setupCreateCompetition(userContext.user.username)
+        const res = await setupCreateCompetition(userContext.user.session)
 
         if (res.success) {
           setTaskList(res.data.tasks.map((task) => {
@@ -80,14 +80,16 @@ function CreateCompetition(props) {
     }
 
     const createCompetitionData = new FormData();
-    createCompetitionData.append("imenatjecanja", name);
-    createCompetitionData.append("vrijemepoc", startDate + " " + startTime);
-    createCompetitionData.append("vrijemekraj", endDate + " " + endTime);
-    createCompetitionData.append("tekstnatjecanja", description);
+    createCompetitionData.append("comp_name", name);
+    createCompetitionData.append("start_time", startDate + " " + startTime);
+    createCompetitionData.append("end_time", endDate + " " + endTime);
+    createCompetitionData.append("comp_text", description);
 
     let tasks = selectedTasks.map(({ value }) => value)
 
-    if (tasks.length !== numOfTasks) {
+    console.log(tasks)
+
+    if (tasks.length !== Number(numOfTasks)) {
       MySwal.fire({
         title: <p>Invalid data</p>,
         html: <p>You must have {numOfTasks} tasks selected. You currently have {tasks.length}.</p>,
@@ -96,14 +98,14 @@ function CreateCompetition(props) {
       return
     }
 
-    createCompetitionData.append("tasks", tasks);
-    createCompetitionData.append("trofejid", 3);
+    createCompetitionData.append("tasks", JSON.stringify(tasks));
+    createCompetitionData.append("trophy_name", name);
     createCompetitionData.append("username", userContext.user.username);
-    createCompetitionData.append("slikatrofeja", trophy);
+    createCompetitionData.append("trophy_img", trophy);
 
     (async () => {
       try {
-        const res = await createCompetition(createCompetitionData)
+        const res = await createCompetition(createCompetitionData, userContext.user.session)
 
         if (res.success) {
           MySwal.fire({
@@ -115,7 +117,7 @@ function CreateCompetition(props) {
             denyButtonText: `Go to competition`,
           }).then((result) => {
             if (result.isDenied) {
-              linkToCompetition(res.data.natjecanje_id)
+              linkToCompetition(res.data.comp_slug)
             }
           })
         } else {

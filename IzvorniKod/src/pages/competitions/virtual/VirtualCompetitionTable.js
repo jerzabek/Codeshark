@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { PROBLEMS, VIRTUAL_COMPETITIONS } from '../../../Routes';
+import { TASK, VIRTUAL_COMPETITIONS } from '../../../Routes';
 import '../competition-table.css'
 import { Link, useNavigate } from "react-router-dom";
 
@@ -79,10 +79,10 @@ function VirtualCompetitionTable({ data, columns, loading }) {
         <tbody>
           {
             displayData && displayData.map((row, rowIndex) =>
-              <tr key={"competitor-row-" + rowIndex} onClick={(e) => linkToCompetition(row.virt_id)} className="hover-pointer align-middle">
-                <td>{row.name}</td>
+              <tr key={"competitor-row-" + rowIndex} className="hover-pointer align-middle">
+                <td onClick={(e) => linkToCompetition(row.virt_id)}>{row.name}</td>
                 <td>{row.tasks.map(({name, slug}) => 
-                  <Link className="me-2 badge bg-success" to={PROBLEMS + "/" + slug} key={slug}>{name}</Link>
+                  <Link className="me-2 badge bg-success" to={TASK + "/" + slug} key={slug}>{name}</Link>
                 )}</td>
               </tr>
             )

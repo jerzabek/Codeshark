@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
@@ -6,7 +6,7 @@ import withReactContent from 'sweetalert2-react-content'
 import Select from 'react-select'
 import { UserContext } from './../../common/UserContext';
 import { useNavigate } from 'react-router'
-import { PROBLEMS } from '../../Routes'
+import { PROBLEMS, TASK } from '../../Routes'
 import { createTask } from '../../API'
 
 const MySwal = withReactContent(Swal.mixin({
@@ -22,11 +22,10 @@ function CreateTask(props) {
 
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [difficulty, setDifficulty] = useState([])
-
-  const [testCasesIn, setTestCasesIn] = useState([])
-  const [testCasesOut, setTestCasesOut] = useState([])
-  const [counter, setCounter] = useState(0)
+  const [difficulty, setDifficulty] = useState(1)
+  const [maxExeTime, setMaxExeTime] = useState(1.0)
+  const [privateTask, setPrivateTask] = useState(true)
+  const navigate = useNavigate()
 
   const [inputList, setInputList] = useState([{ input: "", output: "" }]);
 
@@ -51,26 +50,27 @@ function CreateTask(props) {
   };
 
 
-  function linkToTask() {
-    //TODO link to task/slug
+  function linkToTask(slug) {
+    navigate(TASK + "/" + slug)
   }
 
   function formSubmit(e) {
-    e.preventDefault()
+    console.log(e);
+    e.preventDefault();
 
     (async () => {
       try {
         let data = {
           "task_name": name,
-          "difficulty": state,
-          "max_exe_time": 3.0,
+          "difficulty": difficulty,
+          "max_exe_time": Number(maxExeTime),
           "task_text": description,
-          "private": true,
+          "private": privateTask,
           "test_cases": inputList
         }
-        const res = await createTask(data, userContext.user.username)
+        const res = await createTask(data, userContext.user.session)
 
-        if (res) {
+        if (res.success) {
           MySwal.fire({
             title: <p>Successfully created task!</p>,
             html: <p>Congratulations! Your task had been created.</p>,
@@ -80,13 +80,13 @@ function CreateTask(props) {
             denyButtonText: `Go to task`,
           }).then((result) => {
             if (result.isDenied) {
-              linkToTask()
+              linkToTask(res.data.slug)
             }
           })
         } else {
           MySwal.fire({
             title: <p>An error occurred :(</p>,
-            html: <p>Something went wrong, please try again later</p>
+            html: <p>{res.error}</p>
           })
         }
       } catch (err) {
@@ -103,9 +103,6 @@ function CreateTask(props) {
 
   ]
 
-  const [state, setState] = React.useState(1);
-
-
   return (
     <div className='container py-4'>
       <div className="d-flex flex-row justify-content-between">
@@ -113,7 +110,7 @@ function CreateTask(props) {
         <Link className="btn btn-light" to={PROBLEMS}>Cancel</Link>
       </div>
 
-      <form id="create-task-form" onSubmit={(e) => formSubmit(e)}>
+      <form id="create-task-form" onSubmit={formSubmit}>
         <div className="row">
           <div className="col-12 col-md-6 col-lg-4">
             <div className="mb-3">
@@ -123,13 +120,28 @@ function CreateTask(props) {
                 onChange={(e) => setName(e.target.value)}
                 required />
             </div>
-            <div className='mb-3 col-3'>
-              <p>Difficulty</p>
-              <Select options={options}
-                className="basic-single"
-                defaultValue={options[0]}
-                onChange={(evn) => setState(evn.value)}
-              />
+          </div>
+          <div className='mb-3 col-12 col-md-3 col-lg-2'>
+            <p className="mb-2">Difficulty</p>
+            <Select options={options}
+              className="basic-single"
+              defaultValue={options[0]}
+              onChange={(evn) => setDifficulty(evn.value)}
+            />
+          </div>
+          <div className="col-9 col-md-3 col-lg-2">
+            <label htmlFor="max_exe_time" className="form-label">Max execution time</label>
+            <input type="number" step="0.1" className="form-control" name="max_exe_time" id="max_exe_time"
+              value={maxExeTime}
+              onChange={(e) => setMaxExeTime(e.target.value)}
+              required />
+          </div>
+          <div className="col-3 col-sm-2 align-self-center">
+            <div className="form-check">
+              <label htmlFor="privateTask" className="form-check-label">Is task private?</label>
+              <input type="checkbox" className="form-check-input" name="privateTask" id="privateTask"
+                value={privateTask}
+                onChange={(e) => setPrivateTask(e.target.value)} />
             </div>
           </div>
         </div>
