@@ -354,9 +354,9 @@
 			\eject
 		\section{Dijagram komponenti}
 		
-		Dijagram komponenti prikazan na slici 4.5 opisuje organizaciju i međuovisnost komponenti, interne strukture i odnose prema okolini. Sustavu se pristupa preko dva različita sučelja. Preko sučelja za dohvat HTML, CSS i JS datoteka poslužuju se datoteke koje pripadaju frontend dijelu aplikacije. Router je komponenta koja na upit s url određuje koja datoteka će se poslužiti na sučelje. Frontend dio se sastoji od niza JavaScript datoteka koje su rasporedene u logičke cjeline nazvane po tipovima aktora koji im pristupaju. Sve JavaScript datoteke ovise o React biblioteci iz
-		koje dohvaćaju gotove komponente kao što su gumbi, forme i slično. Preko sučelja za dohvat JSON podataka pristupa se REST API komponenti. REST API poslužuje podatke koji pripadaju backend dijelu aplikacije. EntityFrameworkCore je zadužen za dohvaćanje tablica iz baze podataka pomoću SQL upita. Podaci koji su pristigli
-		iz baze se šalju dalje MVC arhitekturi u obliku DTO (Data transfer object). React-view komponenta preko dostupnih sučelja komunicira sa sjedi pa jedi aplikacijom	te ovisno o korisnikovim akcijama osvježava prikaz i dohvaća nove podatke ili datoteke.
+		Dijagram komponenti prikazan na slici 4.5 opisuje organizaciju i međuovisnost komponenti, interne strukture i odnose prema okolini. Sustavu se pristupa preko dva različita sučelja. Preko sučelja za dohvat HTML, CSS i JS datoteka poslužuju se datoteke koje pripadaju frontend dijelu aplikacije. Router je komponenta koja na upit prema specifičnom URL-u određuje koje komponente će se poslužiti na sučelje. Frontend aplikacije sastoji se od detaljno rastavljenih komponenata koje su hijerarhijski organizirane kako bi omogućile jednostavno ponovno iskorištavanje postojećih komponenti te čitljivost koda. Sve JavaScript datoteke ovise o React biblioteci koju koriste za interakciju sa korisničkim preglednikom \\
+		
+		Preko REST API se šalju zahtjevi na endpointove, koji pozivaju posebne klasne funkcije.  Većina tih funkcija dohvaća ili šalje SQL upite. Posebni wrapper PGDB dobiva od funkcija kombinaciju querya i podataka, priprema ih i šalje zahtjev u SQL bazu podataka. Od baze dobiva podatke, PGDB wrapper ih otpakirava iz tuple-ova i šalje nazad funkcijama koje ih vraćaju REST API-u.
 		
 			\begin{figure}[H]
 				\includegraphics[width=\textwidth]{slike/DijagramKomponenti.png} %veličina u odnosu na širinu linije
