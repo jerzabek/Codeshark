@@ -67,7 +67,7 @@ function VirtualCompetitionTable({ data, columns, loading }) {
               MySwal.fire({
                 title: <p>Successfully deleted competition!</p>,
                 icon: 'success'
-              })
+              }).then(() => window.location.reload())
             } else {
               MySwal.fire({
                 title: <p>Could not delete competition.</p>,
@@ -123,7 +123,7 @@ function VirtualCompetitionTable({ data, columns, loading }) {
                 <td>{row.tasks.map(({ name, slug }) =>
                   <Link className="me-2 badge bg-success" to={TASK + "/" + slug} key={slug}>{name}</Link>
                 )}</td>
-                <td><button className="btn btn-sm btn-danger" onClick={(e) => deleteCompetition(row.virt_id)}></button></td>
+                <td><button className="btn btn-sm btn-danger" onClick={(e) => deleteCompetition(row.virt_id)}><i class="bi bi-x-circle"></i></button></td>
               </tr>
             )
           }

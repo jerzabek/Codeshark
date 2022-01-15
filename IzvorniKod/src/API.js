@@ -291,7 +291,7 @@ function finishCompetition(competition_slug, session) {
 }
 
 function deleteVirtualCompetition(competition_id, session) {
-  return axiosInstance.delete(`delete_virtual/${competition_id}`, {}, {
+  return axiosInstance.delete(`delete_virtual/${competition_id}`, {
     headers: {
       session
     }

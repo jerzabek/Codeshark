@@ -22,9 +22,7 @@ function Task({ taskSlug, preloadedTask }) {
     const [task, setTask] = useState([]);
 
     const [solutionsAvailable, setSolutionsAvailable] = useState(false)
-    const [code, setCode] = React.useState(
-        `function add(a, b) {\n  return a + b;\n}`
-    );
+    const [code, setCode] = React.useState("");
 
     const navigate = useNavigate()
 
@@ -126,7 +124,7 @@ function Task({ taskSlug, preloadedTask }) {
     function displayCode(code, user) {
         MySwall.fire({
             title: "Code solution from user " + user,
-            html: <pre>{code}</pre>
+            html: <code>{code}</code>
         })
     }
 
@@ -218,9 +216,13 @@ function Task({ taskSlug, preloadedTask }) {
                                 <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
                                 {
                                     solutionsAvailable ? (
-                                        <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
+                                        row.code ? (
+                                            <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
+                                        ) : (
+                                            <td><span className="badge bg-secondary">Code</span></td>
+                                        )
                                     ) : (
-                                        <td><span className="badge bg-success bg-secondary">Code</span></td>
+                                        <td><span className="badge bg-secondary">Code</span></td>
                                     )
                                 }
                             </tr>
