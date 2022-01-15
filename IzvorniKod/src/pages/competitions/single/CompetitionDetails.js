@@ -21,7 +21,7 @@ function CompetitionDetails(props) {
   const [time, setTime] = useState('')
   const [canMakeVirtual, setCanMakeVirtual] = useState(false)
   const [canParticipate, setCanParticipate] = useState(false)
-  const [canApply, setCanApply] = useState(true)
+  const [canApply, setCanApply] = useState(false)
   const [canFinishCompetition, setCanFinishCompetition] = useState(false)
 
   const { competition_slug } = useParams()
@@ -39,8 +39,8 @@ function CompetitionDetails(props) {
           var end = new Date(res.data.end_time)
           var currDate = new Date();
 
-          if (res.data.is_applied) {
-            setCanApply(false)
+          if (!res.data.is_applied && !res.data.is_finished) {
+            setCanApply(true)
           }
 
           if (end < currDate) {
@@ -82,7 +82,7 @@ function CompetitionDetails(props) {
             title: <p>You're in!</p>,
             html: <p>Successfully applied to competition.</p>,
             icon: 'success'
-          })
+          }).then(() => window.location.reload())
         } else {
           MySwal.fire({
             title: <p>Oops!</p>,
