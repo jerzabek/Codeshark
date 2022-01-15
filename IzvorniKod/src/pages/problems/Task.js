@@ -83,6 +83,7 @@ function Task({ taskSlug, preloadedTask }) {
                 const res = await executeTask(executeTaskData, userContext.user.session)
                 setShowTests(true)
 
+                console.log(res)
                 if (res.success) {
                     MySwall.fire({
                         title: <p>Success</p>,
@@ -93,7 +94,16 @@ function Task({ taskSlug, preloadedTask }) {
                 } else {
                     MySwall.fire({
                         title: <p>Error</p>,
-                        html: <p>Could not run tests!</p>
+                        html: <React.Fragment>
+                            <p>Could not run tests!</p>
+                            {
+                                res.error.compiler_output ? (
+                                    <code>{res.error.compiler_output}</code>
+                                ) : (
+                                    <pre>{res.error.error}</pre>
+                                )
+                            }
+                        </React.Fragment>
                     })
                 }
             } catch (err) {

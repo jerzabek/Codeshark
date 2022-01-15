@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router'
-import { getCompetition, startVirtualBasedCompetition } from '../../../API'
+import { applyToCompetition, getCompetition, startVirtualBasedCompetition } from '../../../API'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { COMPETITIONS_SOLVE, MEMBERS, VIRTUAL_COMPETITIONS } from '../../../Routes'
 import { UserContext } from '../../../common/UserContext'
@@ -20,6 +20,7 @@ function CompetitionDetails(props) {
   const [time, setTime] = useState('')
   const [canMakeVirtual, setCanMakeVirtual] = useState(false)
   const [canParticipate, setCanParticipate] = useState(false)
+  const [canApply, setCanApply] = useState(true)
 
   const { competition_slug } = useParams()
   const navigate = useNavigate()
@@ -36,12 +37,18 @@ function CompetitionDetails(props) {
           var end = new Date(res.data.end_time)
           var currDate = new Date();
 
+          if (res.data.is_applied) {
+            setCanApply(false)
+          }
+
           if (end < currDate) {
             setCanMakeVirtual(true)
           }
 
           if (start < currDate && currDate < end) {
-            setCanParticipate(true)
+            if (res.data.is_applied) {
+              setCanParticipate(true)
+            }
           }
 
           if (start !== end) {
@@ -57,9 +64,29 @@ function CompetitionDetails(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // function apply() {
-  //   // TODO
-  // }
+  function apply() {
+    (async () => {
+      try {
+        const res = await applyToCompetition(competition_slug, userContext.user.session)
+
+        if (res.success) {
+          MySwal.fire({
+            title: <p>You're in!</p>,
+            html: <p>Successfully applied to competition.</p>,
+            icon: 'success'
+          })
+        } else {
+          MySwal.fire({
+            title: <p>Oops!</p>,
+            html: <p>{res.error}</p>,
+            icon: 'warning'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    })();
+  }
 
   function startVirtual() {
     (async () => {
@@ -105,7 +132,11 @@ function CompetitionDetails(props) {
               <a href={competition_slug + "/" + COMPETITIONS_SOLVE} className="btn btn-success me-2"><i className="bi bi-play-circle"></i> Participate now!</a>
             )
           }
-          {/* <button onClick={apply} className="btn btn-primary"><i className="bi bi-send-plus"></i> Apply for competition</button> */}
+          {
+            canApply && (
+              <button onClick={apply} className="btn btn-primary"><i className="bi bi-send-plus"></i> Apply for competition</button>
+            )
+          }
           {
             canMakeVirtual && (
               <button onClick={startVirtual} className="btn btn-primary"><i className="bi bi-cloud-plus"></i> Start virtual competition</button>

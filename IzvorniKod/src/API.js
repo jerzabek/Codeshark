@@ -197,6 +197,19 @@ function getVirtualCompetitions(username) {
   })
 }
 
+function applyToCompetition(competition_slug, session) {
+  return axiosInstance.put(`competition/${competition_slug}`, {}, {
+    headers: {
+      session
+    }
+  }).then((res) => {
+    return handleSuccess(res.data)
+  }).catch(err => {
+    if (err && err.response && [400].includes(err.response.status)) return handleError(err.response.data.error)
+    return handleError()
+  })
+}
+
 function getVirtualCompetitionLeaderboards(competition_id, session) {
   return axiosInstance.get(`virtual_competition/${competition_id}/leaderboards`, {
     headers: {
@@ -219,7 +232,16 @@ function executeTask(data, session) {
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
-      if (err && err.response && [413, 400].includes(err.response.status)) return handleError(err.response.data.error)
+      console.log(err.response)
+      if (err && err.response && [400].includes(err.response.status)) {
+        // Workaround to get the whole error object without bricking other code
+        let temp = err.response.data
+        Object.defineProperty(temp, "error_msg",
+          Object.getOwnPropertyDescriptor(temp, "error"));
+        delete temp["error"];
+
+        return handleError(temp)
+      }
       return handleError()
     })
 }
@@ -303,5 +325,6 @@ export {
   getVirtualCompetition,
   startVirtualRandomCompetition,
   startVirtualBasedCompetition,
-  getVirtualCompetitionLeaderboards
+  getVirtualCompetitionLeaderboards,
+  applyToCompetition
 }
