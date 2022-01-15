@@ -35,14 +35,14 @@ function Register({ isAuth }) {
     }
 
     const registrationData = new FormData();
-    registrationData.append("korisnickoime", username,);
-    registrationData.append("slikaprofila", profilePicture);
-    registrationData.append("lozinka", password,);
-    registrationData.append("ime", firstname,);
-    registrationData.append("prezime", lastname,);
+    registrationData.append("username", username,);
+    registrationData.append("pfp_url", profilePicture);
+    registrationData.append("password", password,);
+    registrationData.append("name", firstname,);
+    registrationData.append("last_name", lastname,);
     registrationData.append("email", email,);
-    registrationData.append("titula", '',);
-    registrationData.append("nivouprava", level);
+    registrationData.append("title", '',);
+    registrationData.append("rank", level);
 
     const attemptRegistration = async () => {
       document.getElementById('register-button').classList.add('disabled')
