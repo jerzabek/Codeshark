@@ -215,12 +215,8 @@ function Task({ taskSlug, preloadedTask }) {
                                 <td>{row.score}</td>
                                 <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
                                 {
-                                    solutionsAvailable ? (
-                                        row.code ? (
-                                            <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
-                                        ) : (
-                                            <td><span className="badge bg-secondary">Code</span></td>
-                                        )
+                                    row.code ? (
+                                        <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
                                     ) : (
                                         <td><span className="badge bg-secondary">Code</span></td>
                                     )
