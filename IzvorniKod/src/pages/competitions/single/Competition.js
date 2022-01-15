@@ -25,7 +25,7 @@ function Competition({ isVirtual }) {
         const res = isVirtual ?
           await getVirtualCompetition(competition_id, userContext.user.session)
           :
-          await getCompetition(competition_slug);
+          await getCompetition(competition_slug, userContext.user.session);
 
         if (res.success) {
           if (!isVirtual) {

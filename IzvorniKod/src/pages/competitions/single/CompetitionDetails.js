@@ -26,7 +26,7 @@ function CompetitionDetails(props) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getCompetition(competition_slug)
+        const res = await getCompetition(competition_slug, userContext.user.session)
 
         if (res.success) {
           setCompetition(res.data)

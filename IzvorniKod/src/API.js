@@ -125,8 +125,12 @@ function editProfile(data, session) {
   })
 }
 
-function getCompetition(competition_slug) {
-  return axiosInstance.get(`competition/${competition_slug}`)
+function getCompetition(competition_slug, session) {
+  return axiosInstance.get(`competition/${competition_slug}`, {
+    headers: {
+      session
+    }
+  })
     .then((res) => {
       return handleSuccess(res.data)
     }).catch(err => {
