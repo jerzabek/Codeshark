@@ -20,7 +20,7 @@ function Task({ taskSlug, preloadedTask }) {
     // We prioritize the slug we recieve in props over the slug in the URL
     const [slug, setSlug] = useState(taskSlug === undefined ? handle : taskSlug)
     const [task, setTask] = useState([]);
-    
+
     const [solutionsAvailable, setSolutionsAvailable] = useState(false)
     const [code, setCode] = React.useState(
         `function add(a, b) {\n  return a + b;\n}`
@@ -49,7 +49,7 @@ function Task({ taskSlug, preloadedTask }) {
                         }
                     }
 
-                    if(res.data.last_user_solution) {
+                    if (res.data.last_user_solution) {
                         setCode(res.data.last_user_solution)
                     }
                 } else {
@@ -217,8 +217,10 @@ function Task({ taskSlug, preloadedTask }) {
                                 <td>{row.score}</td>
                                 <td><Link to={MEMBERS + "/" + row.username} className='badge bg-info'>{row.username}</Link></td>
                                 {
-                                    solutionsAvailable && (
+                                    solutionsAvailable ? (
                                         <td><span onClick={(e) => displayCode(row.code, row.username)} className="badge bg-success hover-pointer">Code</span></td>
+                                    ) : (
+                                        <td><span className="badge bg-success bg-secondary">Code</span></td>
                                     )
                                 }
                             </tr>
