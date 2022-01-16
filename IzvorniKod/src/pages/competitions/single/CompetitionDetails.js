@@ -54,7 +54,7 @@ function CompetitionDetails(props) {
           }
 
           if (userContext.user.rank === ADMIN_RANK || (userContext.user.rank === LEADER_RANK && userContext.user.username === res.data.author_username)) {
-            if (end < currDate && !res.data.is_finished) {
+            if (end < currDate && res.data.is_finished) {
               setCanFinishCompetition(true)
             }
           }
@@ -126,7 +126,7 @@ function CompetitionDetails(props) {
             title: <p>Successfully ended competition!</p>,
             html: <p>All trophies have been awarded and the competition came to an end.</p>,
             icon: 'success'
-          })
+          }).then(() => window.location.reload())
         } else {
           MySwal.fire({
             title: <p>Could not end competition</p>,
@@ -176,7 +176,7 @@ function CompetitionDetails(props) {
           }
           {
             canFinishCompetition && (
-              <button onClick={endCompetition} className="btn btn-danger ms-2"><i class="bi bi-slash-circle"></i> Finish competition</button>
+              <button onClick={endCompetition} className="btn btn-danger ms-2"><i class="bi bi-slash-circle"></i> Hand out trophies</button>
             )
           }
         </div>

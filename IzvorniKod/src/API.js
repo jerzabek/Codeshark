@@ -278,7 +278,7 @@ function createCompetition(data, session) {
 }
 
 function finishCompetition(competition_slug, session) {
-  return axiosInstance.post(`end_competition/${competition_slug}`, {}, {
+  return axiosInstance.get(`end_competition/${competition_slug}`, {
     headers: {
       session
     }
